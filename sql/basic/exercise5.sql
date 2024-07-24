@@ -22,4 +22,4 @@ INSERT INTO cd.facilities (facid, name, membercost, guestcost, initialoutlay, mo
 (7, 'Snooker Table', 0, 5, 450, 15),
 (8, 'Pool Table', 0, 5, 400, 15);
 
-SELECT * FROM cd.facilities WHERE facid IN (1,5);
+SELECT * FROM cd.facilities WHERE name LIKE '%Tennis%';

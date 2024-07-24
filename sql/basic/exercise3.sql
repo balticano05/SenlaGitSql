@@ -22,4 +22,4 @@ INSERT INTO cd.facilities (facid, name, membercost, guestcost, initialoutlay, mo
 (7, 'Snooker Table', 0, 5, 450, 15),
 (8, 'Pool Table', 0, 5, 400, 15);
 
-SELECT facid,name, membercost, monthlymaintenance FROM cd.facilities WHERE membercost >0 AND membercost < monthlymaintenance/50;
+SELECT * FROM cd.facilities WHERE membercost > 0;
