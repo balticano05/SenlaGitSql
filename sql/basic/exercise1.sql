@@ -1,9 +1,7 @@
---DDL
-CREATE DATABASE IF NOT EXISTS senla_course_sql;
+-- DDL
+CREATE SCHEMA cd;
 
-USE senla_course_sql;
-
-CREATE TABLE IF NOT EXISTS facilities (
+CREATE TABLE cd.facilities (
     facid INT NOT NULL PRIMARY KEY,
     name VARCHAR(45) NOT NULL,
     membercost DECIMAL(10,2) NOT NULL DEFAULT 0.00,
@@ -12,8 +10,8 @@ CREATE TABLE IF NOT EXISTS facilities (
     monthlymaintenance DECIMAL(10,2) NOT NULL DEFAULT 0.00
 );
 
---DML
-INSERT INTO facilities (facid, name, membercost, guestcost, initialoutlay, monthlymaintenance) VALUES
+-- DML 
+INSERT INTO cd.facilities (facid, name, membercost, guestcost, initialoutlay, monthlymaintenance) VALUES
 (0, 'Tennis Court 1', 5, 25, 10000, 200),
 (1, 'Tennis Court 2', 5, 25, 8000, 200),
 (2, 'Badminton Court', 0, 15.5, 4000, 50),
@@ -24,4 +22,4 @@ INSERT INTO facilities (facid, name, membercost, guestcost, initialoutlay, month
 (7, 'Snooker Table', 0, 5, 450, 15),
 (8, 'Pool Table', 0, 5, 400, 15);
 
-SELECT * FROM facilities;
+SELECT * FROM cd.facilities;
