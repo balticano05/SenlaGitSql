@@ -2,12 +2,12 @@
 CREATE SCHEMA cd;
 
 CREATE TABLE cd.facilities (
-    facid INT NOT NULL PRIMARY KEY,
-    name VARCHAR(45) NOT NULL,
-    membercost DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    guestcost DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    initialoutlay DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    monthlymaintenance DECIMAL(10,2) NOT NULL DEFAULT 0.00
+    facid INTEGER NOT NULL PRIMARY KEY,
+    name CHARACTER VARYING(45) NOT NULL,
+    membercost NUMERIC(10,2) NOT NULL DEFAULT 0.00,
+    guestcost NUMERIC(10,2)  NOT NULL DEFAULT 0.00,
+    initialoutlay NUMERIC(10,2)  NOT NULL DEFAULT 0.00,
+    monthlymaintenance NUMERIC(10,2)  NOT NULL DEFAULT 0.00
 );
 
 -- DML 
