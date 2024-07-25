@@ -32,4 +32,4 @@ VALUES
 ('Moore', 'Harry', 'Some Address 10', FLOOR(RAND() * 100000 + 100000), '555-0010', 0, '2003-03-08 15:20:15'),
 ('Taylor', 'Ivy', 'Some Address 11', FLOOR(RAND() * 100000 + 100000), '555-0011', 0, '2023-09-06 14:18:29');
 
-SELECT memid, surname, firstname, joindate FROM cd.members WHERE joindate > '2012-09-01 00:00:00';
+SELECT distinct surname FROM cd.members order by surname limit 10;
