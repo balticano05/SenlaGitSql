@@ -28,6 +28,7 @@ CREATE TABLE bookings (
     slots integer NOT NULL
 );
 
+-- DML
 INSERT INTO facilities (facid, name, membercost, guestcost, initialoutlay, monthlymaintenance) VALUES
 (0, 'Tennis Court 1', 5, 25, 10000, 200),
 (1, 'Tennis Court 2', 5, 25, 8000, 200),

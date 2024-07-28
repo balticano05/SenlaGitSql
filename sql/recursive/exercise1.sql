@@ -29,19 +29,18 @@ CREATE TABLE bookings (
 );
 
 -- DML
-INSERT INTO facilities (facid, name, membercost, guestcost, initialoutlay, monthlymaintenance) VALUES
-(0, 'Tennis Court 1', 5, 25, 10000, 200),
-(1, 'Tennis Court 2', 5, 25, 8000, 200),
-(2, 'Badminton Court', 0, 15.5, 4000, 50),
-(3, 'Table Tennis', 0, 5, 320, 10),
-(4, 'Massage Room 1', 35, 80, 4000, 3000),
-(5, 'Massage Room 2', 35, 80, 4000, 3000),
-(6, 'Squash Court', 3.5, 17.5, 5000, 80),
-(7, 'Snooker Table', 0, 5, 450, 15),
-(8, 'Pool Table', 0, 5, 400, 15);
+INSERT INTO cd.facilities (facid, name, membercost, guestcost, initialoutlay, monthlymaintenance) VALUES
+(0, 'Tennis Court 1', 10, 50, 10000, 200),
+(1, 'Tennis Court 2', 10, 50, 8000, 200),
+(2, 'Badminton Court', 5, 25, 4000, 50),
+(3, 'Table Tennis', 2, 10, 320, 10),
+(4, 'Massage Room 1', 40, 100, 4000, 3000),
+(5, 'Massage Room 2', 40, 100, 4000, 3000),
+(6, 'Squash Court', 5, 25, 5000, 80),
+(7, 'Snooker Table', 2, 10, 450, 15),
+(8, 'Pool Table', 2, 10, 400, 15);
 
-INSERT INTO members (surname, firstname, address, zipcode, telephone, recommendedby, joindate)
-VALUES
+INSERT INTO cd.members (surname, firstname, address, zipcode, telephone, recommendedby, joindate) VALUES
 ('Sarwin', 'Ramnaresh', 'Some Address 24', FLOOR(RAND() * 100000 + 100000), '555-0024', 3, '2012-09-01 08:44:42'),
 ('Jones', 'Douglas', 'Some Address 26', FLOOR(RAND() * 100000 + 100000), '555-0026', 0, '2012-09-02 18:43:05'),
 ('Rumney', 'Henrietta', 'Some Address 27', FLOOR(RAND() * 100000 + 100000), '555-0027', 4, '2012-09-05 08:42:35'),
@@ -59,51 +58,41 @@ VALUES
 ('Moore', 'Harry', 'Some Address 10', FLOOR(RAND() * 100000 + 100000), '555-0010', 6, '2003-03-08 15:20:15'),
 ('Taylor', 'Ivy', 'Some Address 11', FLOOR(RAND() * 100000 + 100000), '555-0011', 0, '2023-09-06 14:18:29');
 
-INSERT INTO bookings (facid, memid, starttime, slots) VALUES
-(0, 4, '2012-09-21 08:00:00', 1),
-(1, 4, '2012-09-21 09:30:00', 1),
-(0, 4, '2012-09-21 10:00:00', 1),
-(1, 4, '2012-09-21 11:30:00', 1),
-(0, 4, '2012-09-21 13:30:00', 1),
-(1, 4, '2012-09-21 14:00:00', 1),
-(0, 4, '2012-09-21 15:30:00', 1),
-(1, 4, '2012-09-21 16:00:00', 1),
-(0, 4, '2012-09-21 17:00:00', 1),
-(1, 4, '2012-09-21 18:00:00', 1),
-(4, 4, '2012-09-22 17:00:00', 1),
-(5, 4, '2012-09-23 08:30:00', 1),
-(6, 4, '2012-09-23 17:30:00', 1),
-(7, 4, '2012-09-23 19:00:00', 1),
-(8, 4, '2012-09-24 08:00:00', 1),
-(0, 4, '2012-09-24 16:30:00', 1),
-(1, 4, '2012-09-24 12:30:00', 1),
-(2, 4, '2012-09-25 15:30:00', 1),
-(3, 4, '2012-09-25 17:00:00', 1),
-(4, 4, '2012-09-26 13:00:00', 1),
-(5, 4, '2012-09-26 17:00:00', 1),
-(6, 4, '2012-09-27 08:00:00', 1),
-(7, 4, '2012-09-28 11:30:00', 1),
-(8, 4, '2012-09-28 09:30:00', 1),
-(0, 4, '2012-09-28 13:00:00', 1),
-(1, 4, '2012-09-29 16:00:00', 1),
-(2, 4, '2012-09-29 10:30:00', 1),
-(3, 4, '2012-09-29 13:30:00', 1),
-(4, 4, '2012-09-29 14:30:00', 1),
-(5, 4, '2012-09-29 17:30:00', 1),
-(6, 4, '2012-09-30 14:30:00', 1);
+INSERT INTO cd.bookings (facid, memid, starttime, slots) VALUES
+(4, 0, '2012-09-14 08:00:00', 2),
+(4, 0, '2012-09-14 09:00:00', 2),
+(4, 0, '2012-09-14 10:00:00', 3),
+(4, 0, '2012-09-14 11:00:00', 1),
+(5, 1, '2012-09-14 17:00:00', 1),
+(5, 1, '2012-09-14 18:00:00', 1),
+(6, 2, '2012-09-14 08:00:00', 4),
+(7, 3, '2012-09-14 08:00:00', 5),
+(8, 4, '2012-09-14 08:00:00', 3);
 
+WITH RECURSIVE recommenders(recommender) AS (
+    SELECT 
+        recommendedby
+    FROM 
+        cd.members
+    WHERE 
+        memid = 27
+    UNION ALL
+    SELECT 
+        mems.recommendedby
+    FROM 
+        recommenders recs
+    INNER JOIN 
+        cd.members mems
+        ON mems.memid = recs.recommender
+)
 SELECT 
-    table_one.firstname AS table_one_fname,
-    table_one.surname AS table_one_surname,
-    table_two.firstname AS table_two_firstname,
-    table_two.surname AS table_two_surname
+    recs.recommender, 
+    mems.firstname, 
+    mems.surname
 FROM 
-    cd.members table_one
-LEFT OUTER JOIN 
-    cd.members table_two 
-    ON table_two.memid = table_one.recommendedby 
+    recommenders recs
+INNER JOIN 
+    cd.members mems
+    ON recs.recommender = mems.memid
 ORDER BY 
-    table_one_fname, table_one_surname;
-
-
-    
+    mems.memid DESC;
