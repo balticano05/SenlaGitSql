@@ -70,14 +70,25 @@ INSERT INTO cd.bookings (facid, memid, starttime, slots) VALUES
 (7, 3, '2012-09-14 08:00:00', 5),
 (8, 4, '2012-09-14 08:00:00', 3);
 
-SELECT facs.name AS name,
-       facs.initialoutlay / (
-           (SUM(CASE
-               WHEN memid = 0 THEN slots * facs.guestcost
-               ELSE slots * membercost
-           END) / 3) - facs.monthlymaintenance
-       ) AS months
-FROM cd.bookings bks
-INNER JOIN cd.facilities facs ON bks.facid = facs.facid
-GROUP BY facs.facid, facs.name, facs.initialoutlay, facs.monthlymaintenance
-ORDER BY name;
+SELECT 
+    facs.name AS name,
+    facs.initialoutlay / (
+        (SUM(
+            CASE 
+                WHEN memid = 0 THEN slots * facs.guestcost
+                ELSE slots * membercost
+            END
+        ) / 3) - facs.monthlymaintenance
+    ) AS months
+FROM 
+    cd.bookings bks
+INNER JOIN 
+    cd.facilities facs 
+    ON bks.facid = facs.facid
+GROUP BY 
+    facs.facid, 
+    facs.name, 
+    facs.initialoutlay, 
+    facs.monthlymaintenance
+ORDER BY 
+    name;

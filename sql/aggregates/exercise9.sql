@@ -70,13 +70,18 @@ INSERT INTO cd.bookings (facid, memid, starttime, slots) VALUES
 (7, 3, '2012-09-14 08:00:00', 5),
 (8, 4, '2012-09-14 08:00:00', 3);
 
-SELECT facs.name,
-       SUM(slots * CASE
-                       WHEN memid = 0 THEN facs.guestcost
-                       ELSE facs.membercost
-                   END) AS revenue
-FROM cd.bookings bks
-INNER JOIN cd.facilities facs
-ON bks.facid = facs.facid 
-GROUP BY facs.name
-ORDER BY revenue;
+SELECT 
+    facs.name,
+    SUM(slots * CASE
+        WHEN memid = 0 THEN facs.guestcost
+        ELSE facs.membercost
+    END) AS revenue
+FROM 
+    cd.bookings bks
+INNER JOIN 
+    cd.facilities facs
+    ON bks.facid = facs.facid 
+GROUP BY 
+    facs.name
+ORDER BY 
+    revenue;

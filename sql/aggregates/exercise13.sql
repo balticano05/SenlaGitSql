@@ -70,10 +70,21 @@ INSERT INTO cd.bookings (facid, memid, starttime, slots) VALUES
 (7, 3, '2012-09-14 08:00:00', 5),
 (8, 4, '2012-09-14 08:00:00', 3);
 
-SELECT facs.facid,
-       facs.name,
-       TRIM(TO_CHAR(SUM(bks.slots) / 2.0, '9999999999999999D99')) AS "Total Hours"
-FROM cd.bookings bks
-INNER JOIN cd.facilities facs ON facs.facid = bks.facid
-GROUP BY facs.facid, facs.name
-ORDER BY facs.facid;
+SELECT 
+    facs.facid,
+    facs.name,
+    TRIM(TO_CHAR(
+        SUM(bks.slots) / 2.0, 
+        '9999999999999999D99'
+    )) AS "Total Hours"
+FROM 
+    cd.bookings bks
+INNER JOIN 
+    cd.facilities facs 
+    ON facs.facid = bks.facid
+GROUP BY 
+    facs.facid, 
+    facs.name
+ORDER BY 
+    facs.facid;
+

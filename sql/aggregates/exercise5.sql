@@ -70,5 +70,11 @@ INSERT INTO cd.bookings (facid, memid, starttime, slots) VALUES
 (7, 3, '2012-09-14 08:00:00', 5),
 (8, 4, '2012-09-14 08:00:00', 3);
 
-SELECT facid, SUM(slots) AS "Total slots" FROM cd.bookings
-  WHERE starttime >= '2012-09-01' AND starttime < '2012-10-01' GROUP BY facid ORDER BY SUM(slots);
+SELECT 
+      facid, SUM(slots) AS "Total slots" FROM cd.bookings
+WHERE 
+      starttime >= '2012-09-01' AND starttime < '2012-10-01'
+GROUP BY
+      facid
+ORDER BY 
+      SUM(slots);

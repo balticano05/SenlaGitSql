@@ -70,18 +70,32 @@ INSERT INTO cd.bookings (facid, memid, starttime, slots) VALUES
 (7, 3, '2012-09-14 08:00:00', 5),
 (8, 4, '2012-09-14 08:00:00', 3);
 
-SELECT dategen.date,
-       (
-           SELECT SUM(CASE
-               WHEN memid = 0 THEN slots * facs.guestcost
-               ELSE slots * membercost
-           END) AS rev
-           FROM cd.bookings bks
-           INNER JOIN cd.facilities facs ON bks.facid = facs.facid
-           WHERE bks.starttime > dategen.date - INTERVAL '14 days'
-             AND bks.starttime < dategen.date + INTERVAL '1 day'
-       ) / 15 AS revenue
+SELECT 
+    dategen.date,
+    (
+        SELECT 
+            SUM(
+                CASE
+                    WHEN memid = 0 THEN slots * facs.guestcost
+                    ELSE slots * membercost
+                END
+            ) AS rev
+        FROM 
+            cd.bookings bks
+        INNER JOIN 
+            cd.facilities facs 
+            ON bks.facid = facs.facid
+        WHERE 
+            bks.starttime > dategen.date - INTERVAL '14 days'
+            AND bks.starttime < dategen.date + INTERVAL '1 day'
+    ) / 15 AS revenue
 FROM (
-    SELECT CAST(GENERATE_SERIES(TIMESTAMP '2012-08-01', '2012-08-31', '1 day') AS DATE) AS date
+    SELECT 
+        CAST(GENERATE_SERIES(
+            TIMESTAMP '2012-08-01', 
+            '2012-08-31', 
+            '1 day'
+        ) AS DATE) AS date
 ) AS dategen
-ORDER BY dategen.date;
+ORDER BY 
+    dategen.date;

@@ -70,10 +70,21 @@ INSERT INTO cd.bookings (facid, memid, starttime, slots) VALUES
 (7, 3, '2012-09-14 08:00:00', 5),
 (8, 4, '2012-09-14 08:00:00', 3);
 
-SELECT mems.surname, mems.firstname, mems.memid, 
-MIN(bks.starttime) AS starttime FROM cd.bookings bks
-INNER JOIN cd.members mems ON
-mems.memid = bks.memid 
-WHERE starttime >= '2012-09-01'
+SELECT 
+    mems.surname, 
+    mems.firstname, 
+    mems.memid, 
+    MIN(bks.starttime) AS starttime 
+FROM 
+    cd.bookings bks
+INNER JOIN 
+    cd.members mems 
+    ON mems.memid = bks.memid 
+WHERE 
+    bks.starttime >= '2012-09-01'
 GROUP BY 
-mems.surname, mems.firstname, mems.memid ORDER BY mems.memid;
+    mems.surname, 
+    mems.firstname, 
+    mems.memid 
+ORDER BY 
+    mems.memid;

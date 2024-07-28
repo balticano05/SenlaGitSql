@@ -95,9 +95,13 @@ INSERT INTO bookings (facid, memid, starttime, slots) VALUES
 (5, 4, '2012-09-29 17:30:00', 1),
 (6, 4, '2012-09-30 14:30:00', 1);
 
-SELECT cd.bookings.starttime 
-FROM cd.bookings
-INNER JOIN cd.members 
-ON cd.bookings.memid = cd.members.memid
-WHERE cd.members.firstname = 'David'
-AND cd.members.surname = 'Farrell';
+SELECT 
+    cd.bookings.starttime 
+FROM 
+    cd.bookings
+INNER JOIN 
+    cd.members 
+    ON cd.bookings.memid = cd.members.memid
+WHERE 
+    cd.members.firstname = 'David'
+    AND cd.members.surname = 'Farrell';

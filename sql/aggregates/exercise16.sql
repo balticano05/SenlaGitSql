@@ -70,9 +70,12 @@ INSERT INTO cd.bookings (facid, memid, starttime, slots) VALUES
 (7, 3, '2012-09-14 08:00:00', 5),
 (8, 4, '2012-09-14 08:00:00', 3);
 
-SELECT ROW_NUMBER() OVER(ORDER BY joindate) AS row_num,
-       firstname,
-       surname
-FROM cd.members
-ORDER BY joindate;
+SELECT 
+    ROW_NUMBER() OVER (ORDER BY joindate) AS row_num,
+    firstname,
+    surname
+FROM 
+    cd.members
+ORDER BY 
+    joindate;
 

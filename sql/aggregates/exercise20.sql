@@ -70,13 +70,32 @@ INSERT INTO cd.bookings (facid, memid, starttime, slots) VALUES
 (7, 3, '2012-09-14 08:00:00', 5),
 (8, 4, '2012-09-14 08:00:00', 3);
 
-ELECT name, CASE WHEN class = 1 THEN 'high'
-	WHEN class = 2 THEN 'average'
-	ELSE 'low' END revenue 
-	FROM(SELECT facs.name AS name, ntile(3) OVER (ORDER BY SUM(CASE
-			WHEN memid = 0 THEN slots*facs.guestcost ELSE slots * membercost
-				END) DESC) AS class
-		FROM cd.bookings bks 
-		INNER JOIN cd.facilities facs
-			ON bks.facid = facs.facid
-		GROUP BY facs.name) AS subq ORDER BY class, name;
+SELECT 
+    name, 
+    CASE 
+        WHEN class = 1 THEN 'high'
+        WHEN class = 2 THEN 'average'
+        ELSE 'low' 
+    END AS revenue
+FROM (
+    SELECT 
+        facs.name AS name,
+        NTILE(3) OVER (
+            ORDER BY SUM(
+                CASE 
+                    WHEN memid = 0 THEN slots * facs.guestcost
+                    ELSE slots * membercost
+                END
+            ) DESC
+        ) AS class
+    FROM 
+        cd.bookings bks
+    INNER JOIN 
+        cd.facilities facs 
+        ON bks.facid = facs.facid
+    GROUP BY 
+        facs.name
+) AS subq
+ORDER BY 
+    class, 
+    name;

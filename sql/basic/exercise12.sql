@@ -54,6 +54,6 @@ VALUES
 ('Taylor', 'Ivy', 'Some Address 11', FLOOR(RAND() * 100000 + 100000), '555-0011', 0, '2023-09-06 14:18:29');
 
 SELECT firstname, surname, joindate
-FROM cd.members
-ORDER BY joindate DESC
+    FROM cd.members
+    ORDER BY joindate DESC
 LIMIT 1;

@@ -92,8 +92,15 @@ INSERT INTO bookings (facid, memid, starttime, slots) VALUES
 (6, 4, '2012-09-30 14:30:00', 1);
 
 
-SELECT DISTINCT t.firstname AS firstname, t.surname AS surname
-FROM cd.members mems
-INNER JOIN cd.members t
+SELECT DISTINCT 
+    t.firstname AS firstname, 
+    t.surname AS surname
+FROM 
+    cd.members mems
+INNER JOIN 
+    cd.members t
     ON mems.memid = t.recommendedby
-ORDER BY t.surname, t.firstname;
+ORDER BY 
+    t.surname, 
+    t.firstname;
+

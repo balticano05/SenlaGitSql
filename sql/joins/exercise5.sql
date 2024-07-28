@@ -91,8 +91,14 @@ INSERT INTO bookings (facid, memid, starttime, slots) VALUES
 (5, 4, '2012-09-29 17:30:00', 1),
 (6, 4, '2012-09-30 14:30:00', 1);
 
-SELECT CONCAT(mems.firstname,' ',mems.surname) AS member,
-	facs.name AS facility
-FROM cd.members mems INNER JOIN cd.bookings bks
-    ON mems.memid = bks.memid 
-INNER JOIN cd.facilities facs ON bks.facid = facs.facid;
+SELECT 
+    CONCAT(mems.firstname, ' ', mems.surname) AS member,
+    facs.name AS facility
+FROM 
+    cd.members mems
+INNER JOIN 
+    cd.bookings bks 
+    ON mems.memid = bks.memid
+INNER JOIN 
+    cd.facilities facs 
+    ON bks.facid = facs.facid;

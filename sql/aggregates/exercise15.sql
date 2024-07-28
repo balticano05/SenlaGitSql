@@ -70,4 +70,11 @@ INSERT INTO cd.bookings (facid, memid, starttime, slots) VALUES
 (7, 3, '2012-09-14 08:00:00', 5),
 (8, 4, '2012-09-14 08:00:00', 3);
 
-SELECT COUNT(*) OVER(),firstname,surname FROM cd.members ORDER BY joindate;
+SELECT 
+    COUNT(*) OVER() AS total_count,
+    firstname,
+    surname 
+FROM 
+    cd.members 
+ORDER BY 
+    joindate;

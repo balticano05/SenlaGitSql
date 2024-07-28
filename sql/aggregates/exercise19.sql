@@ -70,11 +70,29 @@ INSERT INTO cd.bookings (facid, memid, starttime, slots) VALUES
 (7, 3, '2012-09-14 08:00:00', 5),
 (8, 4, '2012-09-14 08:00:00', 3);
 
-SELECT name, rank FROM (
-  select facs.name as name, RANK() OVER (ORDER BY sum(
-	CASE WHEN memid = 0 THEN slots * facs.guestcost
-	ELSE slots * membercost
-	END) DESC) AS rank
-  FROM cd.bookings bks INNER JOIN cd.facilities facs ON bks.facid = facs.facid
-  GROUP BY facs.name) AS subq
-  WHERE rank <= 3 ORDER BY rank;
+SELECT 
+    name, 
+    rank 
+FROM (
+    SELECT 
+        facs.name AS name,
+        RANK() OVER (
+            ORDER BY SUM(
+                CASE 
+                    WHEN memid = 0 THEN slots * facs.guestcost
+                    ELSE slots * facs.membercost
+                END
+            ) DESC
+        ) AS rank
+    FROM 
+        cd.bookings bks
+    INNER JOIN 
+        cd.facilities facs 
+        ON bks.facid = facs.facid
+    GROUP BY 
+        facs.name
+) AS subq
+WHERE 
+    rank <= 3
+ORDER BY 
+    rank;
