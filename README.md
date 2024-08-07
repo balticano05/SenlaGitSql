@@ -1,4 +1,4 @@
-# SenlaDB
-Senla's task. Working with database and liquibase.
+# SenlaGitSql
+First senla's task. Working github and SQL.
 ---
 Full name: Yasiukevich Aleksey Yasiukevich
