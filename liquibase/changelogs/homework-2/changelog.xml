@@ -67,7 +67,7 @@
     <changeSet id="homework-2-reviews" author="Aleksey Yasiukevich">
         <createTable tableName="reviews">
             <column name="id" type="BIGSERIAL">
-                <constraints nullable="false"/>
+                <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="user_id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -83,11 +83,6 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-
-        <addPrimaryKey
-                constraintName="pk_reviews"
-                tableName="reviews"
-                columnNames="user_id,course_id"/>
 
         <addForeignKeyConstraint
                 constraintName="fk_reviews_users"
@@ -113,7 +108,7 @@
     <changeSet id="homework-2-transactions" author="Aleksey Yasiukevich">
         <createTable tableName="transactions">
             <column name="id" type="BIGSERIAL">
-                <constraints nullable="false"/>
+                <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="user_id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -128,11 +123,6 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-
-        <addPrimaryKey
-                constraintName="pk_transactions"
-                tableName="transactions"
-                columnNames="user_id,course_id"/>
 
         <addForeignKeyConstraint
                 constraintName="fk_transactions_users"

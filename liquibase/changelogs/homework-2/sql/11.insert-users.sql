@@ -1,5 +1,5 @@
 INSERT INTO users (email, password, role_id, created_at)
-    SELECT email, password, role_id, created_at
+    SELECT email, password, role_id, created_at::timestamp
     FROM (
          VALUES
              ('admin1.shopcourses@gmail.com', 'd79a734b37ccf46f8b07d7b61b7f6e62', 2, '2024-01-01 08:00:00'),
@@ -29,4 +29,4 @@ INSERT INTO users (email, password, role_id, created_at)
              ('victor.green@gmail.com', '3bda3cba635a74001ad38c5d752b796d', 1, '2024-12-15 16:00:00'),
              ('wendy.hill@gmail.com', '6f091f0e83711c46e646e6efb05f4a22', 1, '2025-01-01 17:00:00')
      ) AS t (email, password, role_id, created_at)
-AS t (email, password, role_id) WHERE NOT EXISTS (SELECT 1 FROM users);
+ WHERE NOT EXISTS (SELECT 1 FROM users);
