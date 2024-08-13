@@ -1,4 +1,4 @@
-# SenlaDB
-Senla's task. Working with database and liquibase.
+# SenlaDi
+Senla's task. Creating my own dependency injection.
 ---
 Full name: Yasiukevich Aleksey Yasiukevich
