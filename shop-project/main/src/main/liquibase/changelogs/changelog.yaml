@@ -1,0 +1,185 @@
+databaseChangeLog:
+  - changeSet:
+      id: homework-2-roles
+      author: Aleksey Yasiukevich
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: sql/01.create-roles-table.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: homework-2-users
+      author: Aleksey Yasiukevich
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: sql/02.create-users-table.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: homework-2-role-idx
+      author: Aleksey Yasiukevich
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: sql/03.create-role-index.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: homework-2-courses
+      author: Aleksey Yasiukevich
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: sql/04.create-courses-table.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: homework-2-plans
+      author: Aleksey Yasiukevich
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: sql/05.create-course-plans-table.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: homework-2-categories
+      author: Aleksey Yasiukevich
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: sql/06.create-categories-table.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: homework-2-reviews
+      author: Aleksey Yasiukevich
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: sql/07.create-reviews-table.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: homework-2-course-category
+      author: Aleksey Yasiukevich
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: sql/08.create-course-categories-table.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: homework-2-transactions
+      author: Aleksey Yasiukevich
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: sql/09.create-transactions-table.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: homework-2-insert-roles
+      author: Aleksey Yasiukevich
+      preConditions:
+          - onFail: WARN
+          - tableIsEmpty:
+              tableName: roles
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: sql/10.insert-roles.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: homework-2-insert-users
+      author: Aleksey Yasiukevich
+      preConditions:
+        - onFail: WARN
+        - tableIsEmpty:
+            tableName: users
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: sql/11.insert-users.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: homework-2-insert-courses
+      author: Aleksey Yasiukevich
+      preConditions:
+        - onFail: WARN
+        - tableIsEmpty:
+            tableName: courses
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: sql/12.insert-courses.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: homework-2-insert-course-plans
+      author: Aleksey Yasiukevich
+      preConditions:
+        - onFail: WARN
+        - tableIsEmpty:
+            tableName: course_plans
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: sql/13.insert-course-plans.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: homework-2-insert-categories
+      author: Aleksey Yasiukevich
+      preConditions:
+        - onFail: WARN
+        - tableIsEmpty:
+            tableName: categories
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: sql/14.insert-categories.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: homework-2-insert-reviews
+      author: Aleksey Yasiukevich
+      preConditions:
+        - onFail: WARN
+        - tableIsEmpty:
+            tableName: reviews
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: sql/15.insert-reviews.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: homework-2-insert-course-categories
+      author: Aleksey Yasiukevich
+      preConditions:
+        - onFail: WARN
+        - tableIsEmpty:
+            tableName: course_categories
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: sql/16.insert-course-categories.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: homework-2-insert-transactions
+      author: Aleksey Yasiukevich
+      preConditions:
+        - onFail: WARN
+        - tableIsEmpty:
+            tableName: transactions
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: sql/17.insert-transactions.sql
+            relativeToChangelogFile: true
