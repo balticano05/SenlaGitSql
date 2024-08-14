@@ -19,8 +19,11 @@ public class FieldProcessor implements Processor {
 
     @Override
     public void process(Object bean) {
+
         Field[] fields = bean.getClass().getDeclaredFields();
+
         for (Field field : fields) {
+
             if (isAutowired(field)) {
                 processAutowiredField(bean, field);
             }
@@ -32,20 +35,26 @@ public class FieldProcessor implements Processor {
     }
 
     private void processAutowiredField(Object bean, Field field) {
+
         Object dependency = resolveDependency(field);
+
         if (dependency == null) {
             throw new RuntimeException(ERROR_BEAN_NOT_FOUND + field.getType().getName());
         }
+
         injectDependency(bean, field, dependency);
     }
 
     private Object resolveDependency(Field field) {
+
         Class<?> fieldType = field.getType();
         return applicationContext.getBean(fieldType);
     }
 
     private void injectDependency(Object bean, Field field, Object dependency) {
+
         setFieldAccessible(field);
+
         try {
             field.set(bean, dependency);
         } catch (IllegalAccessException e) {

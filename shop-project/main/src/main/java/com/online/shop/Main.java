@@ -7,6 +7,7 @@ import static com.myioc.utils.StringConst.PACKAGE_NAME;
 
 public class Main {
     public static void main(String[] args) {
+
         ApplicationContext applicationContext = new ApplicationContext(PACKAGE_NAME);
 
         Controller controller = applicationContext.getBean(Controller.class);

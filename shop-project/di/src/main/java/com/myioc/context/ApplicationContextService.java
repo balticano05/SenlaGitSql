@@ -47,8 +47,11 @@ public class ApplicationContextService {
     }
 
     private void initializeBeans() {
+
         for (Class<?> clazz : beanDefinitions) {
+
             Object bean = createBean(clazz);
+
             if (bean != null) {
                 applicationContext.addBean(clazz, bean);
             }
@@ -82,6 +85,7 @@ public class ApplicationContextService {
     }
 
     private Constructor<?> findAutowiredConstructor(Class<?> clazz) throws NoSuchMethodException {
+
         Constructor<?>[] constructors = clazz.getDeclaredConstructors();
 
         for (Constructor<?> constructor : constructors) {
@@ -94,6 +98,7 @@ public class ApplicationContextService {
     }
 
     private Object[] getDependenciesForConstructor(Constructor<?> constructor) {
+
         Class<?>[] parameterTypes = constructor.getParameterTypes();
         Object[] dependencies = new Object[parameterTypes.length];
 
@@ -105,11 +110,39 @@ public class ApplicationContextService {
     }
 
     private Object findDependencyByType(Class<?> parameterType) {
-        Object dependency = applicationContext.getBean(parameterType);
+
+        Object dependency = null;
+
+        if (parameterType.isInterface()) {
+            dependency = findImplementationForInterface(parameterType);
+        } else {
+            dependency = applicationContext.getBean(parameterType);
+        }
         if (dependency == null) {
             throw new RuntimeException(ERROR_BEAN_NOT_FOUND+ parameterType.getName());
         }
+
         return dependency;
+    }
+
+    private Object findImplementationForInterface(Class<?> interfaceType) {
+
+        Set<Class<?>> implementations = new Reflections(PACKAGE_NAME)
+                .getSubTypesOf((Class<Object>) interfaceType);
+
+        if (implementations.isEmpty()) {
+            throw new RuntimeException(ERROR_IMPLEMENTATION_NOT_FOUND + interfaceType.getName());
+        }
+
+        Class<?> implementationClass = implementations.iterator().next();
+
+        try {
+
+            return createBean(implementationClass);
+
+        } catch (Exception e) {
+            throw new RuntimeException(ERROR_WITH_CREATING_AN_EXAMPLE + implementationClass.getName(), e);
+        }
     }
 
 }

@@ -18,8 +18,11 @@ public class ValueProcessor implements Processor {
 
     @Override
     public void process(Object bean) {
+
         Field[] fields = bean.getClass().getDeclaredFields();
+
         for (Field field : fields) {
+
             if (isValueAnnotated(field)) {
                 injectValue(bean, field);
             }
@@ -38,9 +41,12 @@ public class ValueProcessor implements Processor {
     private String resolvePropertyValue(Field field) {
         try {
             field.setAccessible(true);
+
             Value valueAnnotation = field.getAnnotation(Value.class);
+
             String propertyKey = valueAnnotation.value();
             return applicationContext.getProperty(propertyKey);
+
         } catch (Exception e) {
             throw new RuntimeException(ERROR_PRIVATE + field.getName(), e);
         }

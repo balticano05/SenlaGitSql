@@ -18,8 +18,11 @@ public class SetterProcessor implements Processor {
 
     @Override
     public void process(Object bean) {
+
         Method[] methods = bean.getClass().getDeclaredMethods();
+
         for (Method method : methods) {
+
             if (isAutowired(method)) {
                 injectDependency(bean, method);
             }
@@ -31,6 +34,7 @@ public class SetterProcessor implements Processor {
     }
 
     private void injectDependency(Object bean, Method method) {
+
         Class<?> parameterType = method.getParameterTypes()[0];
         Object dependency = resolveDependency(parameterType);
 
@@ -39,10 +43,13 @@ public class SetterProcessor implements Processor {
     }
 
     private Object resolveDependency(Class<?> parameterType) {
+
         Object dependency = applicationContext.getBean(parameterType);
+
         if (dependency == null) {
             throw new RuntimeException(ERROR_BEAN_NOT_FOUND + parameterType.getName());
         }
+
         return dependency;
     }
 
