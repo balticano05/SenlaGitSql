@@ -14,5 +14,6 @@ public final class StringConst {
     public static final String ERROR_PRIVATE_FIELD = "Ошибка доступа к приватному полю: ";
     public static final String ERROR_WITH_CREATING_AN_EXAMPLE = "Ошибка при создании экземпляра для: ";
     public static final String ERROR_IMPLEMENTATION_NOT_FOUND = "Не удалось найти реализации для интерфейса: ";
+    public static final String ERROR_MANY_IMPLEMENTATIONS = "Много реализаций для интерфейса: ";
 
 }

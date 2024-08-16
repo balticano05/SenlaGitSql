@@ -1,7 +1,7 @@
 package com.myioc.processors;
 
-import com.myioc.context.ApplicationContext;
 import com.myioc.annotations.Autowired;
+import com.myioc.resolver.DependencyResolver;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -10,19 +10,16 @@ import static com.myioc.utils.StringConst.*;
 
 public class SetterProcessor implements Processor {
 
-    private ApplicationContext applicationContext;
+    private DependencyResolver dependencyResolver;
 
-    public SetterProcessor(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
+    public SetterProcessor(DependencyResolver dependencyResolver) {
+        this.dependencyResolver = dependencyResolver;
     }
 
     @Override
     public void process(Object bean) {
-
         Method[] methods = bean.getClass().getDeclaredMethods();
-
         for (Method method : methods) {
-
             if (isAutowired(method)) {
                 injectDependency(bean, method);
             }
@@ -34,27 +31,18 @@ public class SetterProcessor implements Processor {
     }
 
     private void injectDependency(Object bean, Method method) {
-
         Class<?> parameterType = method.getParameterTypes()[0];
-        Object dependency = resolveDependency(parameterType);
-
-        setMethodAccessible(method);
+        Object dependency = dependencyResolver.resolveDependency(parameterType);
+        method.setAccessible(true);
         invokeMethod(bean, method, dependency);
     }
 
     private Object resolveDependency(Class<?> parameterType) {
-
-        Object dependency = applicationContext.getBean(parameterType);
-
+        Object dependency = dependencyResolver.getApplicationContext().getBean(parameterType);
         if (dependency == null) {
             throw new RuntimeException(ERROR_BEAN_NOT_FOUND + parameterType.getName());
         }
-
         return dependency;
-    }
-
-    private void setMethodAccessible(Method method) {
-        method.setAccessible(true);
     }
 
     private void invokeMethod(Object bean, Method method, Object dependency) {
@@ -66,4 +54,5 @@ public class SetterProcessor implements Processor {
             throw new RuntimeException(ERROR_PRIVATE, e);
         }
     }
+
 }
