@@ -5,7 +5,8 @@ import com.myioc.resolver.DependencyResolver;
 
 import java.lang.reflect.Field;
 
-import static com.myioc.utils.StringConst.*;
+import static com.myioc.utils.StringConst.ERROR_BEAN_NOT_FOUND;
+import static com.myioc.utils.StringConst.ERROR_PRIVATE;
 
 public class FieldProcessor implements Processor {
 

@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import static com.myioc.utils.StringConst.*;
+import static com.myioc.utils.StringConst.FILE_PROPERTIES;
+import static com.myioc.utils.StringConst.ERROR_FILE_PROPERTIES_NOT_FOUND;
+import static com.myioc.utils.StringConst.ERROR_WITH_LOADING_FILE_PROPERTIES;
 
 public class PropertyLoader {
 

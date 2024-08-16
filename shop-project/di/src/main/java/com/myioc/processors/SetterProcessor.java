@@ -6,7 +6,9 @@ import com.myioc.resolver.DependencyResolver;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import static com.myioc.utils.StringConst.*;
+import static com.myioc.utils.StringConst.ERROR_BEAN_NOT_FOUND;
+import static com.myioc.utils.StringConst.ERROR_METHOD;
+import static com.myioc.utils.StringConst.ERROR_PRIVATE;
 
 public class SetterProcessor implements Processor {
 
@@ -38,7 +40,7 @@ public class SetterProcessor implements Processor {
     }
 
     private Object resolveDependency(Class<?> parameterType) {
-        Object dependency = dependencyResolver.getApplicationContext().getBean(parameterType);
+        Object dependency = dependencyResolver.resolveDependency(parameterType);
         if (dependency == null) {
             throw new RuntimeException(ERROR_BEAN_NOT_FOUND + parameterType.getName());
         }

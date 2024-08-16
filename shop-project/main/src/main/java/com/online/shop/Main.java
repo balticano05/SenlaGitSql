@@ -5,7 +5,8 @@ import com.online.shop.controller.Controller;
 
 public class Main {
     public static void main(String[] args) {
-        Controller controller = ApplicationContext.initializeContext().getBean(Controller.class);
+        ApplicationContext context = ApplicationContext.run(Main.class);
+        Controller controller = context.getBean(Controller.class);
         String result = controller.execute();
         System.out.println(result);
     }

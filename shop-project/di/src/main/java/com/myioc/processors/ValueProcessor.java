@@ -1,10 +1,10 @@
 package com.myioc.processors;
 
-import com.myioc.context.ApplicationContext;
 import com.myioc.annotations.Value;
 import com.myioc.loaders.PropertyLoader;
 
 import java.lang.reflect.Field;
+import java.util.Map;
 import java.util.Properties;
 
 import static com.myioc.utils.StringConst.ERROR_PRIVATE;
@@ -12,11 +12,11 @@ import static com.myioc.utils.StringConst.ERROR_PRIVATE_FIELD;
 
 public class ValueProcessor implements Processor {
 
-    private ApplicationContext applicationContext;
+    private final Map<Class<?>, Object> beans;
     private Properties properties;
 
-    public ValueProcessor(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
+    public ValueProcessor(Map<Class<?>, Object> beans) {
+        this.beans = beans;
         this.properties = PropertyLoader.getProperties();
     }
 

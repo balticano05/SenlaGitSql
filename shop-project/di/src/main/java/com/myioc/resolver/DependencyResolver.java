@@ -1,49 +1,44 @@
 package com.myioc.resolver;
 
-import com.myioc.context.ApplicationContext;
 import org.reflections.Reflections;
 
+import java.util.Map;
 import java.util.Set;
 
-import static com.myioc.utils.StringConst.*;
+import static com.myioc.utils.StringConst.ERROR_IMPLEMENTATION_NOT_FOUND;
+import static com.myioc.utils.StringConst.ERROR_MANY_IMPLEMENTATIONS;
+import static com.myioc.utils.StringConst.ERROR_WITH_CREATING_AN_EXAMPLE;
 
 public class DependencyResolver {
 
-    private final ApplicationContext applicationContext;
-    private Reflections reflections;
+    private final Map<Class<?>, Object> beans;
+    private final Reflections reflections;
 
-    public void setReflections(Reflections reflections) {
+    public DependencyResolver(Map<Class<?>, Object> beans, Reflections reflections) {
+        this.beans = beans;
         this.reflections = reflections;
-    }
-
-    public DependencyResolver(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
     }
 
     public Object resolveDependency(Class<?> type) {
         if (type.isInterface()) {
             return getImplementationForInterface(type);
         }
-        return applicationContext.getBean(type);
+        return beans.get(type);
     }
 
     private Object getImplementationForInterface(Class<?> interfaceType) {
         Set<Class<?>> implementations = reflections.getSubTypesOf((Class<Object>) interfaceType);
         if (implementations.isEmpty()) {
             throw new RuntimeException(ERROR_IMPLEMENTATION_NOT_FOUND + interfaceType.getName());
-        } else if (implementations.stream().count() > 1) {
+        } else if (implementations.size() > 1) {
             throw new RuntimeException(ERROR_MANY_IMPLEMENTATIONS + interfaceType.getName());
         }
         Class<?> implementationClass = implementations.iterator().next();
-        try {
-            return applicationContext.getBean(implementationClass);
-        } catch (Exception e) {
-            throw new RuntimeException(ERROR_WITH_CREATING_AN_EXAMPLE + implementationClass.getName(), e);
+        Object implementationInstance = beans.get(implementationClass);
+        if (implementationInstance == null) {
+            throw new RuntimeException(ERROR_WITH_CREATING_AN_EXAMPLE + implementationClass.getName());
         }
-    }
-
-    public ApplicationContext getApplicationContext() {
-        return applicationContext;
+        return implementationInstance;
     }
 
 }
