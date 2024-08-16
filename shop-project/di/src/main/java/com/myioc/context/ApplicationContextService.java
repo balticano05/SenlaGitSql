@@ -24,9 +24,9 @@ import static com.myioc.utils.StringConst.ERROR_PRIVATE_FIELD;
 
 public class ApplicationContextService {
 
-    private final Reflections reflections;
-    private final DependencyResolver dependencyResolver;
-    private final Map<Class<?>, Object> beans = new HashMap<>();
+    private Reflections reflections;
+    private DependencyResolver dependencyResolver;
+    private Map<Class<?>, Object> beans = new HashMap<>();
 
     public ApplicationContextService(String packageName) {
         this.reflections = new Reflections(packageName);

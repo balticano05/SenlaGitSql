@@ -6,7 +6,6 @@ import com.myioc.resolver.DependencyResolver;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import static com.myioc.utils.StringConst.ERROR_BEAN_NOT_FOUND;
 import static com.myioc.utils.StringConst.ERROR_METHOD;
 import static com.myioc.utils.StringConst.ERROR_PRIVATE;
 
@@ -22,14 +21,10 @@ public class SetterProcessor implements Processor {
     public void process(Object bean) {
         Method[] methods = bean.getClass().getDeclaredMethods();
         for (Method method : methods) {
-            if (isAutowired(method)) {
+            if (method.isAnnotationPresent(Autowired.class) && method.getParameterCount() == 1) {
                 injectDependency(bean, method);
             }
         }
-    }
-
-    private boolean isAutowired(Method method) {
-        return method.isAnnotationPresent(Autowired.class) && method.getParameterCount() == 1;
     }
 
     private void injectDependency(Object bean, Method method) {
@@ -37,14 +32,6 @@ public class SetterProcessor implements Processor {
         Object dependency = dependencyResolver.resolveDependency(parameterType);
         method.setAccessible(true);
         invokeMethod(bean, method, dependency);
-    }
-
-    private Object resolveDependency(Class<?> parameterType) {
-        Object dependency = dependencyResolver.resolveDependency(parameterType);
-        if (dependency == null) {
-            throw new RuntimeException(ERROR_BEAN_NOT_FOUND + parameterType.getName());
-        }
-        return dependency;
     }
 
     private void invokeMethod(Object bean, Method method, Object dependency) {

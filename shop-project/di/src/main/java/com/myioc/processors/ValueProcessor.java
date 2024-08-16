@@ -12,7 +12,7 @@ import static com.myioc.utils.StringConst.ERROR_PRIVATE_FIELD;
 
 public class ValueProcessor implements Processor {
 
-    private final Map<Class<?>, Object> beans;
+    private Map<Class<?>, Object> beans;
     private Properties properties;
 
     public ValueProcessor(Map<Class<?>, Object> beans) {
@@ -24,19 +24,19 @@ public class ValueProcessor implements Processor {
     public void process(Object bean) {
         Field[] fields = bean.getClass().getDeclaredFields();
         for (Field field : fields) {
-            if (isValueAnnotated(field)) {
+            if (field.isAnnotationPresent(Value.class)) {
                 injectValue(bean, field);
             }
         }
     }
 
-    private boolean isValueAnnotated(Field field) {
-        return field.isAnnotationPresent(Value.class);
-    }
-
     private void injectValue(Object bean, Field field) {
         String propertyValue = resolvePropertyValue(field);
-        setField(bean, field, propertyValue);
+        try {
+            field.set(bean, propertyValue);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(ERROR_PRIVATE_FIELD + field.getName(), e);
+        }
     }
 
     private String resolvePropertyValue(Field field) {
@@ -47,14 +47,6 @@ public class ValueProcessor implements Processor {
             return properties.getProperty(propertyKey);
         } catch (Exception e) {
             throw new RuntimeException(ERROR_PRIVATE + field.getName(), e);
-        }
-    }
-
-    private void setField(Object bean, Field field, Object value) {
-        try {
-            field.set(bean, value);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(ERROR_PRIVATE_FIELD + field.getName(), e);
         }
     }
 

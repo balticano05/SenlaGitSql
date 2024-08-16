@@ -10,7 +10,7 @@ import static com.myioc.utils.StringConst.ERROR_PRIVATE;
 
 public class FieldProcessor implements Processor {
 
-    private final DependencyResolver dependencyResolver;
+    private DependencyResolver dependencyResolver;
 
     public FieldProcessor(DependencyResolver dependencyResolver) {
         this.dependencyResolver = dependencyResolver;
@@ -20,14 +20,10 @@ public class FieldProcessor implements Processor {
     public void process(Object bean) {
         Field[] fields = bean.getClass().getDeclaredFields();
         for (Field field : fields) {
-            if (isAutowired(field)) {
+            if (field.isAnnotationPresent(Autowired.class)) {
                 processAutowiredField(bean, field);
             }
         }
-    }
-
-    private boolean isAutowired(Field field) {
-        return field.isAnnotationPresent(Autowired.class);
     }
 
     private void processAutowiredField(Object bean, Field field) {
