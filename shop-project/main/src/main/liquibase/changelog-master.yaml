@@ -1,0 +1,3 @@
+databaseChangeLog:
+        - include:
+                  file: src/main/liquibase/changelogs/changelog.yaml
