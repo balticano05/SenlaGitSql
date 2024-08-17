@@ -26,27 +26,21 @@ import static com.myioc.utils.StringConst.EXCEPTION_PRIVATE_FIELD_ACCESS;
 
 public class ApplicationContextService {
 
-    private Reflections reflections;
-    private DependencyResolver dependencyResolver;
-    private Map<Class<?>, Object> beans = new HashMap<>();
-
-    public ApplicationContextService(String packageName) {
-        this.reflections = new Reflections(packageName);
-        this.dependencyResolver = new DependencyResolver(beans, reflections);
-    }
-
-    public Map<Class<?>, Object> initializeBeans() {
+    public Map<Class<?>, Object> initializeBeans(String packageName) {
+        Map<Class<?>, Object> beans = new HashMap<>();
+        Reflections reflections = new Reflections(packageName);
         Set<Class<?>> components = reflections.getTypesAnnotatedWith(Component.class);
+        DependencyResolver dependencyResolver = new DependencyResolver(beans, reflections);
         for (Class<?> clazz : components) {
-            Object bean = initializeBean(clazz);
+            Object bean = initializeBean(clazz, dependencyResolver);
             beans.put(clazz, bean);
         }
         return beans;
     }
 
-    private Object initializeBean(Class<?> clazz) {
+    private Object initializeBean(Class<?> clazz, DependencyResolver dependencyResolver) {
         try {
-            Object bean = instantiate(clazz);
+            Object bean = instantiate(clazz, dependencyResolver);
             List<Processor> processors = List.of(
                     new ValueProcessor(),
                     new FieldProcessor(dependencyResolver),
@@ -67,10 +61,10 @@ public class ApplicationContextService {
         }
     }
 
-    private Object instantiate(Class<?> clazz) throws InstantiationException, NoSuchMethodException,
+    private Object instantiate(Class<?> clazz, DependencyResolver dependencyResolver) throws InstantiationException, NoSuchMethodException,
             InvocationTargetException, IllegalAccessException {
         Constructor<?> constructor = getAppropriateConstructor(clazz);
-        Object[] dependencies = getDependenciesForConstructor(constructor);
+        Object[] dependencies = getDependenciesForConstructor(constructor, dependencyResolver);
         return constructor.newInstance(dependencies);
     }
 
@@ -87,7 +81,7 @@ public class ApplicationContextService {
                 });
     }
 
-    private Object[] getDependenciesForConstructor(Constructor<?> constructor) {
+    private Object[] getDependenciesForConstructor(Constructor<?> constructor, DependencyResolver dependencyResolver) {
         return Arrays.stream(constructor.getParameterTypes())
                 .map(dependencyResolver::resolveDependency)
                 .toArray();

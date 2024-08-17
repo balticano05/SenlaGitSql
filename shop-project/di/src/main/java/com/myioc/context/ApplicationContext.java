@@ -11,7 +11,7 @@ public class ApplicationContext {
     }
 
     public static ApplicationContext run(Class<?> startClass) {
-        return new ApplicationContext(new ApplicationContextService(startClass.getPackageName()).initializeBeans());
+        return new ApplicationContext(new ApplicationContextService().initializeBeans(startClass.getPackageName()));
     }
 
     public <T> T getBean(Class<T> clazz) {
