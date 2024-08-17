@@ -48,7 +48,7 @@ public class ApplicationContextService {
         try {
             Object bean = instantiate(clazz);
             List<Processor> processors = List.of(
-                    new ValueProcessor(beans),
+                    new ValueProcessor(),
                     new FieldProcessor(dependencyResolver),
                     new SetterProcessor(dependencyResolver)
             );

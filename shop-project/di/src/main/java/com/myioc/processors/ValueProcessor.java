@@ -5,17 +5,10 @@ import com.myioc.loaders.PropertyLoader;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Map;
 
 import static com.myioc.utils.StringConst.EXCEPTION_PRIVATE_FIELD_ACCESS;
 
 public class ValueProcessor implements Processor {
-
-    private Map<Class<?>, Object> beans;
-
-    public ValueProcessor(Map<Class<?>, Object> beans) {
-        this.beans = beans;
-    }
 
     @Override
     public void process(Object bean) {
