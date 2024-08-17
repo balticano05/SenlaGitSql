@@ -2,7 +2,7 @@ package com.myioc.utils;
 
 public final class StringConst {
 
-    public static final String FILE_PROPERTIES_PATH = "D:\\senla\\SenlaGitSql\\shop-project\\main\\src\\main\\resources\\application.properties";
+    public static final String FILE_PROPERTIES = "application.properties";
     public static final String EXCEPTION_FILE_PROPERTIES_NOT_FOUND = "Файл зависимостей не найден: ";
     public static final String EXCEPTION_LOADING_FILE_PROPERTIES = "Ошибка загрузки файла зависимостей: ";
     public static final String EXCEPTION_CREATING_INSTANCE = "Ошибка создания сущности: ";
