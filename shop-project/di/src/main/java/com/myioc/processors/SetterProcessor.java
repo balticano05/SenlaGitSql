@@ -5,9 +5,10 @@ import com.myioc.resolver.DependencyResolver;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
-import static com.myioc.utils.StringConst.ERROR_METHOD;
-import static com.myioc.utils.StringConst.ERROR_PRIVATE;
+import static com.myioc.utils.StringConst.EXCEPTION_METHOD_INVOCATION;
+import static com.myioc.utils.StringConst.EXCEPTION_PRIVATE_SETTER_ACCESS;
 
 public class SetterProcessor implements Processor {
 
@@ -19,28 +20,25 @@ public class SetterProcessor implements Processor {
 
     @Override
     public void process(Object bean) {
-        Method[] methods = bean.getClass().getDeclaredMethods();
-        for (Method method : methods) {
-            if (method.isAnnotationPresent(Autowired.class) && method.getParameterCount() == 1) {
-                injectDependency(bean, method);
-            }
-        }
+        Arrays.stream(bean.getClass().getDeclaredMethods())
+                .filter(method -> method.isAnnotationPresent(Autowired.class) && method.getParameterCount() == 1)
+                .forEach(method -> injectDependency(bean, method));
     }
 
     private void injectDependency(Object bean, Method method) {
         Class<?> parameterType = method.getParameterTypes()[0];
         Object dependency = dependencyResolver.resolveDependency(parameterType);
-        method.setAccessible(true);
         invokeMethod(bean, method, dependency);
     }
 
     private void invokeMethod(Object bean, Method method, Object dependency) {
         try {
+            method.setAccessible(true);
             method.invoke(bean, dependency);
         } catch (InvocationTargetException e) {
-            throw new RuntimeException(ERROR_METHOD + method.getName(), e.getTargetException());
+            throw new RuntimeException(EXCEPTION_METHOD_INVOCATION + method.getName(), e.getTargetException());
         } catch (IllegalAccessException e) {
-            throw new RuntimeException(ERROR_PRIVATE, e);
+            throw new RuntimeException(EXCEPTION_PRIVATE_SETTER_ACCESS, e);
         }
     }
 

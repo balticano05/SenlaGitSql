@@ -12,15 +12,17 @@ import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.myioc.utils.StringConst.ERROR_WITH_CREATING_INSTANCE;
-import static com.myioc.utils.StringConst.ERROR_METHOD;
-import static com.myioc.utils.StringConst.ERROR_NOT_FOUND_METHOD;
-import static com.myioc.utils.StringConst.ERROR_PRIVATE_FIELD;
+import static com.myioc.utils.StringConst.EXCEPTION_CREATING_INSTANCE;
+import static com.myioc.utils.StringConst.EXCEPTION_METHOD_INVOCATION;
+import static com.myioc.utils.StringConst.EXCEPTION_METHOD_NOT_FOUND;
+import static com.myioc.utils.StringConst.EXCEPTION_PRIVATE_FIELD_ACCESS;
 
 public class ApplicationContextService {
 
@@ -36,12 +38,13 @@ public class ApplicationContextService {
     public Map<Class<?>, Object> initializeBeans() {
         Set<Class<?>> components = reflections.getTypesAnnotatedWith(Component.class);
         for (Class<?> clazz : components) {
-            createBean(clazz);
+            Object bean = initializeBean(clazz);
+            beans.put(clazz, bean);
         }
         return beans;
     }
 
-    private Object createBean(Class<?> clazz) {
+    private Object initializeBean(Class<?> clazz) {
         try {
             Object bean = instantiate(clazz);
             List<Processor> processors = List.of(
@@ -52,16 +55,15 @@ public class ApplicationContextService {
             for (Processor processor : processors) {
                 processor.process(bean);
             }
-            beans.put(clazz, bean);
-            return beans;
+            return bean;
         } catch (InstantiationException e) {
-            throw new RuntimeException(ERROR_WITH_CREATING_INSTANCE + clazz.getName(), e);
+            throw new RuntimeException(EXCEPTION_CREATING_INSTANCE + clazz.getName(), e);
         } catch (InvocationTargetException e) {
-            throw new RuntimeException(ERROR_METHOD + clazz.getName(), e);
+            throw new RuntimeException(EXCEPTION_METHOD_INVOCATION + clazz.getName(), e);
         } catch (NoSuchMethodException e) {
-            throw new RuntimeException(ERROR_NOT_FOUND_METHOD + clazz.getName(), e);
+            throw new RuntimeException(EXCEPTION_METHOD_NOT_FOUND + clazz.getName(), e);
         } catch (IllegalAccessException e) {
-            throw new RuntimeException(ERROR_PRIVATE_FIELD + clazz.getName(), e);
+            throw new RuntimeException(EXCEPTION_PRIVATE_FIELD_ACCESS + clazz.getName(), e);
         }
     }
 
@@ -72,23 +74,23 @@ public class ApplicationContextService {
         return constructor.newInstance(dependencies);
     }
 
-    private Constructor<?> getAppropriateConstructor(Class<?> clazz) throws NoSuchMethodException {
-        Constructor<?>[] constructors = clazz.getDeclaredConstructors();
-        for (Constructor<?> constructor : constructors) {
-            if (constructor.isAnnotationPresent(Autowired.class)) {
-                return constructor;
-            }
-        }
-        return clazz.getDeclaredConstructor();
+    private Constructor<?> getAppropriateConstructor(Class<?> clazz) {
+        return Arrays.stream(clazz.getDeclaredConstructors())
+                .filter(constructor -> constructor.isAnnotationPresent(Autowired.class))
+                .findFirst()
+                .orElseGet(() -> {
+                    try {
+                        return clazz.getDeclaredConstructor();
+                    } catch (NoSuchMethodException e) {
+                        throw new RuntimeException(EXCEPTION_METHOD_NOT_FOUND + clazz.getName(), e);
+                    }
+                });
     }
 
     private Object[] getDependenciesForConstructor(Constructor<?> constructor) {
-        Class<?>[] parameterTypes = constructor.getParameterTypes();
-        Object[] dependencies = new Object[parameterTypes.length];
-        for (int i = 0; i < parameterTypes.length; i++) {
-            dependencies[i] = dependencyResolver.resolveDependency(parameterTypes[i]);
-        }
-        return dependencies;
+        return Arrays.stream(constructor.getParameterTypes())
+                .map(dependencyResolver::resolveDependency)
+                .toArray();
     }
 
 }

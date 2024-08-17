@@ -5,9 +5,9 @@ import org.reflections.Reflections;
 import java.util.Map;
 import java.util.Set;
 
-import static com.myioc.utils.StringConst.ERROR_IMPLEMENTATION_NOT_FOUND;
-import static com.myioc.utils.StringConst.ERROR_MANY_IMPLEMENTATIONS;
-import static com.myioc.utils.StringConst.ERROR_WITH_CREATING_AN_EXAMPLE;
+import static com.myioc.utils.StringConst.EXCEPTION_MULTIPLE_IMPLEMENTATIONS;
+import static com.myioc.utils.StringConst.EXCEPTION_IMPLEMENTATION_NOT_FOUND;
+import static com.myioc.utils.StringConst.EXCEPTION_CREATING_INSTANCE_FOR;
 
 public class DependencyResolver {
 
@@ -29,14 +29,14 @@ public class DependencyResolver {
     private Object getImplementationForInterface(Class<?> interfaceType) {
         Set<Class<?>> implementations = reflections.getSubTypesOf((Class<Object>) interfaceType);
         if (implementations.isEmpty()) {
-            throw new RuntimeException(ERROR_IMPLEMENTATION_NOT_FOUND + interfaceType.getName());
+            throw new RuntimeException(EXCEPTION_IMPLEMENTATION_NOT_FOUND + interfaceType.getName());
         } else if (implementations.size() > 1) {
-            throw new RuntimeException(ERROR_MANY_IMPLEMENTATIONS + interfaceType.getName());
+            throw new RuntimeException(EXCEPTION_MULTIPLE_IMPLEMENTATIONS + interfaceType.getName());
         }
         Class<?> implementationClass = implementations.iterator().next();
         Object implementationInstance = beans.get(implementationClass);
         if (implementationInstance == null) {
-            throw new RuntimeException(ERROR_WITH_CREATING_AN_EXAMPLE + implementationClass.getName());
+            throw new RuntimeException(EXCEPTION_CREATING_INSTANCE_FOR + implementationClass.getName());
         }
         return implementationInstance;
     }

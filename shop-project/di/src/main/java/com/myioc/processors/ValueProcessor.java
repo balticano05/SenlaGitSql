@@ -4,50 +4,40 @@ import com.myioc.annotations.Value;
 import com.myioc.loaders.PropertyLoader;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Map;
-import java.util.Properties;
 
-import static com.myioc.utils.StringConst.ERROR_PRIVATE;
-import static com.myioc.utils.StringConst.ERROR_PRIVATE_FIELD;
+import static com.myioc.utils.StringConst.EXCEPTION_PRIVATE_FIELD_ACCESS;
 
 public class ValueProcessor implements Processor {
 
     private Map<Class<?>, Object> beans;
-    private Properties properties;
 
     public ValueProcessor(Map<Class<?>, Object> beans) {
         this.beans = beans;
-        this.properties = PropertyLoader.getProperties();
     }
 
     @Override
     public void process(Object bean) {
-        Field[] fields = bean.getClass().getDeclaredFields();
-        for (Field field : fields) {
-            if (field.isAnnotationPresent(Value.class)) {
-                injectValue(bean, field);
-            }
-        }
+        Arrays.stream(bean.getClass().getDeclaredFields())
+                .filter(field -> field.isAnnotationPresent(Value.class))
+                .forEach(field -> injectValue(bean, field));
     }
 
     private void injectValue(Object bean, Field field) {
-        String propertyValue = resolvePropertyValue(field);
         try {
+            String propertyValue = resolvePropertyValue(field);
+            field.setAccessible(true);
             field.set(bean, propertyValue);
         } catch (IllegalAccessException e) {
-            throw new RuntimeException(ERROR_PRIVATE_FIELD + field.getName(), e);
+            throw new RuntimeException(EXCEPTION_PRIVATE_FIELD_ACCESS + field.getName(), e);
         }
     }
 
     private String resolvePropertyValue(Field field) {
-        try {
-            field.setAccessible(true);
-            Value valueAnnotation = field.getAnnotation(Value.class);
-            String propertyKey = valueAnnotation.value();
-            return properties.getProperty(propertyKey);
-        } catch (Exception e) {
-            throw new RuntimeException(ERROR_PRIVATE + field.getName(), e);
-        }
+        Value valueAnnotation = field.getAnnotation(Value.class);
+        String propertyKey = valueAnnotation.value();
+        return PropertyLoader.getProperty(propertyKey);
     }
 
 }
