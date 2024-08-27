@@ -1,0 +1,20 @@
+package com.online.shop.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
+public class UserDto {
+    private Long id;
+    private String email;
+    private String password;
+    private RoleDto role;
+    private LocalDateTime createdAt;
+}
