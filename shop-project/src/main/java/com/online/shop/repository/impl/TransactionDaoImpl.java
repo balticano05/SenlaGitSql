@@ -1,17 +1,20 @@
 package com.online.shop.repository.impl;
 
 import com.online.shop.entity.Transaction;
-import com.online.shop.repository.GeneralDao;
+import com.online.shop.repository.CrudOperationsDao;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
-public class TransactionDaoImpl implements GeneralDao<Transaction> {
+@Repository
+public class TransactionDaoImpl implements CrudOperationsDao<Transaction> {
 
     private List<Transaction> transactions;
 
     @Override
-    public Transaction findById(Long id) {
-        return null;
+    public Optional<Transaction> findById(Long id) {
+        return Optional.empty();
     }
 
     @Override
@@ -20,7 +23,7 @@ public class TransactionDaoImpl implements GeneralDao<Transaction> {
     }
 
     @Override
-    public void add(Transaction entity) {
+    public void insert(Transaction entity) {
 
     }
 
@@ -33,4 +36,5 @@ public class TransactionDaoImpl implements GeneralDao<Transaction> {
     public void delete(Long entity) {
 
     }
+
 }

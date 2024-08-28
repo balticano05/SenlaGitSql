@@ -1,4 +1,4 @@
 # SenlaIoc
-Senla's task. Implementation my online store with spring.
+Senla's task. Implementation of my online store with spring.
 ---
 Full name: Yasiukevich Aleksey Yasiukevich

@@ -2,16 +2,19 @@ package com.online.shop.repository.impl;
 
 import com.online.shop.entity.CoursePlan;
 import com.online.shop.repository.CoursePlanDao;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
+@Repository
 public class CoursePlanDaoImpl implements CoursePlanDao<CoursePlan> {
 
     private List<CoursePlan> coursePlans;
 
     @Override
-    public CoursePlan findById(Long id) {
-        return null;
+    public Optional<CoursePlan> findById(Long id) {
+        return Optional.empty();
     }
 
     @Override
@@ -20,7 +23,7 @@ public class CoursePlanDaoImpl implements CoursePlanDao<CoursePlan> {
     }
 
     @Override
-    public void add(CoursePlan entity) {
+    public void insert(CoursePlan entity) {
 
     }
 
@@ -33,4 +36,5 @@ public class CoursePlanDaoImpl implements CoursePlanDao<CoursePlan> {
     public void delete(Long entity) {
 
     }
+
 }

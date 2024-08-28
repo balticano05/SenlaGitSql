@@ -1,4 +1,13 @@
 package com.online.shop.controller;
 
-public interface RoleController {
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Controller;
+
+@Controller
+public class RoleController extends GenericObjectMapper {
+
+    public RoleController(ObjectMapper objectMapper) {
+        super(objectMapper);
+    }
+
 }

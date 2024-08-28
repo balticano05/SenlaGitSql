@@ -2,27 +2,31 @@ package com.online.shop.service.impl;
 
 import com.online.shop.dto.ReviewDto;
 import com.online.shop.entity.Review;
-import com.online.shop.repository.impl.ReviewDaoImpl;
+import com.online.shop.repository.ReviewDao;
 import com.online.shop.service.ReviewService;
-import com.online.shop.service.CrudService;
+import com.online.shop.service.GenericModelMapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ReviewServiceImpl extends CrudService<ReviewDto> implements ReviewService {
+@Service
+public class ReviewServiceImpl extends GenericModelMapper implements ReviewService<ReviewDto> {
 
-    private ReviewDaoImpl reviewDao;
+    private final ReviewDao reviewDao;
 
-    public ReviewServiceImpl(ReviewDaoImpl reviewDao, ModelMapper modelMapper) {
+    @Autowired
+    public ReviewServiceImpl(ReviewDao reviewDao, ModelMapper modelMapper) {
         super(modelMapper);
         this.reviewDao = reviewDao;
     }
 
     @Override
-    public ReviewDto add(ReviewDto entityDto) {
+    public ReviewDto insert(ReviewDto entityDto) {
         Review review = modelMapper.map(entityDto, Review.class);
-        reviewDao.add(review);
+        reviewDao.insert(review);
         return modelMapper.map(review, ReviewDto.class);
     }
 
@@ -30,12 +34,12 @@ public class ReviewServiceImpl extends CrudService<ReviewDto> implements ReviewS
     public ReviewDto update(Long id, ReviewDto entityDto) {
         Review review = modelMapper.map(entityDto, Review.class);
         reviewDao.update(id, review);
-        return modelMapper.map(review, ReviewDto.class);
+        return modelMapper.map(reviewDao.findById(id), ReviewDto.class);
     }
 
     @Override
-    public ReviewDto getById(Long id) {
-        Review review = reviewDao.findById(id);
+    public ReviewDto findById(Long id) {
+        Object review = reviewDao.findById(id);
         return modelMapper.map(review, ReviewDto.class);
     }
 
@@ -48,9 +52,8 @@ public class ReviewServiceImpl extends CrudService<ReviewDto> implements ReviewS
     }
 
     @Override
-    public ReviewDto delete(Long id) {
-        Review review = reviewDao.findById(id);
+    public void delete(Long id) {
         reviewDao.delete(id);
-        return modelMapper.map(review, ReviewDto.class);
     }
+
 }

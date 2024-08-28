@@ -1,40 +1,43 @@
 package com.online.shop.service.impl;
 
-import com.online.shop.entity.User;
-import com.online.shop.service.CrudService;
+import com.online.shop.dto.UserDto;
+import com.online.shop.service.GenericModelMapper;
 import com.online.shop.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public class UserServiceImpl extends CrudService<User> implements UserService {
+@Service
+public class UserServiceImpl extends GenericModelMapper implements UserService<UserDto> {
 
     public UserServiceImpl(ModelMapper modelMapper) {
         super(modelMapper);
     }
 
     @Override
-    public User add(User entityDto) {
+    public UserDto insert(UserDto entityDto) {
         return null;
     }
 
     @Override
-    public User update(Long id, User entityDto) {
+    public UserDto update(Long id, UserDto entityDto) {
         return null;
     }
 
     @Override
-    public User getById(Long id) {
+    public UserDto findById(Long id) {
         return null;
     }
 
     @Override
-    public List<User> getAll() {
+    public List<UserDto> getAll() {
         return List.of();
     }
 
     @Override
-    public User delete(Long id) {
-        return null;
+    public void delete(Long id) {
+
     }
+
 }

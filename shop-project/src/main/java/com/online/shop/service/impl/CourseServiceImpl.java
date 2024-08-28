@@ -1,40 +1,43 @@
 package com.online.shop.service.impl;
 
-import com.online.shop.entity.Course;
+import com.online.shop.dto.CourseDto;
 import com.online.shop.service.CourseService;
-import com.online.shop.service.CrudService;
+import com.online.shop.service.GenericModelMapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public class CourseServiceImpl extends CrudService<Course> implements CourseService {
+@Service
+public class CourseServiceImpl extends GenericModelMapper implements CourseService<CourseDto> {
 
     public CourseServiceImpl(ModelMapper modelMapper) {
         super(modelMapper);
     }
 
     @Override
-    public Course add(Course entityDto) {
+    public CourseDto insert(CourseDto entityDto) {
         return null;
     }
 
     @Override
-    public Course update(Long id, Course entityDto) {
+    public CourseDto update(Long id, CourseDto entityDto) {
         return null;
     }
 
     @Override
-    public Course getById(Long id) {
+    public CourseDto findById(Long id) {
         return null;
     }
 
     @Override
-    public List<Course> getAll() {
+    public List<CourseDto> getAll() {
         return List.of();
     }
 
     @Override
-    public Course delete(Long id) {
-        return null;
+    public void delete(Long id) {
+
     }
+
 }

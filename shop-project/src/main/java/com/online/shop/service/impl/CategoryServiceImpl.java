@@ -1,41 +1,44 @@
 package com.online.shop.service.impl;
 
-import com.online.shop.entity.Category;
+import com.online.shop.dto.CategoryDto;
+
 import com.online.shop.service.CategoryService;
-import com.online.shop.service.CrudService;
+import com.online.shop.service.GenericModelMapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public class CategoryServiceImpl extends CrudService<Category> implements CategoryService {
+@Service
+public class CategoryServiceImpl extends GenericModelMapper implements CategoryService<CategoryDto> {
 
     public CategoryServiceImpl(ModelMapper modelMapper) {
         super(modelMapper);
     }
 
     @Override
-    public Category add(Category entityDto) {
+    public CategoryDto insert(CategoryDto entityDto) {
         return null;
     }
 
     @Override
-    public Category update(Long id, Category entityDto) {
+    public CategoryDto update(Long id, CategoryDto entityDto) {
         return null;
     }
 
     @Override
-    public Category getById(Long id) {
+    public CategoryDto findById(Long id) {
         return null;
     }
 
     @Override
-    public List<Category> getAll() {
+    public List<CategoryDto> getAll() {
         return List.of();
     }
 
     @Override
-    public Category delete(Long id) {
-        return null;
+    public void delete(Long id) {
+
     }
 
 }

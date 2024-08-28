@@ -1,4 +1,4 @@
 package com.online.shop.service;
 
-public interface ReviewService {
+public interface ReviewService<T> extends CrudOperations<T> {
 }

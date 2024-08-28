@@ -1,14 +1,16 @@
 package com.online.shop;
 
-import com.online.shop.controller.impl.ReviewControllerImpl;
+import com.online.shop.controller.ReviewController;
 import com.online.shop.сontext.AppConfig;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-public class Main {
+public class Application {
+
     public static void main(String[] args) {
+
         ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-        ReviewControllerImpl reviewController = context.getBean(ReviewControllerImpl.class);
+        ReviewController reviewController = context.getBean(ReviewController.class);
 
         String json1 = "{\n" +
                 "    \"id\": 1,\n" +
@@ -91,4 +93,5 @@ public class Main {
         System.out.println(reviewController.getAll());
 
     }
+
 }

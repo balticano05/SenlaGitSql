@@ -1,40 +1,43 @@
 package com.online.shop.service.impl;
 
-import com.online.shop.entity.Transaction;
-import com.online.shop.service.CrudService;
+import com.online.shop.dto.TransactionDto;
+import com.online.shop.service.GenericModelMapper;
 import com.online.shop.service.TransactionService;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public class TransactionServiceImpl extends CrudService<Transaction> implements TransactionService {
+@Service
+public class TransactionServiceImpl extends GenericModelMapper implements TransactionService<TransactionDto> {
 
     public TransactionServiceImpl(ModelMapper modelMapper) {
         super(modelMapper);
     }
 
     @Override
-    public Transaction add(Transaction entityDto) {
+    public TransactionDto insert(TransactionDto entityDto) {
         return null;
     }
 
     @Override
-    public Transaction update(Long id, Transaction entityDto) {
+    public TransactionDto update(Long id, TransactionDto entityDto) {
         return null;
     }
 
     @Override
-    public Transaction getById(Long id) {
+    public TransactionDto findById(Long id) {
         return null;
     }
 
     @Override
-    public List<Transaction> getAll() {
+    public List<TransactionDto> getAll() {
         return List.of();
     }
 
     @Override
-    public Transaction delete(Long id) {
-        return null;
+    public void delete(Long id) {
+
     }
+
 }

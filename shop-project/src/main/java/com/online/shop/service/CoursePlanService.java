@@ -1,4 +1,4 @@
 package com.online.shop.service;
 
-public interface CoursePlanService{
+public interface CoursePlanService<T> extends CrudOperations<T> {
 }

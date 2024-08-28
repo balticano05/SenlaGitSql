@@ -1,4 +1,13 @@
 package com.online.shop.controller;
 
-public interface CourseController {
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Controller;
+
+@Controller
+public class CourseController extends GenericObjectMapper {
+
+    public CourseController(ObjectMapper objectMapper) {
+        super(objectMapper);
+    }
+
 }

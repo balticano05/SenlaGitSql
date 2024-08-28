@@ -1,4 +1,4 @@
 package com.online.shop.service;
 
-public interface RoleService{
+public interface RoleService<T> extends CrudOperations<T> {
 }

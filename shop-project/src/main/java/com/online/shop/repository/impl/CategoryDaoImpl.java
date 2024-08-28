@@ -2,16 +2,19 @@ package com.online.shop.repository.impl;
 
 import com.online.shop.entity.Category;
 import com.online.shop.repository.CategoryDao;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
+@Repository
 public class CategoryDaoImpl implements CategoryDao<Category> {
 
     private List<Category> categories;
 
     @Override
-    public Category findById(Long id) {
-        return null;
+    public Optional<Category> findById(Long id) {
+        return Optional.empty();
     }
 
     @Override
@@ -20,7 +23,7 @@ public class CategoryDaoImpl implements CategoryDao<Category> {
     }
 
     @Override
-    public void add(Category entity) {
+    public void insert(Category entity) {
 
     }
 
@@ -33,4 +36,5 @@ public class CategoryDaoImpl implements CategoryDao<Category> {
     public void delete(Long entity) {
 
     }
+
 }

@@ -1,17 +1,20 @@
 package com.online.shop.repository.impl;
 
 import com.online.shop.entity.User;
-import com.online.shop.repository.GeneralDao;
+import com.online.shop.repository.CrudOperationsDao;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
-public class UserDaoImpl implements GeneralDao<User> {
+@Repository
+public class UserDaoImpl implements CrudOperationsDao<User> {
 
     private List<User> users;
 
     @Override
-    public User findById(Long id) {
-        return null;
+    public Optional<User> findById(Long id) {
+        return Optional.empty();
     }
 
     @Override
@@ -20,7 +23,7 @@ public class UserDaoImpl implements GeneralDao<User> {
     }
 
     @Override
-    public void add(User entity) {
+    public void insert(User entity) {
 
     }
 
@@ -33,4 +36,5 @@ public class UserDaoImpl implements GeneralDao<User> {
     public void delete(Long entity) {
 
     }
+
 }

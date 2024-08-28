@@ -1,4 +1,4 @@
 package com.online.shop.service;
 
-public interface UserService{
+public interface UserService<T> extends CrudOperations<T> {
 }

@@ -1,4 +1,4 @@
 package com.online.shop.service;
 
-public interface CategoryService{
+public interface CategoryService<T> extends CrudOperations<T> {
 }

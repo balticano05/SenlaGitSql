@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
@@ -16,5 +17,5 @@ public class Transaction {
     private User user;
     private Course course;
     private LocalDateTime dateTime;
-    private Float price;
+    private BigDecimal price;
 }

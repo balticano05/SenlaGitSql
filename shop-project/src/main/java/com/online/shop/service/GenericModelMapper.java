@@ -2,10 +2,12 @@ package com.online.shop.service;
 
 import org.modelmapper.ModelMapper;
 
-public abstract class CrudService<T> implements GeneralService<T>{
+public abstract class GenericModelMapper {
+
     protected ModelMapper modelMapper;
 
-    public CrudService(ModelMapper modelMapper) {
+    public GenericModelMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
+
 }
