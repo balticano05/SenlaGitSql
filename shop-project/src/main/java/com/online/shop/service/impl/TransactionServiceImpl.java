@@ -1,19 +1,13 @@
 package com.online.shop.service.impl;
 
 import com.online.shop.dto.TransactionDto;
-import com.online.shop.service.GenericModelMapper;
 import com.online.shop.service.TransactionService;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class TransactionServiceImpl extends GenericModelMapper implements TransactionService<TransactionDto> {
-
-    public TransactionServiceImpl(ModelMapper modelMapper) {
-        super(modelMapper);
-    }
+public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public TransactionDto insert(TransactionDto entityDto) {
@@ -36,8 +30,8 @@ public class TransactionServiceImpl extends GenericModelMapper implements Transa
     }
 
     @Override
-    public void delete(Long id) {
-
+    public Boolean delete(Long id) {
+        return null;
     }
 
 }

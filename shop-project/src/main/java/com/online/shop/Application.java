@@ -89,7 +89,7 @@ public class Application {
         System.out.println(reviewController.getAll());
         System.out.println(reviewController.delete(1l));
         System.out.println(reviewController.getAll());
-        reviewController.update(2L, json3);
+        System.out.println(reviewController.update(2L, json3));
         System.out.println(reviewController.getAll());
 
     }

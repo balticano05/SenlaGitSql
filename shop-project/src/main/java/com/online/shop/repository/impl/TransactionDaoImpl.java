@@ -1,14 +1,14 @@
 package com.online.shop.repository.impl;
 
 import com.online.shop.entity.Transaction;
-import com.online.shop.repository.CrudOperationsDao;
+import com.online.shop.repository.TransactionDao;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class TransactionDaoImpl implements CrudOperationsDao<Transaction> {
+public class TransactionDaoImpl implements TransactionDao {
 
     private List<Transaction> transactions;
 
@@ -23,18 +23,18 @@ public class TransactionDaoImpl implements CrudOperationsDao<Transaction> {
     }
 
     @Override
-    public void insert(Transaction entity) {
-
+    public Long insert(Transaction entity) {
+        return 0L;
     }
 
     @Override
-    public void update(Long id, Transaction entity) {
-
+    public Optional<Transaction> update(Long id, Transaction entity) {
+        return Optional.empty();
     }
 
     @Override
-    public void delete(Long entity) {
-
+    public Boolean delete(Long entity) {
+        return null;
     }
 
 }

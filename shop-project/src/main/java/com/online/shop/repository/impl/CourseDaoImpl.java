@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class CourseDaoImpl implements CourseDao<Course> {
+public class CourseDaoImpl implements CourseDao {
 
     private List<Course> courses;
 
@@ -23,18 +23,18 @@ public class CourseDaoImpl implements CourseDao<Course> {
     }
 
     @Override
-    public void insert(Course entity) {
-
+    public Long insert(Course entity) {
+        return 0L;
     }
 
     @Override
-    public void update(Long id, Course entity) {
-
+    public Optional<Course> update(Long id, Course entity) {
+        return Optional.empty();
     }
 
     @Override
-    public void delete(Long entity) {
-
+    public Boolean delete(Long entity) {
+        return null;
     }
 
 }

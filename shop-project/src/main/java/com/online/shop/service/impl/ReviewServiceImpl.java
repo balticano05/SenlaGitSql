@@ -4,7 +4,6 @@ import com.online.shop.dto.ReviewDto;
 import com.online.shop.entity.Review;
 import com.online.shop.repository.ReviewDao;
 import com.online.shop.service.ReviewService;
-import com.online.shop.service.GenericModelMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,28 +12,27 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ReviewServiceImpl extends GenericModelMapper implements ReviewService<ReviewDto> {
+public class ReviewServiceImpl implements ReviewService {
 
-    private final ReviewDao reviewDao;
+    private ReviewDao reviewDao;
+    private ModelMapper modelMapper;
 
     @Autowired
     public ReviewServiceImpl(ReviewDao reviewDao, ModelMapper modelMapper) {
-        super(modelMapper);
+        this.modelMapper = modelMapper;
         this.reviewDao = reviewDao;
     }
 
     @Override
-    public ReviewDto insert(ReviewDto entityDto) {
+    public Long insert(ReviewDto entityDto) {
         Review review = modelMapper.map(entityDto, Review.class);
-        reviewDao.insert(review);
-        return modelMapper.map(review, ReviewDto.class);
+        return reviewDao.insert(review);
     }
 
     @Override
     public ReviewDto update(Long id, ReviewDto entityDto) {
         Review review = modelMapper.map(entityDto, Review.class);
-        reviewDao.update(id, review);
-        return modelMapper.map(reviewDao.findById(id), ReviewDto.class);
+        return modelMapper.map(reviewDao.update(id, review), ReviewDto.class);
     }
 
     @Override
@@ -52,8 +50,8 @@ public class ReviewServiceImpl extends GenericModelMapper implements ReviewServi
     }
 
     @Override
-    public void delete(Long id) {
-        reviewDao.delete(id);
+    public Boolean delete(Long id) {
+        return reviewDao.delete(id);
     }
 
 }

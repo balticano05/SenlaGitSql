@@ -2,18 +2,12 @@ package com.online.shop.service.impl;
 
 import com.online.shop.dto.CourseDto;
 import com.online.shop.service.CourseService;
-import com.online.shop.service.GenericModelMapper;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class CourseServiceImpl extends GenericModelMapper implements CourseService<CourseDto> {
-
-    public CourseServiceImpl(ModelMapper modelMapper) {
-        super(modelMapper);
-    }
+public class CourseServiceImpl implements CourseService {
 
     @Override
     public CourseDto insert(CourseDto entityDto) {
@@ -36,8 +30,8 @@ public class CourseServiceImpl extends GenericModelMapper implements CourseServi
     }
 
     @Override
-    public void delete(Long id) {
-
+    public Boolean delete(Long id) {
+        return null;
     }
 
 }

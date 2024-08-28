@@ -20,4 +20,5 @@ public class User {
     private LocalDateTime createdAt;
     private List<Course> courses;
     private List<Review> reviews;
+    private List<Transaction> transactions;
 }

@@ -20,4 +20,5 @@ public class UserDto {
     private LocalDateTime createdAt;
     private List<CourseDto> courses;
     private List<ReviewDto> reviews;
+    private List<TransactionDto> transactions;
 }

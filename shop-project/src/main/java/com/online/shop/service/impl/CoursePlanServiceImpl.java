@@ -1,22 +1,17 @@
 package com.online.shop.service.impl;
 
 import com.online.shop.dto.CoursePlanDto;
+import com.online.shop.entity.CoursePlan;
 import com.online.shop.service.CoursePlanService;
-import com.online.shop.service.GenericModelMapper;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class CoursePlanServiceImpl extends GenericModelMapper implements CoursePlanService<CoursePlanDto> {
-
-    public CoursePlanServiceImpl(ModelMapper modelMapper) {
-        super(modelMapper);
-    }
+public class CoursePlanServiceImpl implements CoursePlanService {
 
     @Override
-    public CoursePlanDto insert(CoursePlanDto entityDto) {
+    public CoursePlanDto insert(CoursePlan entityDto) {
         return null;
     }
 
@@ -36,8 +31,8 @@ public class CoursePlanServiceImpl extends GenericModelMapper implements CourseP
     }
 
     @Override
-    public void delete(Long id) {
-
+    public Boolean delete(Long id) {
+        return null;
     }
 
 }

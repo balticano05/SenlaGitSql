@@ -9,25 +9,24 @@ import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
-import static com.online.shop.utils.StringConst.ENTITY_DELETED;
 import static com.online.shop.utils.StringConst.EXCEPTION_PROCESSING_JSON;
 
 @Controller
-public class ReviewController extends GenericObjectMapper {
+public class ReviewController {
 
     private ReviewService reviewService;
+    private ObjectMapper objectMapper;
 
     @Autowired
     public ReviewController(ReviewService reviewService, ObjectMapper objectMapper) {
-        super(objectMapper);
         this.reviewService = reviewService;
+        this.objectMapper = objectMapper;
     }
 
     public String insert(String jsonEntity) {
         try {
             ReviewDto reviewDto = objectMapper.readValue(jsonEntity, ReviewDto.class);
-            Object result = reviewService.insert(reviewDto);
-            return objectMapper.writeValueAsString(result);
+            return objectMapper.writeValueAsString(reviewService.insert(reviewDto));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
         }
@@ -37,7 +36,7 @@ public class ReviewController extends GenericObjectMapper {
     public String update(Long id, String jsonEntity) {
         try {
             ReviewDto reviewDto = objectMapper.readValue(jsonEntity, ReviewDto.class);
-            Object result = reviewService.update(id, reviewDto);
+            ReviewDto result = (ReviewDto) reviewService.update(id, reviewDto);
             return objectMapper.writeValueAsString(result);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
@@ -46,8 +45,7 @@ public class ReviewController extends GenericObjectMapper {
 
     public String delete(Long id) {
         try {
-            reviewService.delete(id);
-            return objectMapper.writeValueAsString(ENTITY_DELETED);
+            return objectMapper.writeValueAsString(reviewService.delete(id));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
         }
@@ -64,7 +62,7 @@ public class ReviewController extends GenericObjectMapper {
 
     public String getById(Long id) {
         try {
-            Object reviewDto = reviewService.findById(id);
+            ReviewDto reviewDto = (ReviewDto) reviewService.findById(id);
             return objectMapper.writeValueAsString(reviewDto);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);

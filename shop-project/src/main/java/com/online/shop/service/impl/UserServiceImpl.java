@@ -1,19 +1,13 @@
 package com.online.shop.service.impl;
 
 import com.online.shop.dto.UserDto;
-import com.online.shop.service.GenericModelMapper;
 import com.online.shop.service.UserService;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserServiceImpl extends GenericModelMapper implements UserService<UserDto> {
-
-    public UserServiceImpl(ModelMapper modelMapper) {
-        super(modelMapper);
-    }
+public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto insert(UserDto entityDto) {
@@ -36,8 +30,8 @@ public class UserServiceImpl extends GenericModelMapper implements UserService<U
     }
 
     @Override
-    public void delete(Long id) {
-
+    public Boolean delete(Long id) {
+        return null;
     }
 
 }

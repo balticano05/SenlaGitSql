@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class ReviewDaoImpl implements ReviewDao<Review> {
+public class ReviewDaoImpl implements ReviewDao {
 
     private List<Review> reviews;
 
@@ -30,19 +30,25 @@ public class ReviewDaoImpl implements ReviewDao<Review> {
     }
 
     @Override
-    public void insert(Review entity) {
+    public Long insert(Review entity) {
         reviews.add(entity);
+        return reviews.getLast().getId();
     }
 
     @Override
-    public void update(Long id, Review entity) {
+    public Optional<Review> update(Long id, Review entity) {
         entity.setId(id);
         reviews.replaceAll(review -> review.getId().equals(id) ? entity : review);
+        return reviews.stream()
+                .filter(review -> review.getId().equals(id))
+                .findFirst();
     }
 
     @Override
-    public void delete(Long id) {
+    public Boolean delete(Long id) {
+        Integer size = reviews.size();
         reviews.removeIf(r -> r.getId().equals(id));
+        return reviews.size() < size;
     }
 
 }

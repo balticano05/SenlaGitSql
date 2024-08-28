@@ -1,14 +1,14 @@
 package com.online.shop.repository.impl;
 
 import com.online.shop.entity.Role;
-import com.online.shop.repository.CrudOperationsDao;
+import com.online.shop.repository.RoleDao;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class RoleDaoImpl implements CrudOperationsDao<Role> {
+public class RoleDaoImpl implements RoleDao {
 
     private List<Role> roles;
 
@@ -23,18 +23,17 @@ public class RoleDaoImpl implements CrudOperationsDao<Role> {
     }
 
     @Override
-    public void insert(Role entity) {
-
+    public Long insert(Role entity) {
+        return 0L;
     }
 
     @Override
-    public void update(Long id, Role entity) {
-
+    public Optional<Role> update(Long id, Role entity) {
+        return Optional.empty();
     }
 
     @Override
-    public void delete(Long entity) {
-
+    public Boolean delete(Long entity) {
+        return null;
     }
-
 }

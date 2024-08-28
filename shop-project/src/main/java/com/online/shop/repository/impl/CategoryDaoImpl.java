@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class CategoryDaoImpl implements CategoryDao<Category> {
+public class CategoryDaoImpl implements CategoryDao {
 
     private List<Category> categories;
 
@@ -23,18 +23,18 @@ public class CategoryDaoImpl implements CategoryDao<Category> {
     }
 
     @Override
-    public void insert(Category entity) {
-
+    public Long insert(Category entity) {
+        return 0L;
     }
 
     @Override
-    public void update(Long id, Category entity) {
-
+    public Optional<Category> update(Long id, Category entity) {
+        return Optional.empty();
     }
 
     @Override
-    public void delete(Long entity) {
-
+    public Boolean delete(Long entity) {
+        return null;
     }
 
 }

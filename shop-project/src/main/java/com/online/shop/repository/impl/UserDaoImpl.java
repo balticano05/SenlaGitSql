@@ -1,14 +1,15 @@
 package com.online.shop.repository.impl;
 
+import com.online.shop.entity.Review;
 import com.online.shop.entity.User;
-import com.online.shop.repository.CrudOperationsDao;
+import com.online.shop.repository.UserDao;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class UserDaoImpl implements CrudOperationsDao<User> {
+public class UserDaoImpl implements UserDao {
 
     private List<User> users;
 
@@ -18,23 +19,23 @@ public class UserDaoImpl implements CrudOperationsDao<User> {
     }
 
     @Override
-    public List<User> getAll() {
+    public List<Review> getAll() {
         return List.of();
     }
 
     @Override
-    public void insert(User entity) {
-
+    public Long insert(User entity) {
+        return 0L;
     }
 
     @Override
-    public void update(Long id, User entity) {
-
+    public Optional<User> update(Long id, User entity) {
+        return Optional.empty();
     }
 
     @Override
-    public void delete(Long entity) {
-
+    public Boolean delete(Long entity) {
+        return null;
     }
 
 }
