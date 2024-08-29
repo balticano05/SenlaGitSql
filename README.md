@@ -1,4 +1,4 @@
-# SenlaDi
-Senla's task. Creating my own dependency injection.
+# SenlaIoc
+Senla's task. Implementation of my online store with spring.
 ---
 Full name: Yasiukevich Aleksey Yasiukevich
