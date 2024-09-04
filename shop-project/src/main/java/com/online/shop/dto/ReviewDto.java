@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @Getter
 public class ReviewDto {
     private Long id;
-    private UserDto user;
-    private CourseDto course;
+    private UserDto userDto;
+    private CourseDto courseDto;
     private String content;
     private Integer rating;
     private LocalDateTime createdAt;

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -18,7 +19,6 @@ public class UserDto {
     private String password;
     private RoleDto role;
     private LocalDateTime createdAt;
-    private List<CourseDto> courses;
-    private List<ReviewDto> reviews;
-    private List<TransactionDto> transactions;
+    private List<CourseDto> courses = new ArrayList<>();
+    private List<TransactionDto> transactions = new ArrayList<>();
 }

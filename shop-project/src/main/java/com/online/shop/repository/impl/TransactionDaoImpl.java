@@ -17,24 +17,4 @@ public class TransactionDaoImpl implements TransactionDao {
         return Optional.empty();
     }
 
-    @Override
-    public List<Transaction> getAll() {
-        return List.of();
-    }
-
-    @Override
-    public Long insert(Transaction entity) {
-        return 0L;
-    }
-
-    @Override
-    public Optional<Transaction> update(Long id, Transaction entity) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Boolean delete(Long entity) {
-        return null;
-    }
-
 }
