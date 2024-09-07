@@ -206,6 +206,12 @@ databaseChangeLog:
                     checkConstraint: rating >= 0
         - addForeignKeyConstraint:
             baseTableName: reviews
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_reviews_user_id
+        - addForeignKeyConstraint:
+            baseTableName: reviews
             baseColumnNames: course_id
             referencedTableName: courses
             referencedColumnNames: id
@@ -282,6 +288,12 @@ databaseChangeLog:
                     checkConstraint: price >= 0
         - addForeignKeyConstraint:
             baseTableName: transactions
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_transactions_user_id
+        - addForeignKeyConstraint:
+            baseTableName: transactions
             baseColumnNames: course_id
             referencedTableName: courses
             referencedColumnNames: id
@@ -291,9 +303,9 @@ databaseChangeLog:
       id: homework-2-insert-roles
       author: Aleksey Yasiukevich
       preConditions:
-          - onFail: WARN
-          - tableIsEmpty:
-              tableName: roles
+        - onFail: WARN
+        - tableIsEmpty:
+            tableName: roles
       changes:
         - sqlFile:
             encoding: utf8
@@ -390,3 +402,19 @@ databaseChangeLog:
             encoding: utf8
             path: sql/17.insert-transactions.sql
             relativeToChangelogFile: true
+
+  - changeSet:
+      id: remove-fk-reviews-user-id
+      author: Aleksey Yasiukevich
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: reviews
+            constraintName: fk_reviews_user_id
+
+  - changeSet:
+      id: remove-fk-transactions-user-id
+      author: Aleksey Yasiukevich
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: transactions
+            constraintName: fk_transactions_user_id

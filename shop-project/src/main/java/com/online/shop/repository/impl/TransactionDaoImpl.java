@@ -13,8 +13,28 @@ public class TransactionDaoImpl implements TransactionDao {
     private List<Transaction> transactions;
 
     @Override
-    public Optional<Transaction> findById(Long id) {
+    public Optional<Transaction> getById(Long id) {
         return Optional.empty();
+    }
+
+    @Override
+    public List<Transaction> getAll() {
+        return List.of();
+    }
+
+    @Override
+    public Long insert(Transaction entity) {
+        return 0L;
+    }
+
+    @Override
+    public Optional<Transaction> update(Long id, Transaction entity) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Boolean delete(Long entity) {
+        return null;
     }
 
 }

@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transaction
     public UserDto findById(Long id) {
-        return modelMapper.map(userDao.findById(id), UserDto.class);
+        return modelMapper.map(userDao.getById(id), UserDto.class);
     }
 
     @Override

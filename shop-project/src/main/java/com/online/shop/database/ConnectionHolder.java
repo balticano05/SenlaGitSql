@@ -3,39 +3,65 @@ package com.online.shop.database;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Component
 public class ConnectionHolder {
 
-    private static final ThreadLocal<Connection> connectionHolder = new ThreadLocal<>();
     private static DataSource dataSource;
+    private static Queue<Connection> connectionPool = new ConcurrentLinkedQueue<>();
+    private ThreadLocal<Connection> threadLocalConnection = new ThreadLocal<>();
 
     @Autowired
     public ConnectionHolder(DataSource dataSource) {
         this.dataSource = dataSource;
+        initializeConnectionPool(5);
     }
 
-    public static Connection getConnection() throws SQLException {
-        Connection connection = connectionHolder.get();
-        if (connection == null || connection.isClosed()) {
-            connection = dataSource.getConnection();
-            connectionHolder.set(connection);
+    private void initializeConnectionPool(int size) {
+        for (int i = 0; i < size; i++) {
+            try {
+                Connection connection = dataSource.getConnection();
+                connectionPool.add(connection);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
-        return connection;
     }
 
-    @PreDestroy
-    public void closeConnection() throws SQLException {
-        Connection connection = connectionHolder.get();
-        if (connection != null && !connection.isClosed()) {
-            connection.close();
-            connectionHolder.remove();
+
+    public synchronized Connection getConnection() {
+        if (threadLocalConnection.get() == null) {
+            if (!connectionPool.isEmpty()) {
+                threadLocalConnection.set(connectionPool.poll());
+            } else {
+                try {
+                    threadLocalConnection.set(dataSource.getConnection());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
-        dataSource.getConnection().close();
+        return threadLocalConnection.get();
+    }
+
+    public synchronized void releaseConnection(Connection connection) {
+        if (connection != null) {
+            try {
+                if (!connection.isClosed()) {
+                    connection.setAutoCommit(true);
+                    connectionPool.add(connection);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } finally {
+                threadLocalConnection.remove();
+            }
+        }
     }
 
 }

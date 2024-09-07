@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserDao {
-    Optional<User> findById(Long id);
+    Optional<User> getById(Long id);
 
     List<User> getAll();
 
     Long insert(User entity);
 
-    Optional<Optional<User>> update(Long id, User entity);
+    Optional<User> update(Long id, User entity);
 
     Boolean delete(Long entity);
 }

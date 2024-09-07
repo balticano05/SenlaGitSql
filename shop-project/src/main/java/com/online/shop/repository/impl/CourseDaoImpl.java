@@ -10,6 +10,8 @@ import java.util.Optional;
 @Repository
 public class CourseDaoImpl implements CourseDao {
 
+    private List<Course> courses;
+
     @Override
     public Optional<Course> findById(Long id) {
         return Optional.empty();

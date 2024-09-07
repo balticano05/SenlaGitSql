@@ -4,6 +4,7 @@ import com.online.shop.database.ConnectionHolder;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
@@ -12,28 +13,28 @@ import java.sql.Connection;
 @Aspect
 public class TransactionAspect {
 
+    private final ConnectionHolder connectionHolder;
+
+    @Autowired
+    public TransactionAspect(ConnectionHolder connectionHolder) {
+        this.connectionHolder = connectionHolder;
+    }
+
     @Around("@annotation(com.online.shop.annotation.Transaction)")
     public Object aroundTransaction(ProceedingJoinPoint joinPoint) throws Throwable {
-
-        Connection connection = null;
+        Connection connection = connectionHolder.getConnection();
+        connection.setAutoCommit(false);
+        Object result;
         try {
-            connection = ConnectionHolder.getConnection();
-            connection.setAutoCommit(false);
-            Object result = joinPoint.proceed();
+            result = joinPoint.proceed();
             connection.commit();
-            return result;
-        } catch (Exception e) {
-            if (connection != null) {
-                connection.rollback();
-            }
-            throw e;
+        } catch (Throwable throwable) {
+            connection.rollback();
+            throw throwable;
         } finally {
-            if (connection != null) {
-                connection.setAutoCommit(true);
-                connection.close();
-            }
+            connectionHolder.releaseConnection(connection);
         }
-
+        return result;
     }
 
 }
