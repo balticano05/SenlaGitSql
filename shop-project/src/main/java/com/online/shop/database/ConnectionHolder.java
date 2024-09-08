@@ -38,34 +38,39 @@ public class ConnectionHolder {
             return threadLocalConnection.get();
         }
         if (!connectionPool.isEmpty()) {
-            threadLocalConnection.set(connectionPool.poll());
+            return connectionPool.poll();
         } else {
-            createConnection();
+            return createConnection();
         }
-        return threadLocalConnection.get();
     }
 
-    public synchronized void createConnection() {
+    private Connection createConnection() {
         try {
-            threadLocalConnection.set(dataSource.getConnection());
+            return dataSource.getConnection();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     public synchronized void releaseConnection(Connection connection) {
-        if (connection != null) {
-            try {
-                if (!connection.isClosed()) {
-                    connection.setAutoCommit(true);
-                    connectionPool.add(connection);
-                }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            } finally {
-                threadLocalConnection.remove();
-            }
+        if (connection == null) {
+            return;
         }
+        try {
+            if (!connection.isClosed()) {
+                connection.setAutoCommit(true);
+                connectionPool.add(connection);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            threadLocalConnection.remove();
+        }
+    }
+
+    public Connection getTransactionConnection() {
+        threadLocalConnection.set(getConnection());
+        return threadLocalConnection.get();
     }
 
 }

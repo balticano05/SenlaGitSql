@@ -44,7 +44,7 @@ public class UserDaoImpl implements UserDao {
         try (PreparedStatement statement = connection.prepareStatement(QUERY_GET_ALL_USERS);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
-                users.add(parseUser(resultSet));
+                users.add(mapUser(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -55,7 +55,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Long insert(User entity) {
         Connection connection = connectionHolder.getConnection();
-        try (PreparedStatement statement= connection.prepareStatement(QUERY_INSERT_USER)) {
+        try (PreparedStatement statement = connection.prepareStatement(QUERY_INSERT_USER)) {
             statement.setString(1, entity.getEmail());
             statement.setString(2, entity.getPassword());
             statement.setLong(3, entity.getRole().getId());
@@ -104,7 +104,7 @@ public class UserDaoImpl implements UserDao {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return parseUser(resultSet);
+                return mapUser(resultSet);
             }
         }
         return null;
@@ -117,7 +117,7 @@ public class UserDaoImpl implements UserDao {
             statement.setLong(1, userId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                userTransactions.add(parseTransaction(resultSet));
+                userTransactions.add(mapTransaction(resultSet));
             }
         }
         return userTransactions;
@@ -130,7 +130,7 @@ public class UserDaoImpl implements UserDao {
             statement.setLong(1, userId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                userCourses.add(parseCourse(resultSet));
+                userCourses.add(mapCourse(resultSet));
             }
         }
         return userCourses;
@@ -143,7 +143,7 @@ public class UserDaoImpl implements UserDao {
             statement.setLong(1, courseId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                reviewsCourse.add(parseReview(resultSet));
+                reviewsCourse.add(mapReview(resultSet));
             }
         }
         return reviewsCourse;
@@ -162,7 +162,7 @@ public class UserDaoImpl implements UserDao {
         return categories;
     }
 
-    private User parseUser(ResultSet resultSet) throws SQLException {
+    private User mapUser(ResultSet resultSet) throws SQLException {
         Role role = Role.builder()
                 .id(resultSet.getLong("role_id"))
                 .name(resultSet.getString("role_name"))
@@ -178,7 +178,7 @@ public class UserDaoImpl implements UserDao {
                 .build();
     }
 
-    private Course parseCourse(ResultSet resultSet) throws SQLException {
+    private Course mapCourse(ResultSet resultSet) throws SQLException {
         CoursePlan coursePlan = CoursePlan.builder()
                 .id(resultSet.getLong("id"))
                 .practiceCount(resultSet.getInt("practice_count"))
@@ -198,7 +198,7 @@ public class UserDaoImpl implements UserDao {
                 .build();
     }
 
-    private Transaction parseTransaction(ResultSet resultSet) throws SQLException {
+    private Transaction mapTransaction(ResultSet resultSet) throws SQLException {
         return Transaction.builder()
                 .id(resultSet.getLong("id"))
                 .price(resultSet.getBigDecimal("price"))
@@ -206,7 +206,7 @@ public class UserDaoImpl implements UserDao {
                 .build();
     }
 
-    private Review parseReview(ResultSet resultSet) throws SQLException {
+    private Review mapReview(ResultSet resultSet) throws SQLException {
         User user = User.builder()
                 .id(resultSet.getLong("user_id"))
                 .build();

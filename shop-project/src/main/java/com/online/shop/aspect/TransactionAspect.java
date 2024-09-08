@@ -22,7 +22,7 @@ public class TransactionAspect {
 
     @Around("@annotation(com.online.shop.annotation.Transaction)")
     public Object aroundTransaction(ProceedingJoinPoint joinPoint) throws Throwable {
-        Connection connection = connectionHolder.getConnection();
+        Connection connection = connectionHolder.getTransactionConnection();
         connection.setAutoCommit(false);
         Object result;
         try {
