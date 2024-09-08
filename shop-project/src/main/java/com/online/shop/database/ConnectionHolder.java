@@ -52,7 +52,7 @@ public class ConnectionHolder {
         }
     }
 
-    public synchronized void releaseConnection(Connection connection) {
+    public void releaseConnection(Connection connection) {
         if (connection == null) {
             return;
         }
