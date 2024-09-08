@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.online.shop.utils.StringConst.*;
+
 @Repository
 public class UserDaoImpl implements UserDao {
 
@@ -23,7 +25,6 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> getById(Long id) {
-        Connection connection = connectionHolder.getConnection();
         try {
             User user = getUserById(id);
             if (user != null) {
@@ -36,157 +37,14 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
-    private User getUserById(Long id) throws SQLException {
-        String QUERY_GET_USER_WITH_ROLE_BY_ID =
-                "SELECT u.*, r.id AS role_id, r.name AS role_name, r.description AS role_description " +
-                        "FROM users u " +
-                        "JOIN roles r ON u.role_id = r.id " +
-                        "WHERE u.id = ?";
-        Connection connection = connectionHolder.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(QUERY_GET_USER_WITH_ROLE_BY_ID)) {
-            statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                Role role = Role.builder()
-                        .id(resultSet.getLong("role_id"))
-                        .name(resultSet.getString("role_name"))
-                        .description(resultSet.getString("role_description"))
-                        .build();
-                return User.builder()
-                        .id(resultSet.getLong("id"))
-                        .email(resultSet.getString("email"))
-                        .password(resultSet.getString("password"))
-                        .createdAt(resultSet.getTimestamp("created_at").toLocalDateTime())
-                        .role(role)
-                        .build();
-            }
-        }
-        return null;
-    }
-
-    private List<Transaction> getUserTransactions(Long userId) throws SQLException {
-        String QUERY_GET_TRANSACTIONS_BY_USER = "SELECT t.*, c.title, c.description, c.created_at FROM transactions t " +
-                "JOIN courses c ON c.id = t.course_id " +
-                "JOIN users u ON u.id = t.user_id WHERE u.id = ?";
-        Connection connection = connectionHolder.getConnection();
-        List<Transaction> userTransactions = new ArrayList<>();
-        try (PreparedStatement transactionStatement = connection.prepareStatement(QUERY_GET_TRANSACTIONS_BY_USER)) {
-            transactionStatement.setLong(1, userId);
-            ResultSet transactionResultSet = transactionStatement.executeQuery();
-            while (transactionResultSet.next()) {
-                Transaction transaction = Transaction.builder()
-                        .id(transactionResultSet.getLong("id"))
-                        .price(transactionResultSet.getBigDecimal("price"))
-                        .dateTime(transactionResultSet.getTimestamp("datetime").toLocalDateTime())
-                        .build();
-                userTransactions.add(transaction);
-            }
-        }
-        return userTransactions;
-    }
-
-    private List<Course> getUserCourses(Long userId) throws SQLException {
-        String QUERY_GET_COURSES_BY_USER = "SELECT t.*, c.title, c.description, c.created_at, cc.duration, cc.practice_count, cc.lesson_count FROM transactions t\n" +
-                "JOIN courses c ON c.id = t.course_id\n" +
-                "JOIN course_plans cc ON c.id = cc.id\n" +
-                "JOIN users u ON u.id = t.user_id WHERE u.id = ?;";
-        List<Course> userCourses = new ArrayList<>();
-        Connection connection = connectionHolder.getConnection();
-        try (PreparedStatement courseStatement = connection.prepareStatement(QUERY_GET_COURSES_BY_USER)) {
-            courseStatement.setLong(1, userId);
-            ResultSet courseResultSet = courseStatement.executeQuery();
-            while (courseResultSet.next()) {
-                CoursePlan coursePlan = CoursePlan.builder()
-                        .id(courseResultSet.getLong("id"))
-                        .practiceCount(courseResultSet.getInt("practice_count"))
-                        .lessonCount(courseResultSet.getInt("lesson_count"))
-                        .duration(courseResultSet.getInt("duration"))
-                        .build();
-                Course course = Course.builder()
-                        .id(courseResultSet.getLong("course_id"))
-                        .title(courseResultSet.getString("title"))
-                        .price(courseResultSet.getBigDecimal("price"))
-                        .description(courseResultSet.getString("description"))
-                        .createdAt(courseResultSet.getTimestamp("created_at").toLocalDateTime())
-                        .coursePlan(coursePlan)
-                        .reviews(getCourseReviews(courseResultSet.getLong("course_id")))
-                        .categories(getCourseCategories(courseResultSet.getLong("course_id")))
-                        .build();
-
-                userCourses.add(course);
-            }
-        }
-        return userCourses;
-    }
-
-    private List<Review> getCourseReviews(Long courseId) throws SQLException {
-        String QUERY_GET_REVIEWS_BY_COURSE = "SELECT r.* FROM reviews r JOIN courses c ON r.course_id = c.id WHERE c.id = ?";
-        List<Review> reviewsCourse = new ArrayList<>();
-        Connection connection = connectionHolder.getConnection();
-        try (PreparedStatement reviewsCourseStatement = connection.prepareStatement(QUERY_GET_REVIEWS_BY_COURSE)) {
-            reviewsCourseStatement.setLong(1, courseId);
-            ResultSet reviewsCourseResultSet = reviewsCourseStatement.executeQuery();
-            while (reviewsCourseResultSet.next()) {
-                User user = User.builder()
-                        .id(reviewsCourseResultSet.getLong("user_id"))
-                        .build();
-                Review review = Review.builder()
-                        .id(reviewsCourseResultSet.getLong("id"))
-                        .content(reviewsCourseResultSet.getString("content"))
-                        .rating(reviewsCourseResultSet.getInt("rating"))
-                        .createdAt(reviewsCourseResultSet.getTimestamp("created_at").toLocalDateTime())
-                        .user(user)
-                        .build();
-                reviewsCourse.add(review);
-            }
-        }
-        return reviewsCourse;
-    }
-
-    private List<Category> getCourseCategories(Long courseId) throws SQLException {
-        String QUERY_GET_CATEGORIES_BY_COURSE = "SELECT category.* FROM categories category JOIN course_categories cc ON category.id = cc.category_id WHERE cc.course_id = ?";
-        Connection connection = connectionHolder.getConnection();
-        List<Category> categories = new ArrayList<>();
-        try (PreparedStatement categoriesCourseStatement = connection.prepareStatement(QUERY_GET_CATEGORIES_BY_COURSE)) {
-            categoriesCourseStatement.setLong(1, courseId);
-            ResultSet categoriesCourseResultSet = categoriesCourseStatement.executeQuery();
-            while (categoriesCourseResultSet.next()) {
-                Category category = Category.builder()
-                        .id(categoriesCourseResultSet.getLong("id"))
-                        .name(categoriesCourseResultSet.getString("name"))
-                        .description(categoriesCourseResultSet.getString("description"))
-                        .build();
-                categories.add(category);
-            }
-        }
-        return categories;
-    }
-
     @Override
     public List<User> getAll() {
         List<User> users = new ArrayList<>();
-        String QUERY_GET_ALL_USERS = "SELECT u.*, r.id AS role_id, r.name AS role_name, r.description AS role_description\n" +
-                "FROM users u\n" +
-                "JOIN roles r ON u.role_id = r.id;";
         Connection connection = connectionHolder.getConnection();
-        try (PreparedStatement userStatement = connection.prepareStatement(QUERY_GET_ALL_USERS);
-             ResultSet userResultSet = userStatement.executeQuery()) {
-            while (userResultSet.next()) {
-                Role role = Role.builder()
-                        .id(userResultSet.getLong("role_id"))
-                        .name(userResultSet.getString("role_name"))
-                        .description(userResultSet.getString("description"))
-                        .build();
-                User user = User.builder()
-                        .id(userResultSet.getLong("id"))
-                        .email(userResultSet.getString("email"))
-                        .password(userResultSet.getString("password"))
-                        .createdAt(userResultSet.getTimestamp("created_at").toLocalDateTime())
-                        .role(role)
-                        .transactions(getUserTransactions(userResultSet.getLong("id")))
-                        .courses(getUserCourses(userResultSet.getLong("id")))
-                        .build();
-                users.add(user);
+        try (PreparedStatement statement = connection.prepareStatement(QUERY_GET_ALL_USERS);
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                users.add(parseUser(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -196,15 +54,14 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Long insert(User entity) {
-        String QUERY_INSERT_USER = "INSERT INTO users (email, password, role_id) VALUES (?, ?, ?) RETURNING id";
         Connection connection = connectionHolder.getConnection();
-        try (PreparedStatement insertStatement = connection.prepareStatement(QUERY_INSERT_USER)) {
-            insertStatement.setString(1, entity.getEmail());
-            insertStatement.setString(2, entity.getPassword());
-            insertStatement.setLong(3, entity.getRole().getId());
-            ResultSet rs = insertStatement.executeQuery();
-            if (rs.next()) {
-                return rs.getLong("id");
+        try (PreparedStatement statement= connection.prepareStatement(QUERY_INSERT_USER)) {
+            statement.setString(1, entity.getEmail());
+            statement.setString(2, entity.getPassword());
+            statement.setLong(3, entity.getRole().getId());
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getLong("id");
             } else {
                 throw new SQLException("Failed to insert user");
             }
@@ -215,14 +72,13 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> update(Long id, User entity) {
-        String QUERY_UPDATE_USER = "UPDATE users SET email = ?, password = ?, role_id = ? WHERE id = ?";
         Connection connection = connectionHolder.getConnection();
-        try (PreparedStatement updateUser = connection.prepareStatement(QUERY_UPDATE_USER)) {
-            updateUser.setString(1, entity.getEmail());
-            updateUser.setString(2, entity.getPassword());
-            updateUser.setLong(3, entity.getRole().getId());
-            updateUser.setLong(4, id);
-            updateUser.executeUpdate();
+        try (PreparedStatement statement = connection.prepareStatement(QUERY_UPDATE_USER)) {
+            statement.setString(1, entity.getEmail());
+            statement.setString(2, entity.getPassword());
+            statement.setLong(3, entity.getRole().getId());
+            statement.setLong(4, id);
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -231,16 +87,145 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Boolean delete(Long id) {
-        String QUERY_DELETE_USER = "DELETE FROM users WHERE id = ?";
         Connection connection = connectionHolder.getConnection();
         int affectedRows = 0;
-        try (PreparedStatement deleteUser = connectionHolder.getConnection().prepareStatement(QUERY_DELETE_USER)) {
-            deleteUser.setLong(1, id);
-            affectedRows = deleteUser.executeUpdate();
+        try (PreparedStatement statement = connectionHolder.getConnection().prepareStatement(QUERY_DELETE_USER)) {
+            statement.setLong(1, id);
+            affectedRows = statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return affectedRows > 0;
+    }
+
+    private User getUserById(Long id) throws SQLException {
+        Connection connection = connectionHolder.getConnection();
+        try (PreparedStatement statement = connection.prepareStatement(QUERY_GET_USER_WITH_ROLE_BY_ID)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return parseUser(resultSet);
+            }
+        }
+        return null;
+    }
+
+    private List<Transaction> getUserTransactions(Long userId) throws SQLException {
+        Connection connection = connectionHolder.getConnection();
+        List<Transaction> userTransactions = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(QUERY_GET_TRANSACTIONS_BY_USER)) {
+            statement.setLong(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                userTransactions.add(parseTransaction(resultSet));
+            }
+        }
+        return userTransactions;
+    }
+
+    private List<Course> getUserCourses(Long userId) throws SQLException {
+        List<Course> userCourses = new ArrayList<>();
+        Connection connection = connectionHolder.getConnection();
+        try (PreparedStatement statement = connection.prepareStatement(QUERY_GET_COURSES_BY_USER)) {
+            statement.setLong(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                userCourses.add(parseCourse(resultSet));
+            }
+        }
+        return userCourses;
+    }
+
+    private List<Review> getCourseReviews(Long courseId) throws SQLException {
+        List<Review> reviewsCourse = new ArrayList<>();
+        Connection connection = connectionHolder.getConnection();
+        try (PreparedStatement statement = connection.prepareStatement(QUERY_GET_REVIEWS_BY_COURSE)) {
+            statement.setLong(1, courseId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                reviewsCourse.add(parseReview(resultSet));
+            }
+        }
+        return reviewsCourse;
+    }
+
+    private List<Category> getCourseCategories(Long courseId) throws SQLException {
+        Connection connection = connectionHolder.getConnection();
+        List<Category> categories = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(QUERY_GET_CATEGORIES_BY_COURSE)) {
+            statement.setLong(1, courseId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                categories.add(parseCategory(resultSet));
+            }
+        }
+        return categories;
+    }
+
+    private User parseUser(ResultSet resultSet) throws SQLException {
+        Role role = Role.builder()
+                .id(resultSet.getLong("role_id"))
+                .name(resultSet.getString("role_name"))
+                .description(resultSet.getString("role_description"))
+                .build();
+
+        return User.builder()
+                .id(resultSet.getLong("id"))
+                .email(resultSet.getString("email"))
+                .password(resultSet.getString("password"))
+                .createdAt(resultSet.getTimestamp("created_at").toLocalDateTime())
+                .role(role)
+                .build();
+    }
+
+    private Course parseCourse(ResultSet resultSet) throws SQLException {
+        CoursePlan coursePlan = CoursePlan.builder()
+                .id(resultSet.getLong("id"))
+                .practiceCount(resultSet.getInt("practice_count"))
+                .lessonCount(resultSet.getInt("lesson_count"))
+                .duration(resultSet.getInt("duration"))
+                .build();
+
+        return Course.builder()
+                .id(resultSet.getLong("course_id"))
+                .title(resultSet.getString("title"))
+                .price(resultSet.getBigDecimal("price"))
+                .description(resultSet.getString("description"))
+                .createdAt(resultSet.getTimestamp("created_at").toLocalDateTime())
+                .coursePlan(coursePlan)
+                .reviews(getCourseReviews(resultSet.getLong("course_id")))
+                .categories(getCourseCategories(resultSet.getLong("course_id")))
+                .build();
+    }
+
+    private Transaction parseTransaction(ResultSet resultSet) throws SQLException {
+        return Transaction.builder()
+                .id(resultSet.getLong("id"))
+                .price(resultSet.getBigDecimal("price"))
+                .dateTime(resultSet.getTimestamp("datetime").toLocalDateTime())
+                .build();
+    }
+
+    private Review parseReview(ResultSet resultSet) throws SQLException {
+        User user = User.builder()
+                .id(resultSet.getLong("user_id"))
+                .build();
+
+        return Review.builder()
+                .id(resultSet.getLong("id"))
+                .content(resultSet.getString("content"))
+                .rating(resultSet.getInt("rating"))
+                .createdAt(resultSet.getTimestamp("created_at").toLocalDateTime())
+                .user(user)
+                .build();
+    }
+
+    private Category parseCategory(ResultSet resultSet) throws SQLException {
+        return Category.builder()
+                .id(resultSet.getLong("id"))
+                .name(resultSet.getString("name"))
+                .description(resultSet.getString("description"))
+                .build();
     }
 
 }

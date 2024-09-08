@@ -3,7 +3,6 @@ package com.online.shop.entity;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -17,6 +16,6 @@ public class User {
     private String password;
     private Role role;
     private LocalDateTime createdAt;
-    private List<Course> courses = new ArrayList<>();
-    private List<Transaction> transactions = new ArrayList<>();
+    private List<Course> courses;
+    private List<Transaction> transactions;
 }

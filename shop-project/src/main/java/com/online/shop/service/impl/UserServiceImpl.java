@@ -2,7 +2,6 @@ package com.online.shop.service.impl;
 
 import com.online.shop.annotation.Transaction;
 import com.online.shop.dto.UserDto;
-import com.online.shop.entity.Role;
 import com.online.shop.entity.User;
 import com.online.shop.repository.UserDao;
 import com.online.shop.service.UserService;
@@ -26,19 +25,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transaction
     public Long insert(UserDto entityDto) {
-        Role role = modelMapper.map(entityDto.getRole(), Role.class);
-        User user = modelMapper.map(entityDto, User.class);
-        user.setRole(role);
-        return userDao.insert(user);
+        return userDao.insert(modelMapper.map(entityDto, User.class));
     }
 
     @Override
     @Transaction
     public UserDto update(Long id, UserDto entityDto) {
-        Role role = modelMapper.map(entityDto.getRole(), Role.class);
-        User user = modelMapper.map(entityDto, User.class);
-        user.setRole(role);
-        return modelMapper.map(userDao.update(id, user), UserDto.class);
+        return modelMapper.map(userDao.update(id, modelMapper.map(entityDto, User.class)), UserDto.class);
     }
 
     @Override

@@ -33,20 +33,24 @@ public class ConnectionHolder {
         }
     }
 
-
     public synchronized Connection getConnection() {
-        if (threadLocalConnection.get() == null) {
-            if (!connectionPool.isEmpty()) {
-                threadLocalConnection.set(connectionPool.poll());
-            } else {
-                try {
-                    threadLocalConnection.set(dataSource.getConnection());
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+        if (threadLocalConnection.get() != null) {
+            return threadLocalConnection.get();
+        }
+        if (!connectionPool.isEmpty()) {
+            threadLocalConnection.set(connectionPool.poll());
+        } else {
+            createConnection();
         }
         return threadLocalConnection.get();
+    }
+
+    public synchronized void createConnection() {
+        try {
+            threadLocalConnection.set(dataSource.getConnection());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public synchronized void releaseConnection(Connection connection) {
