@@ -13,9 +13,8 @@ public class Application {
         UserController userController = context.getBean(UserController.class);
 
         String jsonForInsert = "{\n" +
-                "  \"user\": {\n" +
-                "    \"email\": \"Asd@m7afil.com\",\n" +
-                "    \"password\": \"new123\",\n" +
+                "    \"email\": \"test1.com\",\n" +
+                "    \"password\": \"new#password\",\n" +
                 "    \"role\": {\n" +
                 "      \"id\": 1\n" +
                 "    }\n" +
@@ -23,10 +22,9 @@ public class Application {
                 "}";
 
         String jsonForUpdate = "{\n" +
-                "  \"user\": {\n" +
                 "    \"id\": 67,\n" +
-                "    \"email\": \"Asdjklj@m7asdail.com\",\n" +
-                "    \"password\": \"new123\",\n" +
+                "    \"email\": \"test2.com\",\n" +
+                "    \"password\": \"new#password2\",\n" +
                 "    \"role\": {\n" +
                 "      \"id\": 1\n" +
                 "    }\n" +
