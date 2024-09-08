@@ -13,7 +13,7 @@ public class TransactionDaoImpl implements TransactionDao {
     private List<Transaction> transactions;
 
     @Override
-    public Optional<Transaction> findById(Long id) {
+    public Optional<Transaction> getById(Long id) {
         return Optional.empty();
     }
 

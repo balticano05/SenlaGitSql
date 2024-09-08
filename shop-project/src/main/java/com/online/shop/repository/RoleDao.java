@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RoleDao {
-    Optional<Role> findById(Long id);
+    Optional<Role> getById(Long id);
 
     List<Role> getAll();
 

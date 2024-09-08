@@ -1,9 +1,6 @@
 package com.online.shop.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,6 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 @Setter
 @Getter
+@Builder
 public class User {
     private Long id;
     private String email;
@@ -19,6 +17,5 @@ public class User {
     private Role role;
     private LocalDateTime createdAt;
     private List<Course> courses;
-    private List<Review> reviews;
     private List<Transaction> transactions;
 }

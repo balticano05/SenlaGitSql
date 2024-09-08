@@ -19,6 +19,5 @@ public class UserDto {
     private RoleDto role;
     private LocalDateTime createdAt;
     private List<CourseDto> courses;
-    private List<ReviewDto> reviews;
     private List<TransactionDto> transactions;
 }

@@ -4,7 +4,6 @@ import com.online.shop.entity.Review;
 import com.online.shop.repository.ReviewDao;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,12 +12,8 @@ public class ReviewDaoImpl implements ReviewDao {
 
     private List<Review> reviews;
 
-    public ReviewDaoImpl() {
-        this.reviews = new ArrayList<>();
-    }
-
     @Override
-    public Optional<Review> findById(Long id) {
+    public Optional<Review> getById(Long id) {
         return reviews.stream()
                 .filter(r -> r.getId().equals(id))
                 .findFirst();

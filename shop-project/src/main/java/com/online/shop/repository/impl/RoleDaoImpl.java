@@ -2,6 +2,7 @@ package com.online.shop.repository.impl;
 
 import com.online.shop.entity.Role;
 import com.online.shop.repository.RoleDao;
+
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public class RoleDaoImpl implements RoleDao {
     private List<Role> roles;
 
     @Override
-    public Optional<Role> findById(Long id) {
+    public Optional<Role> getById(Long id) {
         return Optional.empty();
     }
 
@@ -36,4 +37,5 @@ public class RoleDaoImpl implements RoleDao {
     public Boolean delete(Long entity) {
         return null;
     }
+
 }

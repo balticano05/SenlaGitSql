@@ -14,8 +14,8 @@ import static com.online.shop.utils.StringConst.EXCEPTION_PROCESSING_JSON;
 @Controller
 public class ReviewController {
 
-    private ReviewService reviewService;
-    private ObjectMapper objectMapper;
+    private final ReviewService reviewService;
+    private final ObjectMapper objectMapper;
 
     @Autowired
     public ReviewController(ReviewService reviewService, ObjectMapper objectMapper) {
@@ -30,13 +30,12 @@ public class ReviewController {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
         }
-
     }
 
     public String update(Long id, String jsonEntity) {
         try {
             ReviewDto reviewDto = objectMapper.readValue(jsonEntity, ReviewDto.class);
-            ReviewDto result = (ReviewDto) reviewService.update(id, reviewDto);
+            ReviewDto result = reviewService.update(id, reviewDto);
             return objectMapper.writeValueAsString(result);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
@@ -62,7 +61,7 @@ public class ReviewController {
 
     public String getById(Long id) {
         try {
-            ReviewDto reviewDto = (ReviewDto) reviewService.findById(id);
+            ReviewDto reviewDto = reviewService.findById(id);
             return objectMapper.writeValueAsString(reviewDto);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);

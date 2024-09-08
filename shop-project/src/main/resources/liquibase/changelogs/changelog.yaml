@@ -303,9 +303,9 @@ databaseChangeLog:
       id: homework-2-insert-roles
       author: Aleksey Yasiukevich
       preConditions:
-          - onFail: WARN
-          - tableIsEmpty:
-              tableName: roles
+        - onFail: WARN
+        - tableIsEmpty:
+            tableName: roles
       changes:
         - sqlFile:
             encoding: utf8
@@ -402,3 +402,19 @@ databaseChangeLog:
             encoding: utf8
             path: sql/17.insert-transactions.sql
             relativeToChangelogFile: true
+
+  - changeSet:
+      id: remove-fk-reviews-user-id
+      author: Aleksey Yasiukevich
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: reviews
+            constraintName: fk_reviews_user_id
+
+  - changeSet:
+      id: remove-fk-transactions-user-id
+      author: Aleksey Yasiukevich
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: transactions
+            constraintName: fk_transactions_user_id

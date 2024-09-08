@@ -37,7 +37,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ReviewDto findById(Long id) {
-        Object review = reviewDao.findById(id);
+        Object review = reviewDao.getById(id);
         return modelMapper.map(review, ReviewDto.class);
     }
 

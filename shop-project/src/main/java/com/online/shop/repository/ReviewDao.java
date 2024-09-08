@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReviewDao {
-    Optional<Review> findById(Long id);
+    Optional<Review> getById(Long id);
 
     List<Review> getAll();
 

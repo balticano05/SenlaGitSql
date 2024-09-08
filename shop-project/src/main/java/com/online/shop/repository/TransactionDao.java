@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TransactionDao {
-    Optional<Transaction> findById(Long id);
+    Optional<Transaction> getById(Long id);
 
     List<Transaction> getAll();
 

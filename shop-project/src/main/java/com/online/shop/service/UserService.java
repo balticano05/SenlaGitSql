@@ -5,7 +5,7 @@ import com.online.shop.dto.UserDto;
 import java.util.List;
 
 public interface UserService {
-    UserDto insert(UserDto entityDto);
+    Long insert(UserDto entityDto);
 
     UserDto update(Long id, UserDto entityDto);
 
