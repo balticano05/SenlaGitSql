@@ -5,7 +5,7 @@ import com.online.shop.dto.TransactionDto;
 import java.util.List;
 
 public interface TransactionService {
-    TransactionDto  insert(TransactionDto entityDto);
+    Long insert(TransactionDto entityDto);
 
     TransactionDto  update(Long id, TransactionDto  entityDto);
 
@@ -14,4 +14,8 @@ public interface TransactionService {
     List<TransactionDto > getAll();
 
     Boolean delete(Long id);
+
+    public List<TransactionDto> getTransactionsByEmail(String email);
+
+    List<TransactionDto> findByDate(String date);
 }

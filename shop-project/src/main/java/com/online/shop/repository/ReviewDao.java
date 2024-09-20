@@ -14,5 +14,9 @@ public interface ReviewDao {
 
     Optional<Review> update(Long id, Review entity);
 
-    Boolean delete(Long entity);
+    Boolean delete(Long id);
+
+    List<Review> findByEmail(String email);
+
+    List<Review> findByCreatedAt(String createdAt);
 }

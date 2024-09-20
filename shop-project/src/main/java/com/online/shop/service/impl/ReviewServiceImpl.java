@@ -1,9 +1,10 @@
 package com.online.shop.service.impl;
 
+import com.online.shop.service.ReviewService;
 import com.online.shop.dto.ReviewDto;
 import com.online.shop.entity.Review;
 import com.online.shop.repository.ReviewDao;
-import com.online.shop.service.ReviewService;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.online.shop.Application.log;
+import static com.online.shop.utils.StringConst.*;
+
 @Service
+@Transactional
 public class ReviewServiceImpl implements ReviewService {
 
     private ReviewDao reviewDao;
@@ -19,39 +24,56 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Autowired
     public ReviewServiceImpl(ReviewDao reviewDao, ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
         this.reviewDao = reviewDao;
+        this.modelMapper = modelMapper;
     }
 
     @Override
     public Long insert(ReviewDto entityDto) {
-        Review review = modelMapper.map(entityDto, Review.class);
-        return reviewDao.insert(review);
+        log.info(LOG_EXECUTING_INSERT_METHOD);
+        return reviewDao.insert(modelMapper.map(entityDto, Review.class));
     }
 
     @Override
     public ReviewDto update(Long id, ReviewDto entityDto) {
-        Review review = modelMapper.map(entityDto, Review.class);
-        return modelMapper.map(reviewDao.update(id, review), ReviewDto.class);
+        log.info(LOG_EXECUTING_UPDATE_METHOD);
+        return modelMapper.map(reviewDao.update(id, modelMapper.map(entityDto, Review.class)), ReviewDto.class);
     }
 
     @Override
     public ReviewDto findById(Long id) {
-        Object review = reviewDao.getById(id);
-        return modelMapper.map(review, ReviewDto.class);
+        log.info(LOG_EXECUTING_FIND_BY_ID_METHOD);
+        return modelMapper.map(reviewDao.getById(id), ReviewDto.class);
     }
 
     @Override
     public List<ReviewDto> getAll() {
-        List<Review> reviews = reviewDao.getAll();
-        return reviews.stream()
+        log.info(LOG_EXECUTING_GET_ALL_METHOD);
+        return reviewDao.getAll().stream()
                 .map(review -> modelMapper.map(review, ReviewDto.class))
                 .collect(Collectors.toList());
     }
 
     @Override
     public Boolean delete(Long id) {
+        log.info(LOG_EXECUTING_DELETE_METHOD);
         return reviewDao.delete(id);
+    }
+
+    @Override
+    public List<ReviewDto> findByEmail(String email) {
+        log.info(LOG_EXECUTING_FIND_BY_EMAIL_METHOD);
+        return reviewDao.findByEmail(email).stream()
+                .map(review -> modelMapper.map(review, ReviewDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ReviewDto> findByDate(String date) {
+        log.info(LOG_EXECUTION_FIND_BY_DATE);
+        return reviewDao.findByCreatedAt(date).stream()
+                .map(review -> modelMapper.map(review, ReviewDto.class))
+                .collect(Collectors.toList());
     }
 
 }

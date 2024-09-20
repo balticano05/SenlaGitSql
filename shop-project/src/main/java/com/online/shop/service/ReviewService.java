@@ -14,4 +14,8 @@ public interface ReviewService {
     List<ReviewDto> getAll();
 
     Boolean delete(Long id);
+
+    List<ReviewDto> findByEmail(String email);
+
+    List<ReviewDto> findByDate(String date);
 }

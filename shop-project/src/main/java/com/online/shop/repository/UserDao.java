@@ -14,5 +14,9 @@ public interface UserDao {
 
     Optional<User> update(Long id, User entity);
 
-    Boolean delete(Long entity);
+    Boolean delete(Long id);
+
+    Optional<User> findByEmail(String email);
+
+    List<User> findByCreatedAt(String createdAt);
 }
