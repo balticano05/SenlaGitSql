@@ -20,7 +20,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
-import static com.online.shop.utils.TestConsts.USER_TEST_EMAIL_FOR_TRANSACTION;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
@@ -31,11 +30,11 @@ class TransactionDaoImplTest {
     @Resource
     private TransactionDao transactionDao;
 
-    private Transaction createTestTransaction() {
+    private Transaction getTransaction() {
         Transaction transaction = new Transaction();
         User user = new User();
         user.setId(1L);
-        user.setEmail(USER_TEST_EMAIL_FOR_TRANSACTION);
+        user.setEmail("admin1.shopcourses@gmail.com");
         transaction.setUser(user);
         Course course = new Course();
         course.setId(11L);
@@ -47,7 +46,7 @@ class TransactionDaoImplTest {
 
     @Test
     void getById() {
-        Transaction transaction = createTestTransaction();
+        Transaction transaction = getTransaction();
         Long transactionId = transactionDao.insert(transaction);
         Optional<Transaction> transactionResult = transactionDao.getById(transactionId);
         assertTrue(transactionResult.isPresent());
@@ -62,7 +61,7 @@ class TransactionDaoImplTest {
 
     @Test
     void insert() {
-        Transaction transaction = createTestTransaction();
+        Transaction transaction = getTransaction();
         Long transactionId = transactionDao.insert(transaction);
         Optional<Transaction> transactionResult = transactionDao.getById(transactionId);
         assertTrue(transactionResult.isPresent());
@@ -71,7 +70,7 @@ class TransactionDaoImplTest {
 
     @Test
     void update() {
-        Transaction transaction = createTestTransaction();
+        Transaction transaction = getTransaction();
         Long transactionId = transactionDao.insert(transaction);
         Optional<Transaction> foundTransaction = transactionDao.getById(transactionId);
         assertTrue(foundTransaction.isPresent());
@@ -85,7 +84,7 @@ class TransactionDaoImplTest {
 
     @Test
     void delete() {
-        Transaction transaction = createTestTransaction();
+        Transaction transaction = getTransaction();
         Long transactionId = transactionDao.insert(transaction);
         transactionDao.delete(transactionId);
         Optional<Transaction> transactionResult = transactionDao.getById(transactionId);
@@ -94,7 +93,7 @@ class TransactionDaoImplTest {
 
     @Test
     void findTransactionsByEmail() {
-        Transaction transaction = createTestTransaction();
+        Transaction transaction = getTransaction();
         transactionDao.insert(transaction);
         List<Transaction> transactions = transactionDao.findTransactionsByEmail(transaction.getUser().getEmail());
         assertFalse(transactions.isEmpty());
@@ -103,7 +102,7 @@ class TransactionDaoImplTest {
 
     @Test
     void findByCreatedAt() {
-        Transaction transaction = createTestTransaction();
+        Transaction transaction = getTransaction();
         transactionDao.insert(transaction);
         String createdAt = transaction.getDateTime().format(DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT));
         List<Transaction> transactions = transactionDao.findByCreatedAt(createdAt);

@@ -4,10 +4,10 @@ import com.online.shop.entity.Role;
 import com.online.shop.entity.User;
 import com.online.shop.repository.UserDao;
 import com.online.shop.utils.StringConst;
-import com.online.shop.utils.TestConsts;
 import com.online.shop.сontext.AppConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -32,10 +32,10 @@ class UserDaoImplTest {
     @Resource
     private UserDao userDao;
 
-    private User createTestUser() {
+    private User getUser() {
         User user = new User();
-        user.setEmail(TestConsts.USER_TEST_EMAIL);
-        user.setPassword(TestConsts.USER_TEST_PASSWORD);
+        user.setEmail("test@mail.com");
+        user.setPassword("password@mail.com");
         user.setCreatedAt(LocalDateTime.now());
         Role role = new Role();
         role.setId(1L);
@@ -45,7 +45,7 @@ class UserDaoImplTest {
 
     @Test
     public void insert_UserWasInserted() {
-        User user = createTestUser();
+        User user = getUser();
         Long userId = userDao.insert(user);
         Optional<User> userResult = userDao.getById(userId);
         assertTrue(userResult .isPresent());
@@ -54,7 +54,7 @@ class UserDaoImplTest {
 
     @Test
     public void findById_UserWasFound() {
-        User user = createTestUser();
+        User user = getUser();
         Long userId = userDao.insert(user);
         Optional<User> foundUser = userDao.getById(userId);
         assertTrue(foundUser.isPresent());
@@ -62,7 +62,7 @@ class UserDaoImplTest {
 
     @Test
     public void delete_UserWasDeleted() {
-        User user = createTestUser();
+        User user = getUser();
         Long userId = userDao.insert(user);
         userDao.delete(userId);
         Optional<User> userResult = userDao.getById(userId);
@@ -71,12 +71,12 @@ class UserDaoImplTest {
 
     @Test
     public void update_UserWasUpdated() {
-        User user = createTestUser();
+        User user = getUser();
         Long userId = userDao.insert(user);
         Optional<User> foundUser = userDao.getById(userId);
         assertTrue(foundUser.isPresent());
         User updatedUser = foundUser.get();
-        updatedUser.setEmail(TestConsts.USER_TEST_UPDATED_EMAIL);
+        updatedUser.setEmail("updated@mail.com");
         userDao.update(userId, updatedUser);
         Optional<User> userResult = userDao.getById(userId);
         assertTrue(userResult.isPresent());
@@ -91,17 +91,17 @@ class UserDaoImplTest {
 
     @Test
     public void findByEmail_UserWasFound() {
-        User user = createTestUser();
+        User user = getUser();
         Long userId = userDao.insert(user);
         userDao.insert(user);
-        Optional<User> foundUser = userDao.findByEmail(TestConsts.USER_TEST_EMAIL);
+        Optional<User> foundUser = userDao.findByEmail("test@mail.com");
         assertTrue(foundUser.isPresent());
         assertEquals(user.getEmail(), foundUser.get().getEmail());
     }
 
     @Test
     public void findByCreatedAt_UsersWereFound() {
-        User user = createTestUser();
+        User user = getUser();
         Long userId = userDao.insert(user);
         userDao.insert(user);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);

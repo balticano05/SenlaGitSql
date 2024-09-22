@@ -5,7 +5,6 @@ import com.online.shop.entity.Review;
 import com.online.shop.entity.User;
 import com.online.shop.repository.ReviewDao;
 import com.online.shop.utils.StringConst;
-import com.online.shop.utils.TestConsts;
 import com.online.shop.сontext.AppConfig;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
@@ -34,19 +33,19 @@ class ReviewDaoImplTest {
     @Resource
     private ReviewDao reviewDao;
 
-    private Review createReview() {
+    private Review getReview() {
         Review review = new Review();
-        review.setContent(TestConsts.REVIEW_TEST_CONTENT);
+        review.setContent("Test review content");
         review.setCreatedAt(LocalDateTime.now());
         review.setRating(4);
         review.setCourse(Course.builder().id(4L).build());
-        review.setUser(User.builder().id(4L).email(TestConsts.REVIEW_TEST_EMAIL).build());
+        review.setUser(User.builder().id(4L).email("alice.smith@gmail.com").build());
         return review;
     }
 
     @Test
     void getById() {
-        Review review = createReview();
+        Review review = getReview();
         Long reviewId = reviewDao.insert(review);
         Optional<Review> resultReview = reviewDao.getById(reviewId);
         assertTrue(resultReview.isPresent());
@@ -61,7 +60,7 @@ class ReviewDaoImplTest {
 
     @Test
     void insert() {
-        Review review = createReview();
+        Review review = getReview();
         Long reviewId = reviewDao.insert(review);
         Optional<Review> resultReview = reviewDao.getById(reviewId);
         assertTrue(resultReview .isPresent());
@@ -70,12 +69,12 @@ class ReviewDaoImplTest {
 
     @Test
     void update() {
-        Review review = createReview();
+        Review review = getReview();
         Long reviewId = reviewDao.insert(review);
         Optional<Review> resultReview = reviewDao.getById(reviewId);
         assertTrue(resultReview.isPresent());
         Review updatedReview = resultReview.get();
-        updatedReview.setContent(TestConsts.REVIEW_TEST_UPDATED_CONTENT);
+        updatedReview.setContent("Updated content");
         reviewDao.update(reviewId, updatedReview);
         Optional<Review> reviewResult = reviewDao.getById(reviewId);
         assertTrue(reviewResult.isPresent());
@@ -84,7 +83,7 @@ class ReviewDaoImplTest {
 
     @Test
     void delete() {
-        Review review = createReview();
+        Review review = getReview();
         Long reviewId = reviewDao.insert(review);
         reviewDao.delete(reviewId);
         Optional<Review> reviewResult = reviewDao.getById(reviewId);
@@ -93,13 +92,13 @@ class ReviewDaoImplTest {
 
     @Test
     void findByEmail() {
-        Review review = createReview();
+        Review review = getReview();
         reviewDao.insert(review);
-        List<Review> reviews = reviewDao.findByEmail(TestConsts.REVIEW_TEST_EMAIL);
+        List<Review> reviews = reviewDao.findByEmail("alice.smith@gmail.com");
         assertFalse(reviews.isEmpty());
         boolean contentMatches = false;
         for (Review r : reviews) {
-            if (r.getContent().equals(TestConsts.REVIEW_TEST_CONTENT)) {
+            if (r.getContent().equals("Test review content")) {
                 contentMatches = true;
                 break;
             }
@@ -109,7 +108,7 @@ class ReviewDaoImplTest {
 
     @Test
     void findByCreatedAt() {
-        Review review = createReview();
+        Review review = getReview();
         reviewDao.insert(review);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);
         String createdAt = review.getCreatedAt().format(formatter);

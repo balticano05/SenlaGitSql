@@ -3,7 +3,6 @@ package com.online.shop.repository.impl;
 import com.online.shop.entity.Course;
 import com.online.shop.repository.CourseDao;
 import com.online.shop.utils.StringConst;
-import com.online.shop.utils.TestConsts;
 import com.online.shop.сontext.AppConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,19 +30,18 @@ class CourseDaoImplTest {
     @Resource
     private CourseDao courseDao;
 
-    private Course createCourse() {
+    private Course getCourse() {
         Course course = new Course();
-        course.setTitle(TestConsts.COURSE_TEST_NAME);
-        course.setDescription(TestConsts.COURSE_TEST_DESCRIPTION);
+        course.setTitle("Test course");
+        course.setDescription("Test course description");
         course.setCreatedAt(LocalDateTime.of(2023, 10, 5, 14, 30, 0));
         course.setPrice(BigDecimal.valueOf(100.0));
         return course;
     }
 
-
     @Test
     void getById() {
-        Course course = createCourse();
+        Course course = getCourse();
         Long courseId = courseDao.insert(course);
         Optional<Course> foundCourse = courseDao.getById(courseId);
         assertTrue(foundCourse.isPresent());
@@ -58,7 +56,7 @@ class CourseDaoImplTest {
 
     @Test
     void insert() {
-        Course course = createCourse();
+        Course course = getCourse();
         Long courseId = courseDao.insert(course);
         Optional<Course> courseResult = courseDao.getById(courseId);
         assertTrue(courseResult.isPresent());
@@ -67,21 +65,21 @@ class CourseDaoImplTest {
 
     @Test
     void update() {
-        Course course = createCourse();
+        Course course = getCourse();
         Long courseId = courseDao.insert(course);
         Optional<Course> foundCourse = courseDao.getById(courseId);
         assertTrue(foundCourse.isPresent());
         Course updatedCourse = foundCourse.get();
-        updatedCourse.setTitle(TestConsts.COURSE_TEST_UPDATED_NAME);
+        updatedCourse.setTitle("Updated course");
         courseDao.update(courseId, updatedCourse);
         Optional<Course> updated = courseDao.getById(courseId);
         assertTrue(updated.isPresent());
-        assertEquals(TestConsts.COURSE_TEST_UPDATED_NAME, updated.get().getTitle());
+        assertEquals("Updated course", updated.get().getTitle());
     }
 
     @Test
     void delete() {
-        Course course = createCourse();
+        Course course = getCourse();
         Long courseId = courseDao.insert(course);
         courseDao.delete(courseId);
         Optional<Course> courseResult = courseDao.getById(courseId);
@@ -90,7 +88,7 @@ class CourseDaoImplTest {
 
     @Test
     void findByCreatedAt() {;
-        Course course = createCourse();
+        Course course = getCourse();
         courseDao.insert(course);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);
         String createdAt = course.getCreatedAt().format(formatter);

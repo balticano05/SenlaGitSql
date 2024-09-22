@@ -2,7 +2,6 @@ package com.online.shop.repository.impl;
 
 import com.online.shop.entity.Role;
 import com.online.shop.repository.RoleDao;
-import com.online.shop.utils.TestConsts;
 import com.online.shop.сontext.AppConfig;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
@@ -28,15 +27,15 @@ class RoleDaoImplTest {
     @Resource
     private RoleDao roleDao;
 
-    private Role createRole() {
+    private Role getRole() {
         Role role = new Role();
-        role.setName(TestConsts.ROLE_TEST_NAME);
+        role.setName("Test role");
         return role;
     }
 
     @Test
     public void create_RoleWasCreated() {
-        Role role = createRole();
+        Role role = getRole();
         Long roleId = roleDao.insert(role);
         Optional<Role> roleResult = roleDao.getById(roleId);
         assertTrue(roleResult.isPresent());
@@ -45,7 +44,7 @@ class RoleDaoImplTest {
 
     @Test
     public void findById_RoleWasFound() {
-        Role role = createRole();
+        Role role = getRole();
         Long roleId = roleDao.insert(role);
         Optional<Role> foundRole = roleDao.getById(roleId);
         assertTrue(foundRole.isPresent());
@@ -53,7 +52,7 @@ class RoleDaoImplTest {
 
     @Test
     public void delete_RoleWasDeleted() {
-        Role role = createRole();
+        Role role = getRole();
         Long roleId = roleDao.insert(role);
         roleDao.delete(roleId);
         Optional<Role> roleResult = roleDao.getById(roleId);
@@ -62,12 +61,12 @@ class RoleDaoImplTest {
 
     @Test
     public void update_RoleWasUpdated() {
-        Role role = createRole();
+        Role role = getRole();
         Long roleId = roleDao.insert(role);
         Optional<Role> foundRole = roleDao.getById(roleId);
         assertTrue(foundRole.isPresent());
         Role updatedRole = foundRole.get();
-        updatedRole.setName(TestConsts.ROLE_TEST_UPDATED_NAME);
+        updatedRole.setName("Updated role");
         roleDao.update(roleId, updatedRole);
         Optional<Role> resultRole = roleDao.getById(roleId);
         assertTrue(resultRole.isPresent());
