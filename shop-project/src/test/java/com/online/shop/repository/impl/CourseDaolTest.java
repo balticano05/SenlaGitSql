@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {AppConfig.class}, loader = AnnotationConfigContextLoader.class)
 @Transactional
-class CourseDaoImplTest {
+class CourseDaolTest {
 
     @Resource
     private CourseDao courseDao;
@@ -40,7 +40,7 @@ class CourseDaoImplTest {
     }
 
     @Test
-    void getById() {
+    void getById_CourseWasFound() {
         Course course = getCourse();
         Long courseId = courseDao.insert(course);
         Optional<Course> foundCourse = courseDao.getById(courseId);
@@ -49,13 +49,13 @@ class CourseDaoImplTest {
     }
 
     @Test
-    void getAll() {
+    void getAll_CoursesWereFound() {
         List<Course> courses = courseDao.getAll();
         assertFalse(courses.isEmpty());
     }
 
     @Test
-    void insert() {
+    void insert_CourseWasInserted() {
         Course course = getCourse();
         Long courseId = courseDao.insert(course);
         Optional<Course> courseResult = courseDao.getById(courseId);
@@ -64,7 +64,7 @@ class CourseDaoImplTest {
     }
 
     @Test
-    void update() {
+    void update_CourseWasUpdated() {
         Course course = getCourse();
         Long courseId = courseDao.insert(course);
         Optional<Course> foundCourse = courseDao.getById(courseId);
@@ -78,7 +78,7 @@ class CourseDaoImplTest {
     }
 
     @Test
-    void delete() {
+    void delete_CourseWasDeleted() {
         Course course = getCourse();
         Long courseId = courseDao.insert(course);
         courseDao.delete(courseId);
@@ -87,7 +87,7 @@ class CourseDaoImplTest {
     }
 
     @Test
-    void findByCreatedAt() {;
+    void findByCreatedAt_courseWasFound() {;
         Course course = getCourse();
         courseDao.insert(course);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);

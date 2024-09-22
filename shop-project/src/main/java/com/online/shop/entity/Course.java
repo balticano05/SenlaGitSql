@@ -17,8 +17,11 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "title", nullable = false)
     private String title;
+    @Column(name = "description", nullable = false)
     private String description;
+    @Column(name = "price", nullable = false)
     private BigDecimal price;
     @Column(name = "created_at")
     private LocalDateTime createdAt;

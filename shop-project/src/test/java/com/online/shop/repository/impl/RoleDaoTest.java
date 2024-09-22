@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
         loader = AnnotationConfigContextLoader.class
 )
 @Transactional
-class RoleDaoImplTest {
+class RoleDaoTest {
 
     @Resource
     private RoleDao roleDao;
@@ -30,6 +30,7 @@ class RoleDaoImplTest {
     private Role getRole() {
         Role role = new Role();
         role.setName("Test role");
+        role.setDescription("Test description");
         return role;
     }
 

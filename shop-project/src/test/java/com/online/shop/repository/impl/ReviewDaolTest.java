@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
         loader = AnnotationConfigContextLoader.class
 )
 @Transactional
-class ReviewDaoImplTest {
+class ReviewDaolTest {
 
     @Resource
     private ReviewDao reviewDao;
@@ -44,7 +44,7 @@ class ReviewDaoImplTest {
     }
 
     @Test
-    void getById() {
+    void getById_ReviewWasFound() {
         Review review = getReview();
         Long reviewId = reviewDao.insert(review);
         Optional<Review> resultReview = reviewDao.getById(reviewId);
@@ -53,13 +53,13 @@ class ReviewDaoImplTest {
     }
 
     @Test
-    void getAll() {
+    void getAll_ReviewsWasFound() {
         List<Review> reviews = reviewDao.getAll();
         assertFalse(reviews.isEmpty());
     }
 
     @Test
-    void insert() {
+    void insert_ReviewWasInserted() {
         Review review = getReview();
         Long reviewId = reviewDao.insert(review);
         Optional<Review> resultReview = reviewDao.getById(reviewId);

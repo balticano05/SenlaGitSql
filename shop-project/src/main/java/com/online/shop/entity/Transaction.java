@@ -22,7 +22,8 @@ public class Transaction {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
-    @Column(name = "datetime")
+    @Column(name = "datetime", nullable = false)
     private LocalDateTime dateTime;
+    @Column(name = "price", nullable = false)
     private BigDecimal price;
 }

@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {AppConfig.class}, loader = AnnotationConfigContextLoader.class)
 @Transactional
-class CategoryDaoImplTest {
+class CategoryDaolTest {
 
     @Resource
     private CategoryDao categoryDao;

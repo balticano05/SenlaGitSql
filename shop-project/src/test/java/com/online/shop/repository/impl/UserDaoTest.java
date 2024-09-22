@@ -27,7 +27,7 @@ import static org.junit.Assert.*;
         loader = AnnotationConfigContextLoader.class
 )
 @Transactional
-class UserDaoImplTest {
+class UserDaoTest {
 
     @Resource
     private UserDao userDao;
