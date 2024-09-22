@@ -4,12 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.online.shop.dto.CoursePlanDto;
 import com.online.shop.service.CoursePlanService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import static com.online.shop.Application.log;
 import static com.online.shop.utils.StringConst.*;
 
+@Slf4j
 @Controller
 public class CoursePlanController {
 
@@ -24,7 +25,7 @@ public class CoursePlanController {
 
     public String insert(String jsonEntity) {
         try {
-            log.info(LOG_EXECUTING_INSERT_METHOD);
+            log.info("Executing insert method in CoursePlanController with JSON processing");
             return objectMapper.writeValueAsString(coursePlanService.insert(objectMapper.readValue(jsonEntity, CoursePlanDto.class)));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
@@ -33,7 +34,7 @@ public class CoursePlanController {
 
     public String update(Long id, String jsonEntity) {
         try {
-            log.info(LOG_EXECUTING_UPDATE_METHOD);
+            log.info("Executing update method in CoursePlanController with JSON processing");
             return objectMapper.writeValueAsString(coursePlanService.update(id, objectMapper.readValue(jsonEntity, CoursePlanDto.class)));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
@@ -42,7 +43,7 @@ public class CoursePlanController {
 
     public String delete(Long id) {
         try {
-            log.info(LOG_EXECUTING_DELETE_METHOD);
+            log.info("Executing delete method in CoursePlanController with JSON processing");
             return objectMapper.writeValueAsString(coursePlanService.delete(id));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
@@ -51,7 +52,7 @@ public class CoursePlanController {
 
     public String getAll() {
         try {
-            log.info(LOG_EXECUTING_GET_ALL_METHOD);
+            log.info("Executing getAll method in CoursePlanController with JSON processing");
             return objectMapper.writeValueAsString(coursePlanService.getAll());
         } catch (JsonProcessingException e) {
             throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
@@ -60,7 +61,7 @@ public class CoursePlanController {
 
     public String getById(Long id) {
         try {
-            log.info(LOG_EXECUTING_GET_BY_ID_METHOD);
+            log.info("Executing getById method in CoursePlanController with JSON processing");
             return objectMapper.writeValueAsString(coursePlanService.findById(id));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);

@@ -1,11 +1,12 @@
 package com.online.shop.repository.impl;
 
-import com.online.shop.Application;
 import com.online.shop.entity.*;
 import com.online.shop.repository.AbstractDao;
 import com.online.shop.repository.TransactionDao;
 import jakarta.persistence.criteria.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,7 +15,9 @@ import java.util.List;
 
 import static com.online.shop.utils.StringConst.*;
 
+@Slf4j
 @Repository
+@Transactional
 public class TransactionDaoImpl extends AbstractDao<Transaction> implements TransactionDao {
     private List<Transaction> transactions;
 
@@ -24,7 +27,7 @@ public class TransactionDaoImpl extends AbstractDao<Transaction> implements Tran
 
     @Override
     public List<Transaction> findTransactionsByEmail(String email) {
-        Application.log.info(LOG_EXECUTION_FIND_TRANSACTIONS_BY_EMAIL_METHOD, email);
+        log.info("Executing findTransactionsByEmail method by {}", email);
         if (email == null || email.isEmpty()) {
             throw new IllegalArgumentException(EXCEPTION_EMAIL_CANNOT_BE_NULL_OR_EMPTY);
         }
@@ -38,7 +41,7 @@ public class TransactionDaoImpl extends AbstractDao<Transaction> implements Tran
 
     @Override
     public List<Transaction> findByCreatedAt(String createdAt) {
-        Application.log.info(LOG_EXECUTING_FIND_BY_CREATED_AT_METHOD, createdAt);
+        log.info("Executing findByCreatedAt method by {}", createdAt);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
         LocalDate date = LocalDate.parse(createdAt, formatter);
         LocalDateTime startOfDay = date.atStartOfDay();

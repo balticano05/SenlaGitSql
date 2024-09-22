@@ -4,14 +4,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.online.shop.dto.ReviewDto;
 import com.online.shop.service.ReviewService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
-import static com.online.shop.Application.log;
 import static com.online.shop.utils.StringConst.*;
 
+@Slf4j
 @Controller
 public class ReviewController {
 
@@ -26,7 +27,7 @@ public class ReviewController {
 
     public String insert(String jsonEntity) {
         try {
-            log.info(LOG_EXECUTING_INSERT_METHOD);
+            log.info("Executing insert method in ReviewController with JSON processing");
             ReviewDto reviewDto = objectMapper.readValue(jsonEntity, ReviewDto.class);
             return objectMapper.writeValueAsString(reviewService.insert(reviewDto));
         } catch (JsonProcessingException e) {
@@ -36,7 +37,7 @@ public class ReviewController {
 
     public String update(Long id, String jsonEntity) {
         try {
-            log.info(LOG_EXECUTING_UPDATE_METHOD);
+            log.info("Executing update method in ReviewController with JSON processing");
             ReviewDto reviewDto = objectMapper.readValue(jsonEntity, ReviewDto.class);
             ReviewDto result = reviewService.update(id, reviewDto);
             return objectMapper.writeValueAsString(result);
@@ -47,7 +48,7 @@ public class ReviewController {
 
     public String delete(Long id) {
         try {
-            log.info(LOG_EXECUTING_DELETE_METHOD);
+            log.info("Executing delete method in ReviewController with JSON processing");
             return objectMapper.writeValueAsString(reviewService.delete(id));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
@@ -56,7 +57,7 @@ public class ReviewController {
 
     public String getAll() {
         try {
-            log.info(LOG_EXECUTING_GET_ALL_METHOD);
+            log.info("Executing getAll method in ReviewController with JSON processing");
             List<ReviewDto> reviews = reviewService.getAll();
             return objectMapper.writeValueAsString(reviews);
         } catch (JsonProcessingException e) {
@@ -66,7 +67,7 @@ public class ReviewController {
 
     public String getById(Long id) {
         try {
-            log.info(LOG_EXECUTING_GET_BY_ID_METHOD);
+            log.info("Executing getById method in ReviewController with JSON processing");
             ReviewDto reviewDto = reviewService.findById(id);
             return objectMapper.writeValueAsString(reviewDto);
         } catch (JsonProcessingException e) {
@@ -76,7 +77,7 @@ public class ReviewController {
 
     public String getReviewsByUser(String email) {
         try {
-            log.info(LOG_EXECUTING_GET_REVIEWS_METHOD);
+            log.info("Executing getReviewsByUser method in ReviewController with JSON processing");
             return objectMapper.writeValueAsString(reviewService.findByEmail(email));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
@@ -85,7 +86,7 @@ public class ReviewController {
 
     public String getByDate(String date) {
         try {
-            log.info(LOG_EXECUTING_GET_BY_DATE_METHOD);
+            log.info("Executing getByDate method in ReviewController with JSON processing");
             return objectMapper.writeValueAsString(reviewService.findByDate(date));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);

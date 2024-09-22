@@ -5,6 +5,7 @@ import com.online.shop.dto.RoleDto;
 import com.online.shop.entity.Role;
 import com.online.shop.repository.RoleDao;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.online.shop.Application.log;
-import static com.online.shop.utils.StringConst.*;
-
+@Slf4j
 @Service
 @Transactional
 public class RoleServiceImpl implements RoleService {
@@ -30,25 +29,25 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Long insert(RoleDto entityDto) {
-        log.info(LOG_EXECUTING_INSERT_METHOD);
+        log.info("Executing insert method in RoleServiceImpl with DTO: {}", entityDto);
         return roleDao.insert(modelMapper.map(entityDto, Role.class));
     }
 
     @Override
     public RoleDto update(Long id, RoleDto entityDto) {
-        log.info(LOG_EXECUTING_UPDATE_METHOD);
+        log.info("Executing update method in RoleServiceImpl for ID: {} with DTO: {}", id, entityDto);
         return modelMapper.map(roleDao.update(id, modelMapper.map(entityDto, Role.class)), RoleDto.class);
     }
 
     @Override
     public RoleDto findById(Long id) {
-        log.info(LOG_EXECUTING_FIND_BY_ID_METHOD);
+        log.info("Executing findById method in RoleServiceImpl for ID: {}", id);
         return modelMapper.map(roleDao.getById(id), RoleDto.class);
     }
 
     @Override
     public List<RoleDto> getAll() {
-        log.info(LOG_EXECUTING_GET_ALL_METHOD);
+        log.info("Executing getAll method in RoleServiceImpl");
         return roleDao.getAll().stream()
                 .map(role -> modelMapper.map(role, RoleDto.class))
                 .collect(Collectors.toList());
@@ -56,7 +55,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Boolean delete(Long id) {
-        log.info(LOG_EXECUTING_DELETE_METHOD);
+        log.info("Executing delete method in RoleServiceImpl for ID: {}", id);
         return roleDao.delete(id);
     }
 

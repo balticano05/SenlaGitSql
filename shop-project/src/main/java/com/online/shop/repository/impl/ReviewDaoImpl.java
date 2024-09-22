@@ -8,6 +8,7 @@ import com.online.shop.repository.AbstractDao;
 import com.online.shop.repository.ReviewDao;
 import com.online.shop.utils.StringConst;
 import jakarta.persistence.criteria.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +17,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static com.online.shop.Application.log;
 import static com.online.shop.utils.StringConst.*;
 
+@Slf4j
 @Repository
 @Transactional
 public class ReviewDaoImpl extends AbstractDao<Review> implements ReviewDao {
@@ -29,7 +30,7 @@ public class ReviewDaoImpl extends AbstractDao<Review> implements ReviewDao {
 
     @Override
     public List<Review> findByEmail(String email) {
-        log.info(LOG_EXECUTING_FIND_BY_EMAIL_METHOD, email);
+        log.info("Executing findByEmail method by {}", email);
         if (email == null || email.isEmpty()) {
             throw new IllegalArgumentException(EXCEPTION_EMAIL_CANNOT_BE_NULL_OR_EMPTY);
         }
@@ -44,7 +45,7 @@ public class ReviewDaoImpl extends AbstractDao<Review> implements ReviewDao {
 
     @Override
     public List<Review> findByCreatedAt(String createdAt) {
-        log.info(LOG_EXECUTING_FIND_BY_CREATED_AT_METHOD, createdAt);
+        log.info("Executing findByCreatedAt method by {}", createdAt);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);
         LocalDate date = LocalDate.parse(createdAt, formatter);
         LocalDateTime startOfDay = date.atStartOfDay();

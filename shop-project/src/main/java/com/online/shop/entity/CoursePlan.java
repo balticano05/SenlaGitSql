@@ -3,10 +3,9 @@ package com.online.shop.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
-@Getter
 @Builder
 @Entity
 @Table(name = "course_plans")

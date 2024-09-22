@@ -5,6 +5,7 @@ import com.online.shop.dto.ReviewDto;
 import com.online.shop.entity.Review;
 import com.online.shop.repository.ReviewDao;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.online.shop.Application.log;
-import static com.online.shop.utils.StringConst.*;
-
+@Slf4j
 @Service
 @Transactional
 public class ReviewServiceImpl implements ReviewService {
@@ -30,25 +29,25 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public Long insert(ReviewDto entityDto) {
-        log.info(LOG_EXECUTING_INSERT_METHOD);
+        log.info("Executing insert method in ReviewServiceImpl with DTO: {}", entityDto);
         return reviewDao.insert(modelMapper.map(entityDto, Review.class));
     }
 
     @Override
     public ReviewDto update(Long id, ReviewDto entityDto) {
-        log.info(LOG_EXECUTING_UPDATE_METHOD);
+        log.info("Executing update method in ReviewServiceImpl for ID: {} with DTO: {}", id, entityDto);
         return modelMapper.map(reviewDao.update(id, modelMapper.map(entityDto, Review.class)), ReviewDto.class);
     }
 
     @Override
     public ReviewDto findById(Long id) {
-        log.info(LOG_EXECUTING_FIND_BY_ID_METHOD);
+        log.info("Executing findById method in ReviewServiceImpl for ID: {}", id);
         return modelMapper.map(reviewDao.getById(id), ReviewDto.class);
     }
 
     @Override
     public List<ReviewDto> getAll() {
-        log.info(LOG_EXECUTING_GET_ALL_METHOD);
+        log.info("Executing getAll method in ReviewServiceImpl");
         return reviewDao.getAll().stream()
                 .map(review -> modelMapper.map(review, ReviewDto.class))
                 .collect(Collectors.toList());
@@ -56,13 +55,13 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public Boolean delete(Long id) {
-        log.info(LOG_EXECUTING_DELETE_METHOD);
+        log.info("Executing delete method in ReviewServiceImpl for ID: {}", id);
         return reviewDao.delete(id);
     }
 
     @Override
     public List<ReviewDto> findByEmail(String email) {
-        log.info(LOG_EXECUTING_FIND_BY_EMAIL_METHOD);
+        log.info("Executing findByEmail method in ReviewServiceImpl for email: {}", email);
         return reviewDao.findByEmail(email).stream()
                 .map(review -> modelMapper.map(review, ReviewDto.class))
                 .collect(Collectors.toList());
@@ -70,7 +69,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public List<ReviewDto> findByDate(String date) {
-        log.info(LOG_EXECUTION_FIND_BY_DATE);
+        log.info("Executing findByDate method in ReviewServiceImpl for date: {}", date);
         return reviewDao.findByCreatedAt(date).stream()
                 .map(review -> modelMapper.map(review, ReviewDto.class))
                 .collect(Collectors.toList());

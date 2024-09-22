@@ -13,10 +13,6 @@ import javax.sql.DataSource;
 
 import java.util.Properties;
 
-import static com.online.shop.Application.log;
-import static com.online.shop.utils.StringConst.LOG_CREATING_JPA_TRANSACTION_MANAGER_BEAN;
-import static com.online.shop.utils.StringConst.LOG_CREATING_LOCAL_CONTAINER_MANAGER_BEAN;
-
 @Configuration
 @EnableTransactionManagement
 public class TransactionConfig {
@@ -26,7 +22,6 @@ public class TransactionConfig {
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-        log.info(LOG_CREATING_LOCAL_CONTAINER_MANAGER_BEAN);
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setGenerateDdl(false);
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
@@ -41,7 +36,6 @@ public class TransactionConfig {
 
     @Bean
     public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
-        log.info(LOG_CREATING_JPA_TRANSACTION_MANAGER_BEAN);
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory);
         return transactionManager;

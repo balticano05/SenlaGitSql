@@ -5,6 +5,7 @@ import com.online.shop.dto.CategoryDto;
 import com.online.shop.entity.Category;
 import com.online.shop.repository.CategoryDao;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.online.shop.Application.log;
-import static com.online.shop.utils.StringConst.*;
-
+@Slf4j
 @Service
 @Transactional
 public class CategoryServiceImpl implements CategoryService {
@@ -30,25 +29,25 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Long insert(CategoryDto entityDto) {
-        log.info(LOG_EXECUTING_INSERT_METHOD);
+        log.info("Executing insert method in CategoryServiceImpl with DTO: {}", entityDto);
         return categoryDao.insert(modelMapper.map(entityDto, Category.class));
     }
 
     @Override
     public CategoryDto update(Long id, CategoryDto entityDto) {
-        log.info(LOG_EXECUTING_UPDATE_METHOD);
+        log.info("Executing update method in CategoryServiceImpl for ID: {} with DTO: {}", id, entityDto);
         return modelMapper.map(categoryDao.update(id, modelMapper.map(entityDto, Category.class)), CategoryDto.class);
     }
 
     @Override
     public CategoryDto findById(Long id) {
-        log.info(LOG_EXECUTING_FIND_BY_ID_METHOD);
+        log.info("Executing findById method in CategoryServiceImpl for ID: {}", id);
         return modelMapper.map(categoryDao.getById(id), CategoryDto.class);
     }
 
     @Override
     public List<CategoryDto> getAll() {
-        log.info(LOG_EXECUTING_GET_ALL_METHOD);
+        log.info("Executing getAll method in CategoryServiceImpl");
         return categoryDao.getAll().stream()
                 .map(category -> modelMapper.map(category, CategoryDto.class))
                 .collect(Collectors.toList());
@@ -56,7 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Boolean delete(Long id) {
-        log.info(LOG_EXECUTING_DELETE_METHOD);
+        log.info("Executing delete method in CategoryServiceImpl for ID: {}", id);
         return categoryDao.delete(id);
     }
 

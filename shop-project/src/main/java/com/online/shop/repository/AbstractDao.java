@@ -2,6 +2,7 @@ package com.online.shop.repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -9,9 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-import static com.online.shop.Application.log;
-import static com.online.shop.utils.StringConst.*;
-
+@Slf4j
 @Repository
 public abstract class AbstractDao<T> {
 
@@ -21,29 +20,29 @@ public abstract class AbstractDao<T> {
     protected EntityManager entityManager;
 
     public final void setClazz(Class<T> entityClass) {
-        log.info(LOG_EXECUTING_SET_CLAZZ_METHOD);
+        log.info("Executing setClazz method.");
         this.entityClass = entityClass;
     }
 
     public Optional<T> getById(Long id) {
-        log.info(LOG_EXECUTING_GET_BY_ID_METHOD_WITH_ID, id);
+        log.info("Executing getById method with id: {}", id);
         return Optional.ofNullable(entityManager.find(entityClass, id));
     }
 
     public List<T> getAll() {
-        log.info(LOG_EXECUTING_GET_ALL_METHOD);
+        log.info("Executing getAll method.");
         return entityManager.createQuery("FROM " + entityClass.getSimpleName()).getResultList();
     }
 
     public Long insert(T entity) {
-        log.info(LOG_EXECUTING_INSERT_METHOD_WITH_ENTITY, entity);
+        log.info("Executing insert method.", entity);
         entityManager.persist(entity);
         entityManager.flush();
         return (Long) entityManager.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(entity);
     }
 
     public Optional<T> update(Long id, T entity) {
-        log.info(LOG_EXECUTING_UPDATE_METHOD_WITH_ID_AND_ENTITY, id, entity);
+        log.info("Executing update method with id: {} and entity: {}", id, entity);
         return getById(id).map(existingEntity -> {
             BeanUtils.copyProperties(entity, existingEntity, getNullPropertyNames(entity));
             entityManager.merge(existingEntity);
@@ -52,7 +51,7 @@ public abstract class AbstractDao<T> {
     }
 
     private String[] getNullPropertyNames(Object source) {
-        log.info(LOG_EXECUTING_GET_NULL_PROPERTY_METHOD);
+        log.info("Executing getNullProperty method.");
         final BeanWrapper src = new BeanWrapperImpl(source);
         return Arrays.stream(src.getPropertyDescriptors())
                 .map(java.beans.PropertyDescriptor::getName)
@@ -61,7 +60,7 @@ public abstract class AbstractDao<T> {
     }
 
     public Boolean delete(Long id) {
-        log.info(LOG_EXECUTING_DELETE_METHOD_WITH_ID, id);
+        log.info("Executing delete method with id: {}", id);
         Optional<T> entity = getById(id);
         if (entity.isPresent()) {
             entityManager.remove(entity.get());

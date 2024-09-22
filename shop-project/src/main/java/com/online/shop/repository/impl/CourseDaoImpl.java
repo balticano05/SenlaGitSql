@@ -6,6 +6,7 @@ import com.online.shop.repository.AbstractDao;
 import com.online.shop.repository.CourseDao;
 import com.online.shop.utils.StringConst;
 import jakarta.persistence.criteria.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +15,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static com.online.shop.Application.log;
-import static com.online.shop.utils.StringConst.LOG_EXECUTING_FIND_BY_CREATED_AT_METHOD;
-
-
+@Slf4j
 @Repository
 @Transactional
 public class CourseDaoImpl extends AbstractDao<Course> implements CourseDao {
@@ -28,7 +26,7 @@ public class CourseDaoImpl extends AbstractDao<Course> implements CourseDao {
 
     @Override
     public List<Course> findByCreatedAt(String createdAt) {
-        log.info(LOG_EXECUTING_FIND_BY_CREATED_AT_METHOD, createdAt);
+        log.info("Executing findByCreatedAt method by {}", createdAt);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);
         LocalDate date = LocalDate.parse(createdAt, formatter);
         LocalDateTime startOfDay = date.atStartOfDay();

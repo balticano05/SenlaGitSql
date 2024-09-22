@@ -5,6 +5,7 @@ import com.online.shop.dto.CoursePlanDto;
 import com.online.shop.entity.CoursePlan;
 import com.online.shop.repository.CoursePlanDao;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.online.shop.Application.log;
-import static com.online.shop.utils.StringConst.*;
-
+@Slf4j
 @Service
 @Transactional
 public class CoursePlanServiceImpl implements CoursePlanService {
@@ -30,25 +29,25 @@ public class CoursePlanServiceImpl implements CoursePlanService {
 
     @Override
     public Long insert(CoursePlanDto entityDto) {
-        log.info(LOG_EXECUTING_INSERT_METHOD);
+        log.info("Executing insert method in CoursePlanServiceImpl with DTO: {}", entityDto);
         return coursePlanDao.insert(modelMapper.map(entityDto, CoursePlan.class));
     }
 
     @Override
     public CoursePlanDto update(Long id, CoursePlanDto entityDto) {
-        log.info(LOG_EXECUTING_UPDATE_METHOD);
+        log.info("Executing update method in CoursePlanServiceImpl for ID: {} with DTO: {}", id, entityDto);
         return modelMapper.map(coursePlanDao.update(id, modelMapper.map(entityDto, CoursePlan.class)), CoursePlanDto.class);
     }
 
     @Override
     public CoursePlanDto findById(Long id) {
-        log.info(LOG_EXECUTING_FIND_BY_ID_METHOD);
+        log.info("Executing findById method in CoursePlanServiceImpl for ID: {}", id);
         return modelMapper.map(coursePlanDao.getById(id), CoursePlanDto.class);
     }
 
     @Override
     public List<CoursePlanDto> getAll() {
-        log.info(LOG_EXECUTING_GET_ALL_METHOD);
+        log.info("Executing getAll method in CoursePlanServiceImpl");
         return coursePlanDao.getAll().stream()
                 .map(coursePlan -> modelMapper.map(coursePlan, CoursePlanDto.class))
                 .collect(Collectors.toList());
@@ -56,7 +55,7 @@ public class CoursePlanServiceImpl implements CoursePlanService {
 
     @Override
     public Boolean delete(Long id) {
-        log.info(LOG_EXECUTING_DELETE_METHOD);
+        log.info("Executing delete method in CoursePlanServiceImpl for ID: {}", id);
         return coursePlanDao.delete(id);
     }
 

@@ -6,10 +6,9 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
-@Getter
 @Builder
 @Entity
 @Table(name = "users")

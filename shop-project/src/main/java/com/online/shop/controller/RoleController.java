@@ -4,12 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.online.shop.dto.RoleDto;
 import com.online.shop.service.RoleService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import static com.online.shop.Application.log;
 import static com.online.shop.utils.StringConst.*;
 
+@Slf4j
 @Controller
 public class RoleController {
 
@@ -24,7 +25,7 @@ public class RoleController {
 
     public String insert(String jsonEntity) {
         try {
-            log.info(LOG_EXECUTING_INSERT_METHOD);
+            log.info("Executing insert method in RoleController with JSON processing");
             return objectMapper.writeValueAsString(roleService.insert(objectMapper.readValue(jsonEntity, RoleDto.class)));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
@@ -33,7 +34,7 @@ public class RoleController {
 
     public String update(Long id, String jsonEntity) {
         try {
-            log.info(LOG_EXECUTING_UPDATE_METHOD);
+            log.info("Executing update method in RoleController with JSON processing");
             return objectMapper.writeValueAsString(roleService.update(id, objectMapper.readValue(jsonEntity, RoleDto.class)));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
@@ -42,7 +43,7 @@ public class RoleController {
 
     public String delete(Long id) {
         try {
-            log.info(LOG_EXECUTING_DELETE_METHOD);
+            log.info("Executing delete method in RoleController with JSON processing");
             return objectMapper.writeValueAsString(roleService.delete(id));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
@@ -51,7 +52,7 @@ public class RoleController {
 
     public String getAll() {
         try {
-            log.info(LOG_EXECUTING_GET_ALL_METHOD);
+            log.info("Executing getAll method in RoleController with JSON processing");
             return objectMapper.writeValueAsString(roleService.getAll());
         } catch (JsonProcessingException e) {
             throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
@@ -60,7 +61,7 @@ public class RoleController {
 
     public String getById(Long id) {
         try {
-            log.info(LOG_EXECUTING_GET_BY_ID_METHOD);
+            log.info("Executing getById method in RoleController with JSON processing");
             return objectMapper.writeValueAsString(roleService.findById(id));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
