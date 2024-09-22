@@ -17,23 +17,19 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static com.online.shop.utils.StringConst.*;
-
 @Slf4j
 @Repository
 @Transactional
 public class ReviewDaoImpl extends AbstractDao<Review> implements ReviewDao {
 
-    public ReviewDaoImpl() {
-        setClazz(Review.class);
+    @Override
+    protected Class<Review> getEntityClass() {
+        return Review.class;
     }
 
     @Override
     public List<Review> findByEmail(String email) {
         log.info("Executing findByEmail method by {}", email);
-        if (email == null || email.isEmpty()) {
-            throw new IllegalArgumentException(EXCEPTION_EMAIL_CANNOT_BE_NULL_OR_EMPTY);
-        }
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Review> query = criteriaBuilder.createQuery(Review.class);
         Root<Review> root = query.from(Review.class);
@@ -45,7 +41,7 @@ public class ReviewDaoImpl extends AbstractDao<Review> implements ReviewDao {
 
     @Override
     public List<Review> findByCreationDate(String createdAt) {
-        log.info("Executing findByCreatedAt method by {}", createdAt);
+        log.info("Executing findByCreationDate method by {}", createdAt);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);
         LocalDate date = LocalDate.parse(createdAt, formatter);
         LocalDateTime startOfDay = date.atStartOfDay();

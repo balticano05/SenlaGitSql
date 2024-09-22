@@ -14,24 +14,19 @@ import java.util.*;
 @Repository
 public abstract class AbstractDao<T> {
 
-    private Class<T> entityClass;
-
     @PersistenceContext
     protected EntityManager entityManager;
 
-    public final void setClazz(Class<T> entityClass) {
-        log.info("Executing setClazz method.");
-        this.entityClass = entityClass;
-    }
+    protected abstract Class<T> getEntityClass();
 
     public Optional<T> getById(Long id) {
         log.info("Executing getById method with id: {}", id);
-        return Optional.ofNullable(entityManager.find(entityClass, id));
+        return Optional.ofNullable(entityManager.find(getEntityClass(), id));
     }
 
     public List<T> getAll() {
         log.info("Executing getAll method.");
-        return entityManager.createQuery("FROM " + entityClass.getSimpleName()).getResultList();
+        return entityManager.createQuery("FROM " + getEntityClass().getSimpleName()).getResultList();
     }
 
     public Long insert(T entity) {
@@ -52,7 +47,7 @@ public abstract class AbstractDao<T> {
 
     private String[] getNullPropertyNames(Object source) {
         log.info("Executing getNullProperty method.");
-        final BeanWrapper src = new BeanWrapperImpl(source);
+        BeanWrapper src = new BeanWrapperImpl(source);
         return Arrays.stream(src.getPropertyDescriptors())
                 .map(java.beans.PropertyDescriptor::getName)
                 .filter(name -> src.getPropertyValue(name) == null)

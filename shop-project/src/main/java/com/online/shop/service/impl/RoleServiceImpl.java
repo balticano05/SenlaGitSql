@@ -29,18 +29,34 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Long insert(RoleDto entityDto) {
+        if (entityDto == null) {
+            log.error("RoleDto is null in insert method");
+            throw new IllegalArgumentException("ReviewDto cannot be null");
+        }
         log.info("Executing insert method in RoleServiceImpl with DTO: {}", entityDto);
         return roleDao.insert(modelMapper.map(entityDto, Role.class));
     }
 
     @Override
     public RoleDto update(Long id, RoleDto entityDto) {
+        if (id == null) {
+            log.error("ID is null in update method");
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+        if (entityDto == null) {
+            log.error("RoleDto is null in update method");
+            throw new IllegalArgumentException("ReviewDto cannot be null");
+        }
         log.info("Executing update method in RoleServiceImpl for ID: {} with DTO: {}", id, entityDto);
         return modelMapper.map(roleDao.update(id, modelMapper.map(entityDto, Role.class)), RoleDto.class);
     }
 
     @Override
     public RoleDto findById(Long id) {
+        if (id == null) {
+            log.error("ID is null in findById method");
+            throw new IllegalArgumentException("ID cannot be null");
+        }
         log.info("Executing findById method in RoleServiceImpl for ID: {}", id);
         return modelMapper.map(roleDao.getById(id), RoleDto.class);
     }
@@ -55,6 +71,10 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Boolean delete(Long id) {
+        if (id == null) {
+            log.error("ID is null in delete method");
+            throw new IllegalArgumentException("ID cannot be null");
+        }
         log.info("Executing delete method in RoleServiceImpl for ID: {}", id);
         return roleDao.delete(id);
     }

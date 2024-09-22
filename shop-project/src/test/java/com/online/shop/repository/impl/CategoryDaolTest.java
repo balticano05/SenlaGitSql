@@ -17,7 +17,10 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {AppConfig.class}, loader = AnnotationConfigContextLoader.class)
+@ContextConfiguration(
+        classes = {AppConfig.class},
+        loader = AnnotationConfigContextLoader.class
+)
 @Transactional
 class CategoryDaolTest {
 
@@ -75,6 +78,32 @@ class CategoryDaolTest {
     public void getAll_CategoriesWereFound() {
         List<Category> categories = categoryDao.getAll();
         assertFalse(categories.isEmpty());
+    }
+
+    @Test
+    public void insert_NullCategory() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            categoryDao.insert(null);
+        });
+    }
+
+    @Test
+    public void getById_NonExistentId() {
+        Optional<Category> categoryResult = categoryDao.getById(9999999999999L);
+        assertFalse(categoryResult.isPresent());
+    }
+
+    @Test
+    public void delete_NonExistentCategory() {
+        Boolean result = categoryDao.delete(999L);
+        assertFalse(result);
+    }
+
+    @Test
+    public void update_NonExistentCategory() {
+        Category category = getCategory();
+        Optional<Category> result = categoryDao.update(999L, category);
+        assertFalse(result.isPresent());
     }
 
 }

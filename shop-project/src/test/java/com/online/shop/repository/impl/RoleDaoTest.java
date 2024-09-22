@@ -80,4 +80,30 @@ class RoleDaoTest {
         assertFalse(roles.isEmpty());
     }
 
+    @Test
+    public void insert_NullRole() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            roleDao.insert(null);
+        });
+    }
+
+    @Test
+    public void findById_NonExistentId() {
+        Optional<Role> roleResult = roleDao.getById(9999999999999L);
+        assertFalse(roleResult.isPresent());
+    }
+
+    @Test
+    public void delete_NonExistentRole() {
+        Boolean result = roleDao.delete(999L);
+        assertFalse(result);
+    }
+
+    @Test
+    public void update_NonExistentRole() {
+        Role role = getRole();
+        Optional<Role> result = roleDao.update(999L, role);
+        assertFalse(result.isPresent());
+    }
+
 }

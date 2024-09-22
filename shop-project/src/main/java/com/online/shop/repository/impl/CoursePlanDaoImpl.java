@@ -6,11 +6,11 @@ import com.online.shop.repository.CoursePlanDao;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-
 @Repository
 @Transactional
 public class CoursePlanDaoImpl extends AbstractDao<CoursePlan> implements CoursePlanDao {
-    public CoursePlanDaoImpl() {
-        setClazz(CoursePlan.class);
+    @Override
+    protected Class<CoursePlan> getEntityClass() {
+        return CoursePlan.class;
     }
 }

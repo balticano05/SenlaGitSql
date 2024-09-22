@@ -19,18 +19,17 @@ import static com.online.shop.utils.StringConst.*;
 @Repository
 @Transactional
 public class TransactionDaoImpl extends AbstractDao<Transaction> implements TransactionDao {
+
     private List<Transaction> transactions;
 
-    public TransactionDaoImpl() {
-        setClazz(Transaction.class);
+    @Override
+    protected Class<Transaction> getEntityClass() {
+        return Transaction.class;
     }
 
     @Override
     public List<Transaction> findTransactionsByEmail(String email) {
         log.info("Executing findTransactionsByEmail method by {}", email);
-        if (email == null || email.isEmpty()) {
-            throw new IllegalArgumentException(EXCEPTION_EMAIL_CANNOT_BE_NULL_OR_EMPTY);
-        }
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Transaction> query = criteriaBuilder.createQuery(Transaction.class);
         Root<Transaction> root = query.from(Transaction.class);
@@ -41,7 +40,7 @@ public class TransactionDaoImpl extends AbstractDao<Transaction> implements Tran
 
     @Override
     public List<Transaction> findByCreationDate(String createdAt) {
-        log.info("Executing findByCreatedAt method by {}", createdAt);
+        log.info("Executing findByCreationDate method by {}", createdAt);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
         LocalDate date = LocalDate.parse(createdAt, formatter);
         LocalDateTime startOfDay = date.atStartOfDay();

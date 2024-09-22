@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
         loader = AnnotationConfigContextLoader.class
 )
 @Transactional
-class ReviewDaolTest {
+class ReviewDaoTest {
 
     @Resource
     private ReviewDao reviewDao;
@@ -63,12 +64,12 @@ class ReviewDaolTest {
         Review review = getReview();
         Long reviewId = reviewDao.insert(review);
         Optional<Review> resultReview = reviewDao.getById(reviewId);
-        assertTrue(resultReview .isPresent());
+        assertTrue(resultReview.isPresent());
         assertEquals(review.getContent(), resultReview.get().getContent());
     }
 
     @Test
-    void update() {
+    void update_ReviewWasUpdate() {
         Review review = getReview();
         Long reviewId = reviewDao.insert(review);
         Optional<Review> resultReview = reviewDao.getById(reviewId);
@@ -82,7 +83,7 @@ class ReviewDaolTest {
     }
 
     @Test
-    void delete() {
+    void delete_ReviewWasDeleted() {
         Review review = getReview();
         Long reviewId = reviewDao.insert(review);
         reviewDao.delete(reviewId);
@@ -91,7 +92,7 @@ class ReviewDaolTest {
     }
 
     @Test
-    void findByEmail() {
+    void findByEmail_ReviewWasFound() {
         Review review = getReview();
         reviewDao.insert(review);
         List<Review> reviews = reviewDao.findByEmail("alice.smith@gmail.com");
@@ -107,7 +108,7 @@ class ReviewDaolTest {
     }
 
     @Test
-    void findByCreatedAt() {
+    void findByCreationDate_ReviewWasFound() {
         Review review = getReview();
         reviewDao.insert(review);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);
@@ -116,6 +117,45 @@ class ReviewDaolTest {
         assertFalse(reviews.isEmpty());
         assertEquals(1, reviews.size());
         assertEquals(review, reviews.get(0));
+    }
+
+    @Test
+    void getById_NonExistentId() {
+        Optional<Review> reviewResult = reviewDao.getById(9999999999999L);
+        assertFalse(reviewResult.isPresent());
+    }
+
+    @Test
+    void insert_NullReview() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            reviewDao.insert(null);
+        });
+    }
+
+    @Test
+    void update_NonExistentReview() {
+        Review review = getReview();
+        Optional<Review> result = reviewDao.update(999L, review);
+        assertFalse(result.isPresent());
+    }
+
+    @Test
+    void delete_NonExistentReview() {
+        Boolean result = reviewDao.delete(999L);
+        assertFalse(result);
+    }
+
+    @Test
+    void findByEmail_NonExistentEmail() {
+        List<Review> reviews = reviewDao.findByEmail("nonexistent@mail.com");
+        assertTrue(reviews.isEmpty());
+    }
+
+    @Test
+    void findByCreationDate_InvalidDate() {
+        assertThrows(DateTimeParseException.class, () -> {
+            List<Review> reviews = reviewDao.findByCreationDate("invalid-date");
+        });
     }
 
 }

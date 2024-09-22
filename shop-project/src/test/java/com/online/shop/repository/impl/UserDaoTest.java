@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,8 +49,8 @@ class UserDaoTest {
         User user = getUser();
         Long userId = userDao.insert(user);
         Optional<User> userResult = userDao.getById(userId);
-        assertTrue(userResult .isPresent());
-        assertEquals(user.getEmail(), userResult .get().getEmail());
+        assertTrue(userResult.isPresent());
+        assertEquals(user.getEmail(), userResult.get().getEmail());
     }
 
     @Test
@@ -100,7 +101,7 @@ class UserDaoTest {
     }
 
     @Test
-    public void findByCreatedAt_UsersWereFound() {
+    public void findByCreationDate_UsersWereFound() {
         User user = getUser();
         Long userId = userDao.insert(user);
         userDao.insert(user);
@@ -110,6 +111,45 @@ class UserDaoTest {
         assertFalse(users.isEmpty());
         assertEquals(1, users.size());
         assertEquals(user.getEmail(), users.get(0).getEmail());
+    }
+
+    @Test
+    public void insert_NullUser() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            userDao.insert(null);
+        });
+    }
+
+    @Test
+    public void findById_NonExistentId() {
+        Optional<User> userResult = userDao.getById(9999999999999L);
+        assertFalse(userResult.isPresent());
+    }
+
+    @Test
+    public void delete_NonExistentUser() {
+        Boolean result = userDao.delete(999L);
+        assertFalse(result);
+    }
+
+    @Test
+    public void update_NonExistentUser() {
+        User user = getUser();
+        Optional<User> result = userDao.update(-1L, user);
+        assertFalse(result.isPresent());
+    }
+
+    @Test
+    public void findByEmail_NonExistentEmail() {
+        Optional<User> userResult = userDao.findByEmail("nonexistent@mail.com");
+        assertFalse(userResult.isPresent());
+    }
+
+    @Test
+    public void findByCreationDate_InvalidDate() {
+        assertThrows(DateTimeParseException.class, () -> {
+            List<User> users = userDao.findByCreationDate("invalid-date");
+        });
     }
 
 }

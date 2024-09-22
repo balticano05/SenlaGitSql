@@ -1,6 +1,7 @@
 package com.online.shop.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -25,5 +26,6 @@ public class Transaction {
     @Column(name = "datetime", nullable = false)
     private LocalDateTime dateTime;
     @Column(name = "price", nullable = false)
+    @Min(value = 0)
     private BigDecimal price;
 }

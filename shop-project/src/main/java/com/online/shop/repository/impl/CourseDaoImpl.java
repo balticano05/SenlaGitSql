@@ -20,8 +20,9 @@ import java.util.List;
 @Transactional
 public class CourseDaoImpl extends AbstractDao<Course> implements CourseDao {
 
-    public CourseDaoImpl() {
-        setClazz(Course.class);
+    @Override
+    protected Class<Course> getEntityClass() {
+        return Course.class;
     }
 
     @Override

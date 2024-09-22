@@ -1,9 +1,12 @@
 package com.online.shop.repository.impl;
 
 import com.online.shop.entity.Course;
+import com.online.shop.entity.User;
 import com.online.shop.repository.CourseDao;
 import com.online.shop.utils.StringConst;
 import com.online.shop.сontext.AppConfig;
+import jakarta.persistence.EntityNotFoundException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -15,17 +18,22 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {AppConfig.class}, loader = AnnotationConfigContextLoader.class)
+@ContextConfiguration(
+        classes = {AppConfig.class},
+        loader = AnnotationConfigContextLoader.class
+)
 @Transactional
-class CourseDaolTest {
+class CourseDaoTest {
 
     @Resource
     private CourseDao courseDao;
@@ -35,7 +43,7 @@ class CourseDaolTest {
         course.setTitle("Test course");
         course.setDescription("Test course description");
         course.setCreatedAt(LocalDateTime.of(2023, 10, 5, 14, 30, 0));
-        course.setPrice(BigDecimal.valueOf(100.0));
+        course.setPrice(BigDecimal.valueOf(-100.0));
         return course;
     }
 
@@ -87,7 +95,7 @@ class CourseDaolTest {
     }
 
     @Test
-    void findByCreatedAt_courseWasFound() {;
+    void findByCreatedAt_CourseWasFound() {;
         Course course = getCourse();
         courseDao.insert(course);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);
@@ -96,6 +104,41 @@ class CourseDaolTest {
         assertFalse(courses.isEmpty());
         assertEquals(1, courses.size());
         assertEquals(course.getTitle(), courses.get(0).getTitle());
+    }
+
+    @Test
+    void getById_CourseNotFound() {
+        Long invalidCourseId = -1L;
+        Optional<Course> foundCourse = courseDao.getById(invalidCourseId);
+        assertFalse(foundCourse.isPresent());
+    }
+
+    @Test
+    void insert_NullCourse() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            courseDao.insert(null);
+        });
+    }
+
+    @Test
+    void update_NonExistentCourse() {
+        Course course = getCourse();
+        Optional<Course> result = courseDao.update(-1L, course);
+        assertFalse(result.isPresent());
+    }
+
+    @Test
+    void delete_NonExistentCourse() {
+        Boolean result = courseDao.delete(-1L);
+        assertFalse(result);
+    }
+
+    @Test
+    void findByCreatedAt_InvalidDate() {
+        String invalidDate = "invalid-date";
+        assertThrows(DateTimeParseException.class, () -> {
+            courseDao.findByCreationDate(invalidDate);
+        });
     }
 
 }

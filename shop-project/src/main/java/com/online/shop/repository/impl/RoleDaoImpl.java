@@ -10,7 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public class RoleDaoImpl extends AbstractDao<Role> implements RoleDao {
-    public RoleDaoImpl() {
-        setClazz(Role.class);
+    @Override
+    protected Class<Role> getEntityClass() {
+        return Role.class;
     }
 }
