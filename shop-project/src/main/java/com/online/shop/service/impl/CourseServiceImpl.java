@@ -64,7 +64,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<CourseDto> findByDate(String date) {
         log.info("Executing findByDate method in CourseServiceImpl for date: {}", date);
-        return courseDao.findByCreatedAt(date).stream()
+        return courseDao.findByCreationDate(date).stream()
                 .map(course -> modelMapper.map(course, CourseDto.class))
                 .collect(Collectors.toList());
     }

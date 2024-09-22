@@ -92,7 +92,7 @@ class CourseDaolTest {
         courseDao.insert(course);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);
         String createdAt = course.getCreatedAt().format(formatter);
-        List<Course> courses = courseDao.findByCreatedAt(createdAt);
+        List<Course> courses = courseDao.findByCreationDate(createdAt);
         assertFalse(courses.isEmpty());
         assertEquals(1, courses.size());
         assertEquals(course.getTitle(), courses.get(0).getTitle());

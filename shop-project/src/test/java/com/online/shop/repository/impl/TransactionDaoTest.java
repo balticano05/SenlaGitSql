@@ -105,7 +105,7 @@ class TransactionDaoTest {
         Transaction transaction = getTransaction();
         transactionDao.insert(transaction);
         String createdAt = transaction.getDateTime().format(DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT));
-        List<Transaction> transactions = transactionDao.findByCreatedAt(createdAt);
+        List<Transaction> transactions = transactionDao.findByCreationDate(createdAt);
         assertFalse(transactions.isEmpty());
         assertEquals(1, transactions.size());
         assertEquals(transaction.getPrice(), transactions.get(0).getPrice());

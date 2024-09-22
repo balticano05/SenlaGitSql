@@ -44,7 +44,7 @@ public class ReviewDaoImpl extends AbstractDao<Review> implements ReviewDao {
     }
 
     @Override
-    public List<Review> findByCreatedAt(String createdAt) {
+    public List<Review> findByCreationDate(String createdAt) {
         log.info("Executing findByCreatedAt method by {}", createdAt);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);
         LocalDate date = LocalDate.parse(createdAt, formatter);

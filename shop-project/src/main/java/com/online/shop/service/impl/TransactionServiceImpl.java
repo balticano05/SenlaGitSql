@@ -72,7 +72,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public List<TransactionDto> findByDate(String date) {
         log.info("Executing findByDate method in TransactionServiceImpl for date: {}", date);
-        return transactionDao.findByCreatedAt(date).stream()
+        return transactionDao.findByCreationDate(date).stream()
                 .map(transaction -> modelMapper.map(transactionDao, TransactionDto.class))
                 .collect(Collectors.toList());
     }

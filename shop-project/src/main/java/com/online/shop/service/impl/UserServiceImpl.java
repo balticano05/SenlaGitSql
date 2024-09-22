@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> findByDate(String date) {
         log.info("Executing findByDate method in UserServiceImpl for date: {}", date);
-        return userDao.findByCreatedAt(date).stream()
+        return userDao.findByCreationDate(date).stream()
                 .map(user -> modelMapper.map(user, UserDto.class))
                 .collect(Collectors.toList());
     }

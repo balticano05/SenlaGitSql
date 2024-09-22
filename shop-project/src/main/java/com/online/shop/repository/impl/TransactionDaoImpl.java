@@ -40,7 +40,7 @@ public class TransactionDaoImpl extends AbstractDao<Transaction> implements Tran
     }
 
     @Override
-    public List<Transaction> findByCreatedAt(String createdAt) {
+    public List<Transaction> findByCreationDate(String createdAt) {
         log.info("Executing findByCreatedAt method by {}", createdAt);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
         LocalDate date = LocalDate.parse(createdAt, formatter);

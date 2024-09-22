@@ -41,7 +41,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public List<User> findByCreatedAt(String createdAt) {
+    public List<User> findByCreationDate(String createdAt) {
         log.info("Executing findByCreatedAt method by {}", createdAt);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
         LocalDate date = LocalDate.parse(createdAt, formatter);

@@ -70,7 +70,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public List<ReviewDto> findByDate(String date) {
         log.info("Executing findByDate method in ReviewServiceImpl for date: {}", date);
-        return reviewDao.findByCreatedAt(date).stream()
+        return reviewDao.findByCreationDate(date).stream()
                 .map(review -> modelMapper.map(review, ReviewDto.class))
                 .collect(Collectors.toList());
     }

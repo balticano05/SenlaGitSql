@@ -18,5 +18,5 @@ public interface ReviewDao {
 
     List<Review> findByEmail(String email);
 
-    List<Review> findByCreatedAt(String createdAt);
+    List<Review> findByCreationDate(String createdAt);
 }

@@ -106,7 +106,7 @@ class UserDaoTest {
         userDao.insert(user);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);
         String createdAt = user.getCreatedAt().format(formatter);
-        List<User> users = userDao.findByCreatedAt(createdAt);
+        List<User> users = userDao.findByCreationDate(createdAt);
         assertFalse(users.isEmpty());
         assertEquals(1, users.size());
         assertEquals(user.getEmail(), users.get(0).getEmail());

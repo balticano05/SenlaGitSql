@@ -112,7 +112,7 @@ class ReviewDaolTest {
         reviewDao.insert(review);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);
         String createdAt = review.getCreatedAt().format(formatter);
-        List<Review> reviews = reviewDao.findByCreatedAt(createdAt);
+        List<Review> reviews = reviewDao.findByCreationDate(createdAt);
         assertFalse(reviews.isEmpty());
         assertEquals(1, reviews.size());
         assertEquals(review, reviews.get(0));

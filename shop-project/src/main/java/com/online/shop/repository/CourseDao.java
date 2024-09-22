@@ -16,5 +16,5 @@ public interface CourseDao {
 
     Boolean delete(Long id);
 
-    List<Course> findByCreatedAt(String createdAt);
+    List<Course> findByCreationDate(String createdAt);
 }

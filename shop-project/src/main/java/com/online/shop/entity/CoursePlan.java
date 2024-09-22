@@ -20,7 +20,6 @@ public class CoursePlan {
     @Column(name = "duration", nullable = false)
     private Integer duration;
     @OneToOne
-    @MapsId
     @JoinColumn(name = "id", nullable = false)
     private Course course;
 }
