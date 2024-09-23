@@ -1,6 +1,6 @@
 package com.online.shop.service.impl;
 
-import com.online.shop.service.Validator;
+import com.online.shop.utils.Validator;
 import com.online.shop.service.ReviewService;
 import com.online.shop.dto.ReviewDto;
 import com.online.shop.entity.Review;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @Transactional
-public class ReviewServiceImpl extends Validator implements ReviewService {
+public class ReviewServiceImpl implements ReviewService {
 
     private ReviewDao reviewDao;
     private ModelMapper modelMapper;
@@ -98,11 +98,11 @@ public class ReviewServiceImpl extends Validator implements ReviewService {
             log.error("Date is null in findByDate method");
             throw new IllegalArgumentException("Date cannot be null");
         }
-        if (!isValidDateFormat(date)) {
+        if (!Validator.isValidDateFormat(date)) {
             log.error("Invalid date format in findByDate method");
         }
         log.info("Executing findByDate method in ReviewServiceImpl for date: {}", date);
-        return reviewDao.findByCreationDate(date).stream()
+        return reviewDao.findByCreateDate(date).stream()
                 .map(review -> modelMapper.map(review, ReviewDto.class))
                 .collect(Collectors.toList());
     }

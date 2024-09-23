@@ -7,6 +7,7 @@ import com.online.shop.repository.ReviewDao;
 import com.online.shop.utils.StringConst;
 import com.online.shop.сontext.AppConfig;
 import jakarta.annotation.Resource;
+import org.hibernate.PropertyValueException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,7 +22,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
@@ -108,12 +108,12 @@ class ReviewDaoTest {
     }
 
     @Test
-    void findByCreationDate_ReviewWasFound() {
+    void findByCreateDate_ReviewWasFound() {
         Review review = getReview();
         reviewDao.insert(review);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);
         String createdAt = review.getCreatedAt().format(formatter);
-        List<Review> reviews = reviewDao.findByCreationDate(createdAt);
+        List<Review> reviews = reviewDao.findByCreateDate(createdAt);
         assertFalse(reviews.isEmpty());
         assertEquals(1, reviews.size());
         assertEquals(review, reviews.get(0));
@@ -152,10 +152,72 @@ class ReviewDaoTest {
     }
 
     @Test
-    void findByCreationDate_InvalidDate() {
+    void findByCreateDate_InvalidDate() {
         assertThrows(DateTimeParseException.class, () -> {
-            List<Review> reviews = reviewDao.findByCreationDate("invalid-date");
+            List<Review> reviews = reviewDao.findByCreateDate("invalid-date");
         });
+    }
+
+    @Test
+    void insert_NullUserId() {
+        Review review = getReview();
+        review.setUser(null);
+        assertThrows(PropertyValueException.class, () -> {
+            reviewDao.insert(review);
+        });
+    }
+
+    @Test
+    void insert_NullCourse() {
+        Review review = getReview();
+        review.setCourse(null);
+        assertThrows(PropertyValueException.class, () -> {
+            reviewDao.insert(review);
+        });
+    }
+
+    @Test
+    void insert_NullCreatedAt() {
+        Review review = getReview();
+        review.setCreatedAt(null);
+        assertThrows(PropertyValueException.class, () -> {
+            reviewDao.insert(review);
+        });
+    }
+
+    @Test
+    void insert_NullRating() {
+        Review review = getReview();
+        review.setRating(null);
+        assertThrows(PropertyValueException.class, () -> {
+            reviewDao.insert(review);
+        });
+    }
+
+    @Test
+    void update_NullCreatedAt() {
+        Review review = getReview();
+        Long reviewId = reviewDao.insert(review);
+        Optional<Review> resultReview = reviewDao.getById(reviewId);
+        assertTrue(resultReview.isPresent());
+        Review updatedReview = resultReview.get();
+        updatedReview.setCreatedAt(null);
+        Optional<Review> updatedResultReview = reviewDao.update(reviewId, updatedReview);
+        assertTrue(updatedResultReview.isPresent());
+        assertNull(updatedResultReview.get().getCreatedAt());
+    }
+
+    @Test
+    void update_NullRating() {
+        Review review = getReview();
+        Long reviewId = reviewDao.insert(review);
+        Optional<Review> resultReview = reviewDao.getById(reviewId);
+        assertTrue(resultReview.isPresent());
+        Review updatedReview = resultReview.get();
+        updatedReview.setRating(null);
+        Optional<Review> updatedResultReview = reviewDao.update(reviewId, updatedReview);
+        assertTrue(updatedResultReview.isPresent());
+        assertNull(updatedResultReview.get().getRating());
     }
 
 }

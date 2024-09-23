@@ -5,9 +5,12 @@ import com.online.shop.entity.User;
 import com.online.shop.repository.UserDao;
 import com.online.shop.utils.StringConst;
 import com.online.shop.сontext.AppConfig;
+import org.hibernate.PropertyValueException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -101,13 +104,13 @@ class UserDaoTest {
     }
 
     @Test
-    public void findByCreationDate_UsersWereFound() {
+    public void findByCreateDate_UsersWereFound() {
         User user = getUser();
         Long userId = userDao.insert(user);
         userDao.insert(user);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);
         String createdAt = user.getCreatedAt().format(formatter);
-        List<User> users = userDao.findByCreationDate(createdAt);
+        List<User> users = userDao.findByCreateDate(createdAt);
         assertFalse(users.isEmpty());
         assertEquals(1, users.size());
         assertEquals(user.getEmail(), users.get(0).getEmail());
@@ -146,9 +149,55 @@ class UserDaoTest {
     }
 
     @Test
-    public void findByCreationDate_InvalidDate() {
+    public void findByCreateDate_InvalidDate() {
         assertThrows(DateTimeParseException.class, () -> {
-            List<User> users = userDao.findByCreationDate("invalid-date");
+            List<User> users = userDao.findByCreateDate("invalid-date");
+        });
+    }
+
+    @Test
+    public void insert_NullEmail() {
+        User user = getUser();
+        user.setEmail(null);
+        assertThrows(PropertyValueException.class, () -> {
+            userDao.insert(user);
+        });
+    }
+
+    @Test
+    public void insert_NullPassword() {
+        User user = getUser();
+        user.setPassword(null);
+        assertThrows(PropertyValueException.class, () -> {
+            userDao.insert(user);
+        });
+    }
+
+    @Test
+    public void insert_NullCreateDate() {
+        User user = getUser();
+        user.setCreatedAt(null);
+        assertThrows(PropertyValueException.class, () -> {
+            userDao.insert(user);
+        });
+    }
+
+    @Test
+    public void insert_NullRoleId() {
+        User user = getUser();
+        user.setRole(null);
+        assertThrows(PropertyValueException.class, () -> {
+            userDao.insert(user);
+        });
+    }
+
+    @Test
+    public void insert_DuplicateEmail() {
+        User user1 = getUser();
+        userDao.insert(user1);
+        User user2 = getUser();
+        assertThrows(ConstraintViolationException.class, () -> {
+            userDao.insert(user2);
         });
     }
 

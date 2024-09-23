@@ -19,7 +19,4 @@ public class CoursePlan {
     private Integer practiceCount;
     @Column(name = "duration", nullable = false)
     private Integer duration;
-    @OneToOne
-    @JoinColumn(name = "id", nullable = false)
-    private Course course;
 }

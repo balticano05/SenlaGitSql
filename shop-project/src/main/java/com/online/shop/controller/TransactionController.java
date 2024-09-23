@@ -68,10 +68,19 @@ public class TransactionController {
         }
     }
 
-    public String getTransactionsByUser(String email) {
+    public String getTransactions(String email) {
         try {
-            log.info("Executing getTransactionsByUser method in TransactionController with JSON processing");
-            return objectMapper.writeValueAsString(transactionService.getTransactionsByEmail(email));
+            log.info("Executing getTransactions method in TransactionController with JSON processing");
+            return objectMapper.writeValueAsString(transactionService.getTransactions(email));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
+        }
+    }
+
+    public String getTransactions(Long id) {
+        try {
+            log.info("Executing getTransactions method in TransactionController with JSON processing");
+            return objectMapper.writeValueAsString(transactionService.getTransactions(id));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
         }

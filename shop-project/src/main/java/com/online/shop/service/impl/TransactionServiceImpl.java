@@ -1,7 +1,7 @@
 package com.online.shop.service.impl;
 
 import com.online.shop.repository.TransactionDao;
-import com.online.shop.service.Validator;
+import com.online.shop.utils.Validator;
 import com.online.shop.service.TransactionService;
 import com.online.shop.dto.TransactionDto;
 import com.online.shop.entity.Transaction;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @Transactional
-public class TransactionServiceImpl extends Validator implements TransactionService {
+public class TransactionServiceImpl implements TransactionService {
 
     private TransactionDao transactionDao;
     private ModelMapper modelMapper;
@@ -81,7 +81,7 @@ public class TransactionServiceImpl extends Validator implements TransactionServ
     }
 
     @Override
-    public List<TransactionDto> getTransactionsByEmail(String email) {
+    public List<TransactionDto> getTransactions(String email) {
         if (email == null) {
             log.error("Email is null in getTransactionsByEmail method");
             throw new IllegalArgumentException("Email cannot be null");
@@ -98,13 +98,24 @@ public class TransactionServiceImpl extends Validator implements TransactionServ
             log.error("Date is null in findByDate method");
             throw new IllegalArgumentException("Date cannot be null");
         }
-        if (!isValidDateFormat(date)) {
+        if (!Validator.isValidDateFormat(date)) {
             log.error("Invalid date format in findByDate method");
         }
         log.info("Executing findByDate method in TransactionServiceImpl for date: {}", date);
-        return transactionDao.findByCreationDate(date).stream()
-                .map(transaction -> modelMapper.map(transactionDao, TransactionDto.class))
+        return transactionDao.findByCreateDate(date).stream()
+                .map(transaction -> modelMapper.map(transaction, TransactionDto.class))
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<TransactionDto> getTransactions(Long userId) {
+        if (userId == null) {
+            log.error("ID is null in getTransactionsByUserId method");
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+        log.info("Executing getTransactionsByUserId method in TransactionServiceImpl for id: {}", userId);
+        return transactionDao.findTransactionsById(userId).stream()
+                .map(transaction -> modelMapper.map(transaction, TransactionDto.class))
+                .collect(Collectors.toList());
+    }
 }

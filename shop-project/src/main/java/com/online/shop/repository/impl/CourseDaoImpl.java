@@ -26,7 +26,7 @@ public class CourseDaoImpl extends AbstractDao<Course> implements CourseDao {
     }
 
     @Override
-    public List<Course> findByCreationDate(String createdAt) {
+    public List<Course> findByCreateDate(String createdAt) {
         log.info("Executing findByCreatedAt method by {}", createdAt);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);
         LocalDate date = LocalDate.parse(createdAt, formatter);

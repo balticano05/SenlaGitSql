@@ -1,12 +1,9 @@
 package com.online.shop.repository.impl;
 
 import com.online.shop.entity.Course;
-import com.online.shop.entity.User;
 import com.online.shop.repository.CourseDao;
 import com.online.shop.utils.StringConst;
 import com.online.shop.сontext.AppConfig;
-import jakarta.persistence.EntityNotFoundException;
-import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -43,7 +40,7 @@ class CourseDaoTest {
         course.setTitle("Test course");
         course.setDescription("Test course description");
         course.setCreatedAt(LocalDateTime.of(2023, 10, 5, 14, 30, 0));
-        course.setPrice(BigDecimal.valueOf(-100.0));
+        course.setPrice(BigDecimal.valueOf(100.0));
         return course;
     }
 
@@ -95,12 +92,13 @@ class CourseDaoTest {
     }
 
     @Test
-    void findByCreatedAt_CourseWasFound() {;
+    void findByCreateDate_CourseWasFound() {
+        ;
         Course course = getCourse();
         courseDao.insert(course);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);
         String createdAt = course.getCreatedAt().format(formatter);
-        List<Course> courses = courseDao.findByCreationDate(createdAt);
+        List<Course> courses = courseDao.findByCreateDate(createdAt);
         assertFalse(courses.isEmpty());
         assertEquals(1, courses.size());
         assertEquals(course.getTitle(), courses.get(0).getTitle());
@@ -134,10 +132,10 @@ class CourseDaoTest {
     }
 
     @Test
-    void findByCreatedAt_InvalidDate() {
+    void findByCreateDate_InvalidDate() {
         String invalidDate = "invalid-date";
         assertThrows(DateTimeParseException.class, () -> {
-            courseDao.findByCreationDate(invalidDate);
+            courseDao.findByCreateDate(invalidDate);
         });
     }
 

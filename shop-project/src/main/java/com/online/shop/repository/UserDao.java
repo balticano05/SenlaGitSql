@@ -18,5 +18,5 @@ public interface UserDao {
 
     Optional<User> findByEmail(String email);
 
-    List<User> findByCreationDate(String createdAt);
+    List<User> findByCreateDate(String createdAt);
 }

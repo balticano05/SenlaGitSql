@@ -1,6 +1,6 @@
 package com.online.shop.service.impl;
 
-import com.online.shop.service.Validator;
+import com.online.shop.utils.Validator;
 import com.online.shop.service.UserService;
 import com.online.shop.dto.UserDto;
 import com.online.shop.entity.User;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @Transactional
-public class UserServiceImpl extends Validator implements UserService {
+public class UserServiceImpl implements UserService {
 
     private UserDao userDao;
     private ModelMapper modelMapper;
@@ -96,11 +96,11 @@ public class UserServiceImpl extends Validator implements UserService {
             log.error("Date is null in findByDate method");
             throw new IllegalArgumentException("Date cannot be null");
         }
-        if (!isValidDateFormat(date)) {
+        if (!Validator.isValidDateFormat(date)) {
             log.error("Invalid date format in findByDate method");
         }
         log.info("Executing findByDate method in UserServiceImpl for date: {}", date);
-        return userDao.findByCreationDate(date).stream()
+        return userDao.findByCreateDate(date).stream()
                 .map(user -> modelMapper.map(user, UserDto.class))
                 .collect(Collectors.toList());
     }

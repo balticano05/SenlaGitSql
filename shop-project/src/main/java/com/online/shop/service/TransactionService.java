@@ -7,15 +7,17 @@ import java.util.List;
 public interface TransactionService {
     Long insert(TransactionDto entityDto);
 
-    TransactionDto  update(Long id, TransactionDto  entityDto);
+    TransactionDto update(Long id, TransactionDto entityDto);
 
-    TransactionDto  findById(Long id);
+    TransactionDto findById(Long id);
 
-    List<TransactionDto > getAll();
+    List<TransactionDto> getAll();
 
     Boolean delete(Long id);
 
-    public List<TransactionDto> getTransactionsByEmail(String email);
+    public List<TransactionDto> getTransactions(String email);
+
+    public List<TransactionDto> getTransactions(Long userId);
 
     List<TransactionDto> findByDate(String date);
 }

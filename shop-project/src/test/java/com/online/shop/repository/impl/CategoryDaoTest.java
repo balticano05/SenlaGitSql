@@ -3,6 +3,8 @@ package com.online.shop.repository.impl;
 import com.online.shop.entity.Category;
 import com.online.shop.repository.CategoryDao;
 import com.online.shop.сontext.AppConfig;
+import org.hibernate.PropertyValueException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -22,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
         loader = AnnotationConfigContextLoader.class
 )
 @Transactional
-class CategoryDaolTest {
+class CategoryDaoTest {
 
     @Resource
     private CategoryDao categoryDao;
@@ -104,6 +106,25 @@ class CategoryDaolTest {
         Category category = getCategory();
         Optional<Category> result = categoryDao.update(999L, category);
         assertFalse(result.isPresent());
+    }
+
+    @Test
+    public void insertCategory_DuplicateName() {
+        Category category1 = getCategory();
+        Category category2 = getCategory();
+        categoryDao.insert(category1);
+        assertThrows(ConstraintViolationException.class, () -> {
+            categoryDao.insert(category2);
+        });
+    }
+
+    @Test
+    public void insertCategory_NullName() {
+        Category category = getCategory();
+        category.setName(null);
+        assertThrows(PropertyValueException.class, () -> {
+            categoryDao.insert(category);
+        });
     }
 
 }

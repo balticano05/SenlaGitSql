@@ -39,7 +39,7 @@ public class TransactionDaoImpl extends AbstractDao<Transaction> implements Tran
     }
 
     @Override
-    public List<Transaction> findByCreationDate(String createdAt) {
+    public List<Transaction> findByCreateDate(String createdAt) {
         log.info("Executing findByCreationDate method by {}", createdAt);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
         LocalDate date = LocalDate.parse(createdAt, formatter);
@@ -53,4 +53,15 @@ public class TransactionDaoImpl extends AbstractDao<Transaction> implements Tran
         return entityManager.createQuery(query).getResultList();
     }
 
+    @Override
+    public List<Transaction> findTransactionsById(Long id) {
+        log.info("Executing findTransactionsById method by {}", id);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Transaction> query = criteriaBuilder.createQuery(Transaction.class);
+        Root<Transaction> root = query.from(Transaction.class);
+        Join<Transaction, User> userJoin = root.join(Transaction_.user);
+        Predicate userIdPredicate = criteriaBuilder.equal(userJoin.get(User_.id), id);
+        query.where(userIdPredicate);
+        return entityManager.createQuery(query).getResultList();
+    }
 }

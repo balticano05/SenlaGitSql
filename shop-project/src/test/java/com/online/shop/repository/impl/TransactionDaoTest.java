@@ -109,7 +109,7 @@ class TransactionDaoTest {
         Transaction transaction = getTransaction();
         transactionDao.insert(transaction);
         String createdAt = transaction.getDateTime().format(DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT));
-        List<Transaction> transactions = transactionDao.findByCreationDate(createdAt);
+        List<Transaction> transactions = transactionDao.findByCreateDate(createdAt);
         assertFalse(transactions.isEmpty());
         assertEquals(1, transactions.size());
         assertEquals(transaction.getPrice(), transactions.get(0).getPrice());
@@ -148,10 +148,25 @@ class TransactionDaoTest {
     }
 
     @Test
-    void findByCreationDate_InvalidDate() {
+    void findByCreateDate_InvalidDate() {
         assertThrows(DateTimeParseException.class, () -> {
-            List<Transaction> transactions = transactionDao.findByCreationDate("invalid-date");
+            List<Transaction> transactions = transactionDao.findByCreateDate("invalid-date");
         });
+    }
+
+    @Test
+    void findTransactionsById_TransactionWasFound() {
+        Transaction transaction = getTransaction();
+        transactionDao.insert(transaction);
+        List<Transaction> transactions = transactionDao.findTransactionsById(transaction.getUser().getId());
+        assertFalse(transactions.isEmpty());
+        assertEquals(transaction.getUser().getId(), transactions.get(0).getUser().getId());
+    }
+
+    @Test
+    void findTransactionsById_NonExistentId() {
+        List<Transaction> transactions = transactionDao.findTransactionsById(9999999999999L);
+        assertTrue(transactions.isEmpty());
     }
 
 }
