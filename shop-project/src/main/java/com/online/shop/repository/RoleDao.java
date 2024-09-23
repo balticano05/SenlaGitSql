@@ -14,5 +14,5 @@ public interface RoleDao {
 
     Optional<Role> update(Long id, Role entity);
 
-    Boolean delete(Long entity);
+    Boolean delete(Long id);
 }

@@ -5,7 +5,7 @@ import com.online.shop.dto.RoleDto;
 import java.util.List;
 
 public interface RoleService {
-    RoleDto insert(RoleDto entityDto);
+    Long insert(RoleDto entityDto);
 
     RoleDto  update(Long id, RoleDto  entityDto);
 

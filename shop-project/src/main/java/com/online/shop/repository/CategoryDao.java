@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CategoryDao {
-    Optional<Category> findById(Long id);
+    Optional<Category> getById(Long id);
 
     List<Category> getAll();
 
@@ -14,5 +14,5 @@ public interface CategoryDao {
 
     Optional<Category> update(Long id, Category entity);
 
-    Boolean delete(Long entity);
+    Boolean delete(Long id);
 }

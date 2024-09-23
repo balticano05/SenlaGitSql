@@ -1,40 +1,67 @@
 package com.online.shop.repository.impl;
 
-import com.online.shop.entity.Transaction;
+import com.online.shop.entity.*;
+import com.online.shop.repository.AbstractDao;
 import com.online.shop.repository.TransactionDao;
+import jakarta.persistence.criteria.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
+import static com.online.shop.utils.StringConst.*;
+
+@Slf4j
 @Repository
-public class TransactionDaoImpl implements TransactionDao {
+@Transactional
+public class TransactionDaoImpl extends AbstractDao<Transaction> implements TransactionDao {
 
     private List<Transaction> transactions;
 
     @Override
-    public Optional<Transaction> getById(Long id) {
-        return Optional.empty();
+    protected Class<Transaction> getEntityClass() {
+        return Transaction.class;
     }
 
     @Override
-    public List<Transaction> getAll() {
-        return List.of();
+    public List<Transaction> findTransactionsByEmail(String email) {
+        log.info("Executing findTransactionsByEmail method by {}", email);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Transaction> query = criteriaBuilder.createQuery(Transaction.class);
+        Root<Transaction> root = query.from(Transaction.class);
+        Join<Transaction, User> userJoin = root.join(Transaction_.user);
+        query.select(root).where(criteriaBuilder.equal(userJoin.get(User_.email), email));
+        return entityManager.createQuery(query).getResultList();
     }
 
     @Override
-    public Long insert(Transaction entity) {
-        return 0L;
+    public List<Transaction> findByCreateDate(String createdAt) {
+        log.info("Executing findByCreationDate method by {}", createdAt);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+        LocalDate date = LocalDate.parse(createdAt, formatter);
+        LocalDateTime startOfDay = date.atStartOfDay();
+        LocalDateTime endOfDay = date.plusDays(1).atStartOfDay();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Transaction> query = criteriaBuilder.createQuery(Transaction.class);
+        Root<Transaction> root = query.from(Transaction.class);
+        Predicate datePredicate = criteriaBuilder.between(root.get(Transaction_.dateTime), startOfDay, endOfDay);
+        query.where(datePredicate);
+        return entityManager.createQuery(query).getResultList();
     }
 
     @Override
-    public Optional<Transaction> update(Long id, Transaction entity) {
-        return Optional.empty();
+    public List<Transaction> findTransactionsById(Long id) {
+        log.info("Executing findTransactionsById method by {}", id);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Transaction> query = criteriaBuilder.createQuery(Transaction.class);
+        Root<Transaction> root = query.from(Transaction.class);
+        Join<Transaction, User> userJoin = root.join(Transaction_.user);
+        Predicate userIdPredicate = criteriaBuilder.equal(userJoin.get(User_.id), id);
+        query.where(userIdPredicate);
+        return entityManager.createQuery(query).getResultList();
     }
-
-    @Override
-    public Boolean delete(Long entity) {
-        return null;
-    }
-
 }

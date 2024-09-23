@@ -1,40 +1,16 @@
 package com.online.shop.repository.impl;
 
 import com.online.shop.entity.CoursePlan;
+import com.online.shop.repository.AbstractDao;
 import com.online.shop.repository.CoursePlanDao;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public class CoursePlanDaoImpl implements CoursePlanDao {
-
-    private List<CoursePlan> coursePlans;
-
+@Transactional
+public class CoursePlanDaoImpl extends AbstractDao<CoursePlan> implements CoursePlanDao {
     @Override
-    public Optional<CoursePlan> findById(Long id) {
-        return Optional.empty();
+    protected Class<CoursePlan> getEntityClass() {
+        return CoursePlan.class;
     }
-
-    @Override
-    public List<CoursePlan> getAll() {
-        return List.of();
-    }
-
-    @Override
-    public Long insert(CoursePlan entity) {
-        return 0L;
-    }
-
-    @Override
-    public Optional<CoursePlan> update(Long id, CoursePlan entity) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Boolean delete(Long entity) {
-        return null;
-    }
-
 }

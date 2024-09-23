@@ -14,4 +14,8 @@ public interface UserService {
     List<UserDto> getAll();
 
     Boolean delete(Long id);
+
+    UserDto findByEmail(String email);
+
+    List<UserDto> findByDate(String date);
 }

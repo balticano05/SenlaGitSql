@@ -1,4 +1,4 @@
 # SenlaJDBC
-Senla's task. Implementation of the repository using the aspect.
+Senla's task. Working with JPA.
 ---
 Full name: Yasiukevich Aleksey Yasiukevich

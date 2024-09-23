@@ -1,40 +1,43 @@
 package com.online.shop.repository.impl;
 
 import com.online.shop.entity.Course;
+import com.online.shop.entity.Course_;
+import com.online.shop.repository.AbstractDao;
 import com.online.shop.repository.CourseDao;
+import com.online.shop.utils.StringConst;
+import jakarta.persistence.criteria.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
+@Slf4j
 @Repository
-public class CourseDaoImpl implements CourseDao {
-
-    private List<Course> courses;
+@Transactional
+public class CourseDaoImpl extends AbstractDao<Course> implements CourseDao {
 
     @Override
-    public Optional<Course> findById(Long id) {
-        return Optional.empty();
+    protected Class<Course> getEntityClass() {
+        return Course.class;
     }
 
     @Override
-    public List<Course> getAll() {
-        return List.of();
-    }
-
-    @Override
-    public Long insert(Course entity) {
-        return 0L;
-    }
-
-    @Override
-    public Optional<Course> update(Long id, Course entity) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Boolean delete(Long entity) {
-        return null;
+    public List<Course> findByCreateDate(String createdAt) {
+        log.info("Executing findByCreatedAt method by {}", createdAt);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);
+        LocalDate date = LocalDate.parse(createdAt, formatter);
+        LocalDateTime startOfDay = date.atStartOfDay();
+        LocalDateTime endOfDay = date.plusDays(1).atStartOfDay();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Course> query = criteriaBuilder.createQuery(Course.class);
+        Root<Course> root = query.from(Course.class);
+        Predicate datePredicate = criteriaBuilder.between(root.get(Course_.createdAt), startOfDay, endOfDay);
+        query.where(datePredicate);
+        return entityManager.createQuery(query).getResultList();
     }
 
 }

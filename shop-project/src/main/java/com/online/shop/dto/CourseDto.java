@@ -18,8 +18,7 @@ public class CourseDto {
     private String title;
     private String description;
     private BigDecimal price;
-    private LocalDateTime createdAt;
     private CoursePlanDto coursePlan;
-    private List<ReviewDto> reviews;
+    private LocalDateTime createdAt;
     private List<CategoryDto> categories;
 }

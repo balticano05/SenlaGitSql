@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CoursePlanDao {
-    Optional<CoursePlan> findById(Long id);
+    Optional<CoursePlan> getById(Long id);
 
     List<CoursePlan> getAll();
 
@@ -14,5 +14,5 @@ public interface CoursePlanDao {
 
     Optional<CoursePlan> update(Long id, CoursePlan entity);
 
-    Boolean delete(Long entity);
+    Boolean delete(Long id);
 }

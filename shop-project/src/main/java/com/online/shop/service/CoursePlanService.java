@@ -1,12 +1,11 @@
 package com.online.shop.service;
 
 import com.online.shop.dto.CoursePlanDto;
-import com.online.shop.entity.CoursePlan;
 
 import java.util.List;
 
 public interface CoursePlanService {
-    CoursePlanDto insert(CoursePlan entityDto);
+    Long insert(CoursePlanDto entityDto);
 
     CoursePlanDto  update(Long id, CoursePlanDto  entityDto);
 

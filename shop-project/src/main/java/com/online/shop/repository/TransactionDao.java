@@ -14,5 +14,11 @@ public interface TransactionDao {
 
     Optional<Transaction> update(Long id, Transaction entity);
 
-    Boolean delete(Long entity);
+    Boolean delete(Long id);
+
+    List<Transaction> findTransactionsByEmail(String email);
+
+    List<Transaction> findByCreateDate(String createdAt);
+
+    List<Transaction> findTransactionsById(Long id);
 }
