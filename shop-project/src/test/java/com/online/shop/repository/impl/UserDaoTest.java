@@ -4,7 +4,7 @@ import com.online.shop.entity.Role;
 import com.online.shop.entity.User;
 import com.online.shop.repository.UserDao;
 import com.online.shop.utils.StringConst;
-import com.online.shop.сontext.AppConfig;
+import com.online.shop.config.AppConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 

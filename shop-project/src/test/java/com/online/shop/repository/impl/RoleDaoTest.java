@@ -2,7 +2,7 @@ package com.online.shop.repository.impl;
 
 import com.online.shop.entity.Role;
 import com.online.shop.repository.RoleDao;
-import com.online.shop.сontext.AppConfig;
+import com.online.shop.config.AppConfig;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

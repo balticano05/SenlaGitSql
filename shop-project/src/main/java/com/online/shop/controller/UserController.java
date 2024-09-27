@@ -7,11 +7,13 @@ import com.online.shop.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import static com.online.shop.utils.StringConst.*;
 
 @Slf4j
 @Controller
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
@@ -23,7 +25,8 @@ public class UserController {
         this.objectMapper = objectMapper;
     }
 
-    public String insert(String jsonEntity) {
+    @PostMapping
+    public String insert(@RequestBody String jsonEntity) {
         try {
             log.info("Executing insert method in UserController with JSON processing");
             return objectMapper.writeValueAsString(userService.insert(objectMapper.readValue(jsonEntity, UserDto.class)));
@@ -32,7 +35,8 @@ public class UserController {
         }
     }
 
-    public String update(Long id, String jsonEntity) {
+    @PostMapping("/{id}")
+    public String update(@PathVariable Long id,@RequestBody String jsonEntity) {
         try {
             log.info("Executing update method in UserController with JSON processing");
             return objectMapper.writeValueAsString(userService.update(id, objectMapper.readValue(jsonEntity, UserDto.class)));
@@ -41,6 +45,7 @@ public class UserController {
         }
     }
 
+    @DeleteMapping("/{id}")
     public String delete(Long id) {
         try {
             log.info("Executing delete method in UserController with JSON processing");
@@ -50,6 +55,7 @@ public class UserController {
         }
     }
 
+    @GetMapping
     public String getAll() {
         try {
             log.info("Executing getById method in UserController with JSON processing");
@@ -59,7 +65,8 @@ public class UserController {
         }
     }
 
-    public String getById(Long id) {
+    @GetMapping("/{id}")
+    public String getById(@PathVariable  Long id) {
         try {
             log.info("Executing getByEmail method in UserController with JSON processing");
             return objectMapper.writeValueAsString(userService.findById(id));
@@ -68,7 +75,8 @@ public class UserController {
         }
     }
 
-    public String getByEmail(String email) {
+    @GetMapping("/email/{email}")
+    public String getByEmail(@PathVariable String email) {
         try {
             log.info("Executing getByDate method in UserController with JSON processing");
             return objectMapper.writeValueAsString(userService.findByEmail(email));
@@ -77,7 +85,8 @@ public class UserController {
         }
     }
 
-    public String getByDate(String date) {
+    @GetMapping("/date/{date}")
+    public String getByDate(@PathVariable String date) {
         try {
             log.info("Executing getByDate method.");
             return objectMapper.writeValueAsString(userService.findByDate(date));

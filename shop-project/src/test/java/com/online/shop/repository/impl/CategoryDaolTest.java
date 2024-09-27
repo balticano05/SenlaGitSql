@@ -2,7 +2,7 @@ package com.online.shop.repository.impl;
 
 import com.online.shop.entity.Category;
 import com.online.shop.repository.CategoryDao;
-import com.online.shop.сontext.AppConfig;
+import com.online.shop.config.AppConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ContextConfiguration;

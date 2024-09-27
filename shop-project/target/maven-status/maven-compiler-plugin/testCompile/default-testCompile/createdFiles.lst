@@ -1,0 +1,6 @@
+com\online\shop\repository\impl\CategoryDaolTest.class
+com\online\shop\repository\impl\UserDaoTest.class
+com\online\shop\repository\impl\CourseDaolTest.class
+com\online\shop\repository\impl\TransactionDaoTest.class
+com\online\shop\repository\impl\RoleDaoTest.class
+com\online\shop\repository\impl\ReviewDaolTest.class

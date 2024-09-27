@@ -5,7 +5,7 @@ import com.online.shop.entity.Transaction;
 import com.online.shop.entity.User;
 import com.online.shop.repository.TransactionDao;
 import com.online.shop.utils.StringConst;
-import com.online.shop.сontext.AppConfig;
+import com.online.shop.config.AppConfig;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,6 +1,4 @@
 com\online\shop\service\impl\TransactionServiceImpl.class
-com\online\shop\сontext\MapperConfig.class
-com\online\shop\сontext\DatabaseConfig.class
 com\online\shop\service\ReviewService.class
 com\online\shop\service\CourseService.class
 com\online\shop\entity\Transaction_.class
@@ -17,10 +15,12 @@ com\online\shop\entity\Course.class
 com\online\shop\dto\CoursePlanDto.class
 com\online\shop\entity\Role$RoleBuilder.class
 com\online\shop\repository\ReviewDao.class
+com\online\shop\config\RootConfig.class
 com\online\shop\entity\CoursePlan_.class
 com\online\shop\entity\Review_.class
 com\online\shop\service\TransactionService.class
 com\online\shop\service\UserService.class
+com\online\shop\config\DatabaseConfig.class
 com\online\shop\service\CoursePlanService.class
 com\online\shop\repository\CoursePlanDao.class
 com\online\shop\controller\CoursePlanController.class
@@ -47,7 +47,8 @@ com\online\shop\service\impl\RoleServiceImpl.class
 com\online\shop\repository\CourseDao.class
 com\online\shop\controller\ReviewController.class
 com\online\shop\dto\RoleDto.class
-com\online\shop\сontext\AppConfig.class
+com\online\shop\config\MapperConfig.class
+com\online\shop\config\WebAppInitializer.class
 com\online\shop\entity\Role_.class
 com\online\shop\service\impl\ReviewServiceImpl.class
 com\online\shop\repository\impl\CoursePlanDaoImpl.class
@@ -55,6 +56,7 @@ com\online\shop\Application.class
 com\online\shop\entity\Course_.class
 com\online\shop\service\RoleService.class
 com\online\shop\dto\CategoryDto.class
+com\online\shop\config\WebConfig.class
 com\online\shop\controller\UserController.class
 com\online\shop\repository\impl\RoleDaoImpl.class
 com\online\shop\entity\User.class
