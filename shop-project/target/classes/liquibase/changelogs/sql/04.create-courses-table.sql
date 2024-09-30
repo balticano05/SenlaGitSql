@@ -1,7 +1,0 @@
-CREATE TABLE courses (
-    id BIGSERIAL PRIMARY KEY,
-    title VARCHAR(80) NOT NULL UNIQUE,
-    description VARCHAR,
-    price DECIMAL(10, 2) NOT NULL CHECK (price >= 0),
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);

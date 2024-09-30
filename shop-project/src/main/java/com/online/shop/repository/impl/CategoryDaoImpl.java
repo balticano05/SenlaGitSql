@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class CategoryDaoImpl extends AbstractDao<Category> implements CategoryDao {
-    public CategoryDaoImpl() {
-        setClazz(Category.class);
+    @Override
+    protected Class<Category> getEntityClass() {
+        return Category.class;
     }
 }

@@ -1,5 +1,6 @@
 package com.online.shop.service.impl;
 
+import com.online.shop.utils.Validator;
 import com.online.shop.service.CourseService;
 import com.online.shop.dto.CourseDto;
 import com.online.shop.entity.Course;
@@ -12,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.online.shop.utils.StringConst.*;
 
 @Slf4j
 @Service
@@ -31,18 +30,34 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Long insert(CourseDto entityDto) {
+        if (entityDto == null) {
+            log.error("CourseDto is null in insert method");
+            throw new IllegalArgumentException("CourseDto cannot be null");
+        }
         log.info("Executing insert method in CourseServiceImpl with DTO: {}", entityDto);
         return courseDao.insert(modelMapper.map(entityDto, Course.class));
     }
 
     @Override
     public CourseDto update(Long id, CourseDto entityDto) {
+        if (id == null) {
+            log.error("ID is null in update method");
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+        if (entityDto == null) {
+            log.error("CourseDto is null in update method");
+            throw new IllegalArgumentException("CourseDto cannot be null");
+        }
         log.info("Executing update method in CourseServiceImpl for ID: {} with DTO: {}", id, entityDto);
         return modelMapper.map(courseDao.update(id, modelMapper.map(entityDto, Course.class)), CourseDto.class);
     }
 
     @Override
     public CourseDto findById(Long id) {
+        if (id == null) {
+            log.error("ID is null in findById method");
+            throw new IllegalArgumentException("ID cannot be null");
+        }
         log.info("Executing findById method in CourseServiceImpl for ID: {}", id);
         return modelMapper.map(courseDao.getById(id), CourseDto.class);
     }
@@ -57,16 +72,28 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Boolean delete(Long id) {
+        if (id == null) {
+            log.error("ID is null in delete method");
+            throw new IllegalArgumentException("ID cannot be null");
+        }
         log.info("Executing delete method in CourseServiceImpl for ID: {}", id);
         return courseDao.delete(id);
     }
 
     @Override
     public List<CourseDto> findByDate(String date) {
+        if (date == null) {
+            log.error("Date is null in findByDate method");
+            throw new IllegalArgumentException("Date cannot be null");
+        }
+        if (!Validator.isValidDateFormat(date)) {
+            log.error("Invalid date format in findByDate method");
+        }
         log.info("Executing findByDate method in CourseServiceImpl for date: {}", date);
-        return courseDao.findByCreationDate(date).stream()
+        return courseDao.findByCreateDate(date).stream()
                 .map(course -> modelMapper.map(course, CourseDto.class))
                 .collect(Collectors.toList());
     }
+
 
 }

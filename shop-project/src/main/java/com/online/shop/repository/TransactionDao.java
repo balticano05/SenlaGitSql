@@ -18,5 +18,7 @@ public interface TransactionDao {
 
     List<Transaction> findTransactionsByEmail(String email);
 
-    List<Transaction> findByCreationDate(String createdAt);
+    List<Transaction> findByCreateDate(String createdAt);
+
+    List<Transaction> findTransactionsById(Long id);
 }

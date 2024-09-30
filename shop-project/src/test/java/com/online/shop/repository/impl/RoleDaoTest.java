@@ -6,9 +6,9 @@ import com.online.shop.config.AppConfig;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -17,10 +17,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(
-        classes = {AppConfig.class},
-        loader = AnnotationConfigContextLoader.class
-)
+@SpringJUnitConfig(classes = AppConfig.class)
+@WebAppConfiguration
 @Transactional
 class RoleDaoTest {
 
@@ -78,6 +76,32 @@ class RoleDaoTest {
     public void getAll_RolesWereFound() {
         List<Role> roles = roleDao.getAll();
         assertFalse(roles.isEmpty());
+    }
+
+    @Test
+    public void insert_NullRole() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            roleDao.insert(null);
+        });
+    }
+
+    @Test
+    public void findById_NonExistentId() {
+        Optional<Role> roleResult = roleDao.getById(9999999999999L);
+        assertFalse(roleResult.isPresent());
+    }
+
+    @Test
+    public void delete_NonExistentRole() {
+        Boolean result = roleDao.delete(999L);
+        assertFalse(result);
+    }
+
+    @Test
+    public void update_NonExistentRole() {
+        Role role = getRole();
+        Optional<Role> result = roleDao.update(999L, role);
+        assertFalse(result.isPresent());
     }
 
 }
