@@ -33,7 +33,7 @@ public class TransactionController {
 
     @PostMapping("/insert")
     public ResponseEntity<String> insert(@RequestBody TransactionDto transactionDto) {
-        if(transactionDto.getUser() == null || transactionDto.getCourse() == null
+        if (transactionDto.getUser() == null || transactionDto.getCourse() == null
                 || transactionDto.getPrice() == null) {
             throw new InvalidEntityDataException("Data are required");
         }
@@ -50,7 +50,7 @@ public class TransactionController {
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity<String> update(@PathVariable Long id,@RequestBody TransactionDto transactionDto) {
+    public ResponseEntity<String> update(@PathVariable Long id, @RequestBody TransactionDto transactionDto) {
         try {
             log.info("Executing update method in TransactionController with JSON processing");
             TransactionDto updatedTransaction = transactionService.update(id, transactionDto);
@@ -131,7 +131,7 @@ public class TransactionController {
     public ResponseEntity<String> getByDate(@PathVariable String date) {
         try {
             log.info("Executing getByDate method in TransactionController with JSON processing");
-            if(!Validator.isValidDateFormat(date)){
+            if (!Validator.isValidDateFormat(date)) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad format of date.");
             }
             List<TransactionDto> transactions = transactionService.findByDate(date);

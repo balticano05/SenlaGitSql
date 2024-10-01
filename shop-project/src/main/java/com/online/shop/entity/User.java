@@ -11,19 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-@NamedEntityGraph(
-        name = "com.User.details",
-        attributeNodes = {
-                @NamedAttributeNode("role"),
-                @NamedAttributeNode(value = "courses", subgraph = "subgraph.courses")
-        },
-        subgraphs = {
-                @NamedSubgraph(name = "subgraph.courses", attributeNodes = {
-                        @NamedAttributeNode("categories"),
-                        @NamedAttributeNode("coursePlan")
-                })
-        }
-)
 @Table(name = "users")
 public class User {
     @Id

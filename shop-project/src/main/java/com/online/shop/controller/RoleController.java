@@ -30,7 +30,7 @@ public class RoleController {
 
     @PostMapping("/insert")
     public ResponseEntity<String> insert(@RequestBody RoleDto roleDto) {
-        if(roleDto.getName() == null || roleDto.getDescription() == null) {
+        if (roleDto.getName() == null || roleDto.getDescription() == null) {
             throw new InvalidEntityDataException("Data are required");
         }
         try {
@@ -46,7 +46,7 @@ public class RoleController {
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity<String> update(@PathVariable Long id,@RequestBody RoleDto roleDto) {
+    public ResponseEntity<String> update(@PathVariable Long id, @RequestBody RoleDto roleDto) {
         try {
             log.info("Executing update method in RoleController with JSON processing");
             RoleDto updatedRole = roleService.update(id, roleDto);

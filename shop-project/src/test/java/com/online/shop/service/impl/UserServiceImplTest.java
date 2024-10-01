@@ -79,7 +79,8 @@ class UserServiceImplTest {
     void findById() {
         when(userDao.getById(anyLong())).thenReturn(Optional.of(user));
         when(modelMapper.map(any(Optional.class), eq(UserDto.class))).thenReturn(userDto);
-        UserDto foundUserDto = userService.findById(1L);assertEquals(userDto.getEmail(), foundUserDto.getEmail());
+        UserDto foundUserDto = userService.findById(1L);
+        assertEquals(userDto.getEmail(), foundUserDto.getEmail());
         verify(userDao, times(1)).getById(anyLong());
     }
 

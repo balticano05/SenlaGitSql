@@ -33,8 +33,8 @@ public class CourseController {
 
     @PostMapping("/insert")
     public ResponseEntity<String> insert(@RequestBody CourseDto courseDto) {
-        if(courseDto.getTitle() == null || courseDto.getCoursePlan() == null
-        || courseDto.getDescription() == null || courseDto.getPrice() == null) {
+        if (courseDto.getTitle() == null || courseDto.getCoursePlan() == null
+                || courseDto.getDescription() == null || courseDto.getPrice() == null) {
             throw new InvalidEntityDataException("Data are required");
         }
         try {
@@ -113,7 +113,7 @@ public class CourseController {
     public ResponseEntity<String> getByDate(@PathVariable String date) {
         try {
             log.info("Executing getByDate method in CourseController with JSON processing");
-            if(!Validator.isValidDateFormat(date)){
+            if (!Validator.isValidDateFormat(date)) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found.");
             }
             List<CourseDto> courses = courseService.findByDate(date);

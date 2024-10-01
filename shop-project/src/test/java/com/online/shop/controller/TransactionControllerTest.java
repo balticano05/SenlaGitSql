@@ -5,9 +5,6 @@ import com.online.shop.config.AppConfig;
 import com.online.shop.dto.CourseDto;
 import com.online.shop.dto.TransactionDto;
 import com.online.shop.dto.UserDto;
-import com.online.shop.entity.Course;
-import com.online.shop.entity.Transaction;
-import com.online.shop.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +21,6 @@ import org.springframework.web.context.WebApplicationContext;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

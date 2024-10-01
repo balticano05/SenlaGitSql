@@ -3,8 +3,6 @@ package com.online.shop.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.online.shop.dto.ReviewDto;
-import com.online.shop.dto.RoleDto;
-import com.online.shop.entity.Review;
 import com.online.shop.exceptions.InvalidEntityDataException;
 import com.online.shop.service.ReviewService;
 import com.online.shop.utils.Validator;
@@ -133,7 +131,7 @@ public class ReviewController {
     public ResponseEntity<String> getByDate(@PathVariable String date) {
         try {
             log.info("Executing getByDate method in ReviewController with JSON processing");
-            if(!Validator.isValidDateFormat(date)){
+            if (!Validator.isValidDateFormat(date)) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad format of date.");
             }
             List<ReviewDto> reviews = reviewService.findByDate(date);

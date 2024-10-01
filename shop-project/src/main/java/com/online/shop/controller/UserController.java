@@ -34,7 +34,7 @@ public class UserController {
 
     @PostMapping("/insert")
     public ResponseEntity<String> insert(@RequestBody UserDto userDto) {
-        if(userDto.getEmail() == null || userDto.getPassword() == null) {
+        if (userDto.getEmail() == null || userDto.getPassword() == null) {
             throw new InvalidEntityDataException("Data are required");
         }
         try {
@@ -51,11 +51,11 @@ public class UserController {
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity<String> update(@PathVariable Long id,@RequestBody UserDto userDto) {
+    public ResponseEntity<String> update(@PathVariable Long id, @RequestBody UserDto userDto) {
         try {
             log.info("Executing update method in UserController with JSON processing");
             UserDto updatedUser = userService.update(id, userDto);
-            if(updatedUser == null) {
+            if (updatedUser == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
             String jsonResponse = objectMapper.writeValueAsString(updatedUser);
@@ -131,11 +131,11 @@ public class UserController {
     public ResponseEntity<String> getByDate(@PathVariable String date) {
         try {
             log.info("Executing getByDate method.");
-            if(!Validator.isValidDateFormat(date)){
+            if (!Validator.isValidDateFormat(date)) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found.");
             }
             List<UserDto> users = userService.findByDate(date);
-            if(userService.findByDate(date).isEmpty()){
+            if (userService.findByDate(date).isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bad format of date.");
             }
             String jsonResponse = objectMapper.writeValueAsString(users);
