@@ -1,4 +1,4 @@
-# SenlaJDBC
-Senla's task. Working with JPA.
+# SenlaWEB
+Senla's task. Working with rest api.
 ---
 Full name: Yasiukevich Aleksey Yasiukevich
