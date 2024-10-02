@@ -53,7 +53,7 @@ class CourseControllerTest {
     void insert() throws Exception {
         CourseDto courseDto = getCourseDto();
         String jsonContent = objectMapper.writeValueAsString(courseDto);
-        mockMvc.perform(post("/api/courses/insert")
+        mockMvc.perform(post("/api/courses")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isOk());
@@ -63,7 +63,7 @@ class CourseControllerTest {
     void update() throws Exception {
         CourseDto courseDto = getCourseDto();
         String jsonContent = objectMapper.writeValueAsString(courseDto);
-        mockMvc.perform(post("/api/courses/update/1")
+        mockMvc.perform(put("/api/courses/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isOk());
@@ -71,28 +71,28 @@ class CourseControllerTest {
 
     @Test
     void deleteEntity() throws Exception {
-        mockMvc.perform(delete("/api/courses/delete/1")
+        mockMvc.perform(delete("/api/courses/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getAll() throws Exception {
-        mockMvc.perform(get("/api/courses/all")
+        mockMvc.perform(get("/api/courses")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getById() throws Exception {
-        mockMvc.perform(get("/api/courses/get/1")
+        mockMvc.perform(get("/api/courses/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getByDate() throws Exception {
-        mockMvc.perform(get("/api/courses/date/01.10.2024")
+        mockMvc.perform(get("/api/courses/date/03.10.2024")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -101,7 +101,7 @@ class CourseControllerTest {
     void insertWithInvalidData() throws Exception {
         CourseDto courseDto = new CourseDto();
         String jsonContent = objectMapper.writeValueAsString(courseDto);
-        mockMvc.perform(post("/api/courses/insert")
+        mockMvc.perform(post("/api/courses")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isBadRequest());
@@ -111,7 +111,7 @@ class CourseControllerTest {
     void updateNonExistentCourse() throws Exception {
         CourseDto courseDto = getCourseDto();
         String jsonContent = objectMapper.writeValueAsString(courseDto);
-        mockMvc.perform(post("/api/courses/update/9999") // Non-existent course ID
+        mockMvc.perform(put("/api/courses/9999") // Non-existent course ID
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isNotFound());
@@ -119,14 +119,14 @@ class CourseControllerTest {
 
     @Test
     void deleteNonExistentCourse() throws Exception {
-        mockMvc.perform(delete("/api/courses/delete/9999")
+        mockMvc.perform(delete("/api/courses/9999")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void getByInvalidId() throws Exception {
-        mockMvc.perform(get("/api/courses/get/invalid-id")
+        mockMvc.perform(get("/api/courses/invalid-id")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }

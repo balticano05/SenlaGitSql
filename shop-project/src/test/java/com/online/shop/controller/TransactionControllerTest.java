@@ -59,7 +59,7 @@ class TransactionControllerTest {
     void insert() throws Exception {
         TransactionDto transactionDto = getTransactionDto();
         String jsonContent = objectMapper.writeValueAsString(transactionDto);
-        mockMvc.perform(post("/api/transactions/insert")
+        mockMvc.perform(post("/api/transactions")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isOk());
@@ -69,7 +69,7 @@ class TransactionControllerTest {
     void update() throws Exception {
         TransactionDto transactionDto = getTransactionDto();
         String jsonContent = objectMapper.writeValueAsString(transactionDto);
-        mockMvc.perform(post("/api/transactions/update/1")
+        mockMvc.perform(put("/api/transactions/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isOk());
@@ -77,21 +77,21 @@ class TransactionControllerTest {
 
     @Test
     void deleteEntity() throws Exception {
-        mockMvc.perform(delete("/api/transactions/delete/1")
+        mockMvc.perform(delete("/api/transactions/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getAll() throws Exception {
-        mockMvc.perform(get("/api/transactions/all")
+        mockMvc.perform(get("/api/transactions")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getById() throws Exception {
-        mockMvc.perform(get("/api/transactions/get/1")
+        mockMvc.perform(get("/api/transactions/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -114,7 +114,7 @@ class TransactionControllerTest {
     void insertWithInvalidData() throws Exception {
         TransactionDto transactionDto = new TransactionDto();
         String jsonContent = objectMapper.writeValueAsString(transactionDto);
-        mockMvc.perform(post("/api/transactions/insert")
+        mockMvc.perform(post("/api/transactions")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isBadRequest());
@@ -124,7 +124,7 @@ class TransactionControllerTest {
     void updateNonExistentTransaction() throws Exception {
         TransactionDto transactionDto = getTransactionDto();
         String jsonContent = objectMapper.writeValueAsString(transactionDto);
-        mockMvc.perform(post("/api/transactions/update/9999") // Non-existent transaction ID
+        mockMvc.perform(put("/api/transactions/9999") // Non-existent transaction ID
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isNotFound());
@@ -132,14 +132,14 @@ class TransactionControllerTest {
 
     @Test
     void deleteNonExistentTransaction() throws Exception {
-        mockMvc.perform(delete("/api/transactions/delete/9999")
+        mockMvc.perform(delete("/api/transactions/9999")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void getByInvalidId() throws Exception {
-        mockMvc.perform(get("/api/transactions/get/invalid-id")
+        mockMvc.perform(get("/api/transactions/invalid-id")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }

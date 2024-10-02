@@ -63,7 +63,7 @@ class UserControllerTest {
     void insert() throws Exception {
         UserDto userDto = getUserDto();
         String jsonContent = objectMapper.writeValueAsString(userDto);
-        mockMvc.perform(post("/api/users/insert")
+        mockMvc.perform(post("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isOk());
@@ -73,7 +73,7 @@ class UserControllerTest {
     void update() throws Exception {
         UserDto userDto = getUserDto();
         String jsonContent = objectMapper.writeValueAsString(userDto);
-        mockMvc.perform(post("/api/users/update/1")
+        mockMvc.perform(put("/api/users/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isOk());
@@ -81,21 +81,21 @@ class UserControllerTest {
 
     @Test
     void deleteEntity() throws Exception {
-        mockMvc.perform(delete("/api/users/delete/1")
+        mockMvc.perform(delete("/api/users/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getAll() throws Exception {
-        mockMvc.perform(get("/api/users/all")
+        mockMvc.perform(get("/api/users")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getById() throws Exception {
-        mockMvc.perform(get("/api/users/get/1")
+        mockMvc.perform(get("/api/users/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -118,7 +118,7 @@ class UserControllerTest {
     void insertWithInvalidData() throws Exception {
         UserDto userDto = new UserDto();
         String jsonContent = objectMapper.writeValueAsString(userDto);
-        mockMvc.perform(post("/api/users/insert")
+        mockMvc.perform(post("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isBadRequest());
@@ -128,7 +128,7 @@ class UserControllerTest {
     void updateNonExistentUser() throws Exception {
         UserDto userDto = getUserDto();
         String jsonContent = objectMapper.writeValueAsString(userDto);
-        mockMvc.perform(post("/api/users/update/9999") // Non-existent user ID
+        mockMvc.perform(put("/api/users/9999") // Non-existent user ID
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isNotFound());
@@ -136,14 +136,14 @@ class UserControllerTest {
 
     @Test
     void deleteNonExistentUser() throws Exception {
-        mockMvc.perform(delete("/api/users/delete/9999")
+        mockMvc.perform(delete("/api/users/9999")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void getByInvalidId() throws Exception {
-        mockMvc.perform(get("/api/users/get/invalid-id")
+        mockMvc.perform(get("/api/users/invalid-id")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = {"id", "user", "course"})
 @Builder
 @Entity
 @Table(name = "reviews")

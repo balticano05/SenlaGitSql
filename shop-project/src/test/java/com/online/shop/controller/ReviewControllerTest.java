@@ -53,7 +53,7 @@ class ReviewControllerTest {
     void insert() throws Exception {
         ReviewDto reviewDto = getReviewDto();
         String jsonContent = objectMapper.writeValueAsString(reviewDto);
-        mockMvc.perform(post("/api/reviews/insert")
+        mockMvc.perform(post("/api/reviews")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isOk());
@@ -63,7 +63,7 @@ class ReviewControllerTest {
     void update() throws Exception {
         ReviewDto reviewDto = getReviewDto();
         String jsonContent = objectMapper.writeValueAsString(reviewDto);
-        mockMvc.perform(post("/api/reviews/update/1")
+        mockMvc.perform(put("/api/reviews/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isOk());
@@ -71,21 +71,21 @@ class ReviewControllerTest {
 
     @Test
     void deleteEntity() throws Exception {
-        mockMvc.perform(delete("/api/reviews/delete/1")
+        mockMvc.perform(delete("/api/reviews/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getAll() throws Exception {
-        mockMvc.perform(get("/api/reviews/all")
+        mockMvc.perform(get("/api/reviews")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getById() throws Exception {
-        mockMvc.perform(get("/api/reviews/get/1")
+        mockMvc.perform(get("/api/reviews/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -108,7 +108,7 @@ class ReviewControllerTest {
     void insertWithInvalidData() throws Exception {
         ReviewDto reviewDto = new ReviewDto();
         String jsonContent = objectMapper.writeValueAsString(reviewDto);
-        mockMvc.perform(post("/api/reviews/insert")
+        mockMvc.perform(post("/api/reviews")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isBadRequest());
@@ -118,7 +118,7 @@ class ReviewControllerTest {
     void updateNonExistentReview() throws Exception {
         ReviewDto reviewDto = getReviewDto();
         String jsonContent = objectMapper.writeValueAsString(reviewDto);
-        mockMvc.perform(post("/api/reviews/update/9999") // Non-existent review ID
+        mockMvc.perform(put("/api/reviews/9999") // Non-existent review ID
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isNotFound());
@@ -126,14 +126,14 @@ class ReviewControllerTest {
 
     @Test
     void deleteNonExistentReview() throws Exception {
-        mockMvc.perform(delete("/api/reviews/delete/9999")
+        mockMvc.perform(delete("/api/reviews/9999")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void getByInvalidId() throws Exception {
-        mockMvc.perform(get("/api/reviews/get/invalid-id")
+        mockMvc.perform(get("/api/reviews/invalid-id")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }

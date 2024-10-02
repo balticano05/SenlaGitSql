@@ -1,5 +1,8 @@
 package com.online.shop.service.impl;
 
+import com.online.shop.entity.User;
+import com.online.shop.exceptions.InvalidEntityDataException;
+import com.online.shop.exceptions.NotFoundEntityException;
 import com.online.shop.service.RoleService;
 import com.online.shop.dto.RoleDto;
 import com.online.shop.entity.Role;
@@ -11,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -33,12 +37,17 @@ public class RoleServiceImpl implements RoleService {
             log.error("RoleDto is null in insert method");
             throw new IllegalArgumentException("ReviewDto cannot be null");
         }
+        if (entityDto.getName() == null || entityDto.getDescription() == null) {
+            log.error("RoleDto data's cannot be null insert method");
+            throw new InvalidEntityDataException("Data are required");
+        }
         log.info("Executing insert method in RoleServiceImpl with DTO: {}", entityDto);
         return roleDao.insert(modelMapper.map(entityDto, Role.class));
     }
 
     @Override
     public RoleDto update(Long id, RoleDto entityDto) {
+        log.info("Executing update method in RoleServiceImpl for ID: {} with DTO: {}", id, entityDto);
         if (id == null) {
             log.error("ID is null in update method");
             throw new IllegalArgumentException("ID cannot be null");
@@ -47,8 +56,11 @@ public class RoleServiceImpl implements RoleService {
             log.error("RoleDto is null in update method");
             throw new IllegalArgumentException("ReviewDto cannot be null");
         }
-        log.info("Executing update method in RoleServiceImpl for ID: {} with DTO: {}", id, entityDto);
-        return modelMapper.map(roleDao.update(id, modelMapper.map(entityDto, Role.class)), RoleDto.class);
+        Optional<Role> updatedRole = roleDao.update(id, modelMapper.map(entityDto, Role.class));
+        if (!updatedRole.isPresent()) {
+            throw new NotFoundEntityException("Role not found");
+        }
+        return modelMapper.map(updatedRole, RoleDto.class);
     }
 
     @Override
@@ -57,8 +69,13 @@ public class RoleServiceImpl implements RoleService {
             log.error("ID is null in findById method");
             throw new IllegalArgumentException("ID cannot be null");
         }
+        Optional<Role> foundRole = roleDao.getById(id);
+        if (!foundRole.isPresent()) {
+            log.error("Role not found");
+            throw new NotFoundEntityException("Role not found");
+        }
         log.info("Executing findById method in RoleServiceImpl for ID: {}", id);
-        return modelMapper.map(roleDao.getById(id), RoleDto.class);
+        return modelMapper.map(foundRole, RoleDto.class);
     }
 
     @Override
@@ -71,12 +88,17 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Boolean delete(Long id) {
+        log.info("Executing delete method in RoleServiceImpl for ID: {}", id);
         if (id == null) {
             log.error("ID is null in delete method");
             throw new IllegalArgumentException("ID cannot be null");
         }
-        log.info("Executing delete method in RoleServiceImpl for ID: {}", id);
-        return roleDao.delete(id);
+        Boolean deleted = roleDao.delete(id);
+        if (!deleted) {
+            log.error("Role not found");
+            throw new NotFoundEntityException("Role not found");
+        }
+        return deleted;
     }
 
 }

@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = "id")
 @Builder
 @Entity
 @Table(name = "courses")

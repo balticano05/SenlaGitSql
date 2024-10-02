@@ -9,6 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = {"id", "email"})
 @Builder
 @Entity
 @Table(name = "users")

@@ -46,7 +46,7 @@ class CategoryControllerTest {
     void insert() throws Exception {
         CategoryDto categoryDto = getCategoryDto();
         String jsonContent = objectMapper.writeValueAsString(categoryDto);
-        mockMvc.perform(post("/api/categories/insert")
+        mockMvc.perform(post("/api/categories")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isOk());
@@ -56,7 +56,7 @@ class CategoryControllerTest {
     void update() throws Exception {
         CategoryDto categoryDto = getCategoryDto();
         String jsonContent = objectMapper.writeValueAsString(categoryDto);
-        mockMvc.perform(post("/api/categories/update/1")
+        mockMvc.perform(put("/api/categories/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isOk());
@@ -64,21 +64,21 @@ class CategoryControllerTest {
 
     @Test
     void deleteEntity() throws Exception {
-        mockMvc.perform(delete("/api/categories/delete/1")
+        mockMvc.perform(delete("/api/categories/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getAll() throws Exception {
-        mockMvc.perform(get("/api/categories/all")
+        mockMvc.perform(get("/api/categories")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getById() throws Exception {
-        mockMvc.perform(get("/api/categories/get/1")
+        mockMvc.perform(get("/api/categories/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -87,7 +87,7 @@ class CategoryControllerTest {
     void insertWithInvalidData() throws Exception {
         CategoryDto categoryDto = new CategoryDto();
         String jsonContent = objectMapper.writeValueAsString(categoryDto);
-        mockMvc.perform(post("/api/categories/insert")
+        mockMvc.perform(post("/api/categories")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isBadRequest());
@@ -97,7 +97,7 @@ class CategoryControllerTest {
     void updateNonExistentCategory() throws Exception {
         CategoryDto categoryDto = getCategoryDto();
         String jsonContent = objectMapper.writeValueAsString(categoryDto);
-        mockMvc.perform(post("/api/categories/update/9999") // Non-existent category ID
+        mockMvc.perform(put("/api/categories/9999")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isNotFound());
@@ -105,14 +105,14 @@ class CategoryControllerTest {
 
     @Test
     void deleteNonExistentCategory() throws Exception {
-        mockMvc.perform(delete("/api/categories/delete/9999")
+        mockMvc.perform(delete("/api/categories/9999")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void getByInvalidId() throws Exception {
-        mockMvc.perform(get("/api/categories/get/invalid-id")
+        mockMvc.perform(get("/api/categories/invalid-id")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }

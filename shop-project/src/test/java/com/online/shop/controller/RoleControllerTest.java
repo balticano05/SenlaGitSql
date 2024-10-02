@@ -46,7 +46,7 @@ class RoleControllerTest {
     void insert() throws Exception {
         RoleDto roleDto = getRoleDto();
         String jsonContent = objectMapper.writeValueAsString(roleDto);
-        mockMvc.perform(post("/api/roles/insert")
+        mockMvc.perform(post("/api/roles")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isOk());
@@ -56,7 +56,7 @@ class RoleControllerTest {
     void update() throws Exception {
         RoleDto roleDto = getRoleDto();
         String jsonContent = objectMapper.writeValueAsString(roleDto);
-        mockMvc.perform(post("/api/roles/update/1")
+        mockMvc.perform(put("/api/roles/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isOk());
@@ -64,21 +64,21 @@ class RoleControllerTest {
 
     @Test
     void deleteEntity() throws Exception {
-        mockMvc.perform(delete("/api/roles/delete/1")
+        mockMvc.perform(delete("/api/roles/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getAll() throws Exception {
-        mockMvc.perform(get("/api/roles/all")
+        mockMvc.perform(get("/api/roles")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getById() throws Exception {
-        mockMvc.perform(get("/api/roles/get/1")
+        mockMvc.perform(get("/api/roles/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -87,7 +87,7 @@ class RoleControllerTest {
     void insertWithInvalidData() throws Exception {
         RoleDto roleDto = new RoleDto();
         String jsonContent = objectMapper.writeValueAsString(roleDto);
-        mockMvc.perform(post("/api/roles/insert")
+        mockMvc.perform(post("/api/roles")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isBadRequest());
@@ -97,7 +97,7 @@ class RoleControllerTest {
     void updateNonExistentRole() throws Exception {
         RoleDto roleDto = getRoleDto();
         String jsonContent = objectMapper.writeValueAsString(roleDto);
-        mockMvc.perform(post("/api/roles/update/9999") // Non-existent role ID
+        mockMvc.perform(put("/api/roles/9999")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isNotFound());
@@ -105,14 +105,14 @@ class RoleControllerTest {
 
     @Test
     void deleteNonExistentRole() throws Exception {
-        mockMvc.perform(delete("/api/roles/delete/9999")
+        mockMvc.perform(delete("/api/roles/9999")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void getByInvalidId() throws Exception {
-        mockMvc.perform(get("/api/roles/get/invalid-id")
+        mockMvc.perform(get("/api/roles/invalid-id")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }

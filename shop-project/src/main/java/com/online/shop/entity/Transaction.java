@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = "id")
 @Builder
 @Entity
 @Table(name = "transactions")

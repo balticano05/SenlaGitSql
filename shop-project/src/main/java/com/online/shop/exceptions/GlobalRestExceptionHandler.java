@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -38,13 +39,23 @@ public class GlobalRestExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<String> handleTypeMismatch(MethodArgumentTypeMismatchException e) {
+    public ResponseEntity<String> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleArgumentTypeMismatch(IllegalArgumentException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
     @ExceptionHandler(InvalidEntityDataException.class)
-    public ResponseEntity<String> handleInvalidUserDataException(InvalidEntityDataException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
+    public ResponseEntity<String> handleInvalidUserDataException(InvalidEntityDataException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
+    @ExceptionHandler(NotFoundEntityException.class)
+    public ResponseEntity<String> handleNotFoundEntityException(NotFoundEntityException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
 }
