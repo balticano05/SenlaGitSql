@@ -12,4 +12,5 @@ public class CoursePlanDto {
     private Integer lessonCount;
     private Integer practiceCount;
     private Integer duration;
+    private CourseDto course;
 }

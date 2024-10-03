@@ -26,9 +26,6 @@ public class Course {
     private BigDecimal price;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @PrimaryKeyJoinColumn
-    private CoursePlan coursePlan;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "course_categories",

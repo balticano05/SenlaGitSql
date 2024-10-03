@@ -19,7 +19,6 @@ public class CourseDto {
     private String description;
     private BigDecimal price;
     @OneToOne(cascade = CascadeType.ALL)
-    private CoursePlanDto coursePlan;
     private LocalDateTime createdAt;
     private List<CategoryDto> categories;
 }

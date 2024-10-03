@@ -1,0 +1,102 @@
+package com.online.shop.service.impl;
+
+import com.online.shop.dto.CoursePlanDto;
+import com.online.shop.entity.CoursePlan;
+import com.online.shop.exceptions.InvalidEntityDataException;
+import com.online.shop.exceptions.NotFoundEntityException;
+import com.online.shop.repository.CoursePlanDao;
+import com.online.shop.service.CoursePlanService;
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Slf4j
+@Service
+@Transactional
+public class CoursePlanServiceImpl implements CoursePlanService {
+
+    private final CoursePlanDao coursePlanDao;
+    private final ModelMapper modelMapper;
+
+    @Autowired
+    public CoursePlanServiceImpl(CoursePlanDao coursePlanDao, ModelMapper modelMapper) {
+        this.coursePlanDao = coursePlanDao;
+        this.modelMapper = modelMapper;
+    }
+
+    @Override
+    public Long insert(CoursePlanDto entityDto) {
+        log.info("Executing insert method in CoursePlanServiceImpl with DTO: {}", entityDto);
+        if (entityDto == null) {
+            log.error("CoursePlanDto is null in insert method");
+            throw new IllegalArgumentException("CoursePlanDto cannot be null");
+        }
+        if (entityDto.getLessonCount() == null || entityDto.getPracticeCount() == null || entityDto.getDuration() == null) {
+            log.error("CoursePlanDto data's cannot be null in insert method");
+            throw new InvalidEntityDataException("Data are required");
+        }
+        return coursePlanDao.insert(modelMapper.map(entityDto, CoursePlan.class));
+    }
+
+    @Override
+    public CoursePlanDto update(Long id, CoursePlanDto entityDto) {
+        log.info("Executing update method in CoursePlanServiceImpl for ID: {} with DTO: {}", id, entityDto);
+        if (id == null) {
+            log.error("ID is null in update method");
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+        if (entityDto == null) {
+            log.error("CoursePlanDto is null in update method");
+            throw new IllegalArgumentException("CoursePlanDto cannot be null");
+        }
+        Optional<CoursePlan> updatedCoursePlan = coursePlanDao.update(id, modelMapper.map(entityDto, CoursePlan.class));
+        if (!updatedCoursePlan.isPresent()) {
+            throw new NotFoundEntityException("CoursePlan not found");
+        }
+        return modelMapper.map(updatedCoursePlan.get(), CoursePlanDto.class);
+    }
+
+    @Override
+    public CoursePlanDto findById(Long id) {
+        log.info("Executing findById method in CoursePlanServiceImpl for ID: {}", id);
+        if (id == null) {
+            log.error("ID is null in findById method");
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+        Optional<CoursePlan> foundCoursePlan = coursePlanDao.getById(id);
+        if (!foundCoursePlan.isPresent()) {
+            log.error("CoursePlan not found");
+            throw new NotFoundEntityException("CoursePlan not found");
+        }
+        return modelMapper.map(foundCoursePlan.get(), CoursePlanDto.class);
+    }
+
+    @Override
+    public List<CoursePlanDto> getAll() {
+        log.info("Executing getAll method in CoursePlanServiceImpl");
+        return coursePlanDao.getAll().stream()
+                .map(coursePlan -> modelMapper.map(coursePlan, CoursePlanDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Boolean delete(Long id) {
+        log.info("Executing delete method in CoursePlanServiceImpl for ID: {}", id);
+        if (id == null) {
+            log.error("ID is null in delete method");
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+        Boolean deleted = coursePlanDao.delete(id);
+        if (!deleted) {
+            log.error("CoursePlan not found");
+            throw new NotFoundEntityException("CoursePlan not found");
+        }
+        return deleted;
+    }
+}

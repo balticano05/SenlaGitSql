@@ -2,11 +2,13 @@ package com.online.shop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.online.shop.config.AppConfig;
-import com.online.shop.dto.CourseDto;
 import com.online.shop.dto.CoursePlanDto;
+import com.online.shop.entity.Course;
+import com.online.shop.entity.CoursePlan;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -27,32 +29,42 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringJUnitConfig(classes = {AppConfig.class})
 @WebAppConfiguration
 @Transactional
-class CourseControllerTest {
+class CoursePlanControllerTest {
+
     @Autowired
     WebApplicationContext webApplicationContext;
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @BeforeEach
     public void setUp() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
     }
 
-    private CourseDto getCourseDto() {
-        CourseDto course = new CourseDto();
-        course.setTitle("Test course");
-        course.setDescription("Test course description");
-        course.setCreatedAt(LocalDateTime.of(2023, 10, 5, 14, 30, 0));
-        course.setPrice(BigDecimal.valueOf(100.0));
-        return course;
+    private CoursePlanDto getCoursePlanDto() {
+        Course course = new Course();
+        course.setTitle("Test Course");
+        course.setDescription("Test Description");
+        course.setPrice(new BigDecimal("100.00"));
+        course.setCreatedAt(LocalDateTime.now());
+
+        CoursePlan coursePlan = new CoursePlan();
+        coursePlan.setLessonCount(10);
+        coursePlan.setPracticeCount(5);
+        coursePlan.setDuration(30);
+        coursePlan.setCourse(course);
+        return modelMapper.map(coursePlan, CoursePlanDto.class);
     }
 
     @Test
     void insert() throws Exception {
-        CourseDto courseDto = getCourseDto();
-        String jsonContent = objectMapper.writeValueAsString(courseDto);
-        mockMvc.perform(post("/api/courses")
+        CoursePlanDto coursePlanDto = getCoursePlanDto();
+        String jsonContent = objectMapper.writeValueAsString(coursePlanDto);
+
+        mockMvc.perform(post("/api/course-plans")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isOk());
@@ -60,9 +72,10 @@ class CourseControllerTest {
 
     @Test
     void update() throws Exception {
-        CourseDto courseDto = getCourseDto();
-        String jsonContent = objectMapper.writeValueAsString(courseDto);
-        mockMvc.perform(put("/api/courses/1")
+        CoursePlanDto coursePlanDto = getCoursePlanDto();
+        String jsonContent = objectMapper.writeValueAsString(coursePlanDto);
+
+        mockMvc.perform(put("/api/course-plans/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isOk());
@@ -70,69 +83,57 @@ class CourseControllerTest {
 
     @Test
     void deleteEntity() throws Exception {
-        mockMvc.perform(delete("/api/courses/1")
+        mockMvc.perform(delete("/api/course-plans/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getAll() throws Exception {
-        mockMvc.perform(get("/api/courses")
+        mockMvc.perform(get("/api/course-plans")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getById() throws Exception {
-        mockMvc.perform(get("/api/courses/1")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void getByDate() throws Exception {
-        mockMvc.perform(get("/api/courses/date/03.10.2024")
+        mockMvc.perform(get("/api/course-plans/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     void insertWithInvalidData() throws Exception {
-        CourseDto courseDto = new CourseDto();
-        String jsonContent = objectMapper.writeValueAsString(courseDto);
-        mockMvc.perform(post("/api/courses")
+        CoursePlanDto coursePlanDto = new CoursePlanDto(); // Assuming this is invalid
+        String jsonContent = objectMapper.writeValueAsString(coursePlanDto);
+
+        mockMvc.perform(post("/api/course-plans")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    void updateNonExistentCourse() throws Exception {
-        CourseDto courseDto = getCourseDto();
-        String jsonContent = objectMapper.writeValueAsString(courseDto);
-        mockMvc.perform(put("/api/courses/9999") // Non-existent course ID
+    void updateNonExistentCoursePlan() throws Exception {
+        CoursePlanDto coursePlanDto = getCoursePlanDto();
+        String jsonContent = objectMapper.writeValueAsString(coursePlanDto);
+
+        mockMvc.perform(put("/api/course-plans/9999")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    void deleteNonExistentCourse() throws Exception {
-        mockMvc.perform(delete("/api/courses/9999")
+    void deleteNonExistentCoursePlan() throws Exception {
+        mockMvc.perform(delete("/api/course-plans/9999")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void getByInvalidId() throws Exception {
-        mockMvc.perform(get("/api/courses/invalid-id")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    void getByInvalidDateFormat() throws Exception {
-        mockMvc.perform(get("/api/courses/date/invalid-date")
+        mockMvc.perform(get("/api/course-plans/invalid-id")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }

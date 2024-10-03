@@ -38,8 +38,7 @@ public class CourseServiceImpl implements CourseService {
             log.error("CourseDto is null in insert method");
             throw new IllegalArgumentException("CourseDto cannot be null");
         }
-        if (entityDto.getTitle() == null || entityDto.getCoursePlan() == null
-                || entityDto.getDescription() == null || entityDto.getPrice() == null) {
+        if (entityDto.getTitle() == null || entityDto.getDescription() == null || entityDto.getPrice() == null) {
             log.error("CourseDto data's cannot be null insert method");
             throw new InvalidEntityDataException("Data are required");
         }
