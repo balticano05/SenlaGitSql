@@ -58,7 +58,7 @@ public class TransactionServiceImpl implements TransactionService {
             throw new IllegalArgumentException("TransactionDto cannot be null");
         }
         Optional<Transaction> updatedTransaction = transactionDao.update(id, modelMapper.map(entityDto, Transaction.class));
-        if (!updatedTransaction.isPresent()){
+        if (!updatedTransaction.isPresent()) {
             throw new NotFoundEntityException("Transaction not found");
         }
         return modelMapper.map(updatedTransaction, TransactionDto.class);
@@ -93,12 +93,7 @@ public class TransactionServiceImpl implements TransactionService {
             log.error("ID is null in delete method");
             throw new IllegalArgumentException("ID cannot be null");
         }
-        Boolean deleted = transactionDao.delete(id);
-        if (!deleted) {
-            log.error("Transaction not found");
-            throw new NotFoundEntityException("Transaction not found");
-        }
-        return deleted;
+        return transactionDao.delete(id);
     }
 
     @Override
@@ -126,11 +121,11 @@ public class TransactionServiceImpl implements TransactionService {
             throw new IllegalArgumentException("Invalid date format in findByDate method");
         }
         List<Transaction> foundTransactions = transactionDao.findByCreateDate(date);
-        if(foundTransactions.isEmpty()){
+        if (foundTransactions.isEmpty()) {
             log.error("List of transactions is empty in findByDate method");
             throw new NotFoundEntityException("List of transactions is empty in findByDate method");
         }
-        return transactionDao.findByCreateDate(date).stream()
+        return foundTransactions.stream()
                 .map(transaction -> modelMapper.map(transaction, TransactionDto.class))
                 .collect(Collectors.toList());
     }

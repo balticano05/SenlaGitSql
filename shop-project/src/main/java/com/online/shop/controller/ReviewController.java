@@ -1,21 +1,15 @@
 package com.online.shop.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.online.shop.dto.ReviewDto;
-import com.online.shop.exceptions.InvalidEntityDataException;
 import com.online.shop.service.ReviewService;
-import com.online.shop.utils.Validator;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static com.online.shop.utils.StringConst.*;
 
 @Slf4j
 @RestController
@@ -32,45 +26,45 @@ public class ReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> insert(@RequestBody ReviewDto reviewDto) {
+    public ResponseEntity<Long> insert(@Valid @RequestBody ReviewDto reviewDto) {
         log.info("Executing insert method in ReviewController with JSON processing");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(reviewService.insert(reviewDto));
+        return ResponseEntity.ok(reviewService.insert(reviewDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReviewDto> update(@PathVariable Long id, @RequestBody ReviewDto reviewDto) {
+    public ResponseEntity<ReviewDto> update(@PathVariable Long id, @Valid @RequestBody ReviewDto reviewDto) {
         log.info("Executing update method in ReviewController with JSON processing");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(reviewService.update(id, reviewDto));
+        return ResponseEntity.ok(reviewService.update(id, reviewDto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable Long id) {
         log.info("Executing delete method in ReviewController with JSON processing");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(reviewService.delete(id));
+        return ResponseEntity.ok(reviewService.delete(id));
     }
 
     @GetMapping
     public ResponseEntity<List<ReviewDto>> getAll() {
         log.info("Executing getAll method in ReviewController with JSON processing");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(reviewService.getAll());
+        return ResponseEntity.ok(reviewService.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ReviewDto> getById(@PathVariable Long id) {
         log.info("Executing getById method in ReviewController with JSON processing");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(reviewService.findById(id));
+        return ResponseEntity.ok(reviewService.findById(id));
     }
 
     @GetMapping("/email/{email}")
     public ResponseEntity<List<ReviewDto>> getReviewsByUser(@PathVariable String email) {
         log.info("Executing getReviewsByUser method in ReviewController with JSON processing");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(reviewService.findByEmail(email));
+        return ResponseEntity.ok(reviewService.findByEmail(email));
     }
 
     @GetMapping("/date/{date}")
     public ResponseEntity<List<ReviewDto>> getByDate(@PathVariable String date) {
-            log.info("Executing getByDate method in ReviewController with JSON processing");
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(reviewService.findByDate(date));
+        log.info("Executing getByDate method in ReviewController with JSON processing");
+        return ResponseEntity.ok(reviewService.findByDate(date));
 
     }
 

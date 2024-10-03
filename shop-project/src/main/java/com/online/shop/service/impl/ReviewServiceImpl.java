@@ -94,12 +94,7 @@ public class ReviewServiceImpl implements ReviewService {
             log.error("ID is null in delete method");
             throw new IllegalArgumentException("ID cannot be null");
         }
-        Boolean deleted = reviewDao.delete(id);
-        if (!deleted) {
-            log.error("Review not found");
-            throw new NotFoundEntityException("Review not found");
-        }
-        return deleted;
+        return reviewDao.delete(id);
     }
 
     @Override
@@ -127,7 +122,7 @@ public class ReviewServiceImpl implements ReviewService {
             throw new IllegalArgumentException("Invalid date format in findByDate method");
         }
         List<Review> reviews = reviewDao.findByCreateDate(date);
-        if(reviews.isEmpty()){
+        if (reviews.isEmpty()) {
             log.error("List of reviews is empty in findByDate method");
             throw new NotFoundEntityException("List of reviews is empty in findByDate method");
         }

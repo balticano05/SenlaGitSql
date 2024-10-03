@@ -3,6 +3,7 @@ package com.online.shop.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.online.shop.dto.UserDto;
 import com.online.shop.service.UserService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -27,47 +28,47 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> insert(@RequestBody UserDto userDto) {
+    public ResponseEntity<Long> insert(@Valid @RequestBody UserDto userDto) {
         log.info("Executing insert method in UserController with JSON processing");
         userDto.setCreatedAt(LocalDateTime.now());
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(userService.insert(userDto));
+        return ResponseEntity.ok(userService.insert(userDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> update(@PathVariable Long id, @Valid @RequestBody UserDto userDto) {
         log.info("Executing update method in UserController with JSON processing");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(userService.update(id, userDto));
+        return ResponseEntity.ok(userService.update(id, userDto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable Long id) {
         log.info("Executing delete method in UserController with JSON processing");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(userService.delete(id));
+        return ResponseEntity.ok(userService.delete(id));
     }
 
     @GetMapping
     public ResponseEntity<List<UserDto>> getAll() {
         log.info("Executing getAll method in UserController with JSON processing");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(userService.getAll());
+        return ResponseEntity.ok(userService.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getById(@PathVariable Long id) {
         log.info("Executing getById method in UserController with JSON processing");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(userService.findById(id));
+        return ResponseEntity.ok(userService.findById(id));
     }
 
     @GetMapping("/email/{email}")
     public ResponseEntity<UserDto> getByEmail(@PathVariable String email) {
         log.info("Executing getByEmail method in UserController with JSON processing");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(userService.findByEmail(email));
+        return ResponseEntity.ok(userService.findByEmail(email));
 
     }
 
     @GetMapping("/date/{date}")
     public ResponseEntity<List<UserDto>> getByDate(@PathVariable String date) {
         log.info("Executing getByDate method.");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(userService.findByDate(date));
+        return ResponseEntity.ok(userService.findByDate(date));
     }
 
 }

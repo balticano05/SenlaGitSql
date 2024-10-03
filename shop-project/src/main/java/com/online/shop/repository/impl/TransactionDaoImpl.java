@@ -64,4 +64,5 @@ public class TransactionDaoImpl extends AbstractDao<Transaction> implements Tran
         query.where(userIdPredicate);
         return entityManager.createQuery(query).getResultList();
     }
+
 }

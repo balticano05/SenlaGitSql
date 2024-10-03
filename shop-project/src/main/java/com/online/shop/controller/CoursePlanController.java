@@ -2,9 +2,9 @@ package com.online.shop.controller;
 
 import com.online.shop.dto.CoursePlanDto;
 import com.online.shop.service.CoursePlanService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,32 +23,33 @@ public class CoursePlanController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> insert(@RequestBody CoursePlanDto coursePlanDto) {
+    public ResponseEntity<Long> insert(@Valid @RequestBody CoursePlanDto coursePlanDto) {
         log.info("Executing insert method in CoursePlanController with JSON processing");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(coursePlanService.insert(coursePlanDto));
+        return ResponseEntity.ok(coursePlanService.insert(coursePlanDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CoursePlanDto> update(@PathVariable Long id, @RequestBody CoursePlanDto coursePlanDto) {
+    public ResponseEntity<CoursePlanDto> update(@PathVariable Long id, @Valid @RequestBody CoursePlanDto coursePlanDto) {
         log.info("Executing update method in CoursePlanController with JSON processing");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(coursePlanService.update(id, coursePlanDto));
+        return ResponseEntity.ok(coursePlanService.update(id, coursePlanDto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable Long id) {
         log.info("Executing delete method in CoursePlanController with JSON processing");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(coursePlanService.delete(id));
+        return ResponseEntity.ok(coursePlanService.delete(id));
     }
 
     @GetMapping
     public ResponseEntity<List<CoursePlanDto>> getAll() {
         log.info("Executing getAll method in CoursePlanController with JSON processing");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(coursePlanService.getAll());
+        return ResponseEntity.ok(coursePlanService.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CoursePlanDto> getById(@PathVariable Long id) {
         log.info("Executing getById method in CoursePlanController with JSON processing");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(coursePlanService.findById(id));
+        return ResponseEntity.ok(coursePlanService.findById(id));
     }
+
 }

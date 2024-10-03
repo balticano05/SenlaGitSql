@@ -59,7 +59,7 @@ public class CoursePlanServiceImpl implements CoursePlanService {
         if (!updatedCoursePlan.isPresent()) {
             throw new NotFoundEntityException("CoursePlan not found");
         }
-        return modelMapper.map(updatedCoursePlan.get(), CoursePlanDto.class);
+        return modelMapper.map(updatedCoursePlan, CoursePlanDto.class);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class CoursePlanServiceImpl implements CoursePlanService {
             log.error("CoursePlan not found");
             throw new NotFoundEntityException("CoursePlan not found");
         }
-        return modelMapper.map(foundCoursePlan.get(), CoursePlanDto.class);
+        return modelMapper.map(foundCoursePlan, CoursePlanDto.class);
     }
 
     @Override
@@ -92,11 +92,6 @@ public class CoursePlanServiceImpl implements CoursePlanService {
             log.error("ID is null in delete method");
             throw new IllegalArgumentException("ID cannot be null");
         }
-        Boolean deleted = coursePlanDao.delete(id);
-        if (!deleted) {
-            log.error("CoursePlan not found");
-            throw new NotFoundEntityException("CoursePlan not found");
-        }
-        return deleted;
+        return coursePlanDao.delete(id);
     }
 }

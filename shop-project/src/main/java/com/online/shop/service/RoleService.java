@@ -7,9 +7,9 @@ import java.util.List;
 public interface RoleService {
     Long insert(RoleDto entityDto);
 
-    RoleDto  update(Long id, RoleDto  entityDto);
+    RoleDto update(Long id, RoleDto entityDto);
 
-    RoleDto  findById(Long id);
+    RoleDto findById(Long id);
 
     List<RoleDto> getAll();
 

@@ -1,6 +1,5 @@
 package com.online.shop.service.impl;
 
-import com.online.shop.entity.User;
 import com.online.shop.exceptions.InvalidEntityDataException;
 import com.online.shop.exceptions.NotFoundEntityException;
 import com.online.shop.service.RoleService;
@@ -33,6 +32,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Long insert(RoleDto entityDto) {
+        log.info("Executing insert method in RoleServiceImpl with DTO: {}", entityDto);
         if (entityDto == null) {
             log.error("RoleDto is null in insert method");
             throw new IllegalArgumentException("ReviewDto cannot be null");
@@ -41,7 +41,6 @@ public class RoleServiceImpl implements RoleService {
             log.error("RoleDto data's cannot be null insert method");
             throw new InvalidEntityDataException("Data are required");
         }
-        log.info("Executing insert method in RoleServiceImpl with DTO: {}", entityDto);
         return roleDao.insert(modelMapper.map(entityDto, Role.class));
     }
 
@@ -93,12 +92,7 @@ public class RoleServiceImpl implements RoleService {
             log.error("ID is null in delete method");
             throw new IllegalArgumentException("ID cannot be null");
         }
-        Boolean deleted = roleDao.delete(id);
-        if (!deleted) {
-            log.error("Role not found");
-            throw new NotFoundEntityException("Role not found");
-        }
-        return deleted;
+        return roleDao.delete(id);
     }
 
 }

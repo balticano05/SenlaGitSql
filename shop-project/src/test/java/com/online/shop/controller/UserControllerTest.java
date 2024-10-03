@@ -38,7 +38,7 @@ class UserControllerTest {
     private ObjectMapper objectMapper;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
     }
 

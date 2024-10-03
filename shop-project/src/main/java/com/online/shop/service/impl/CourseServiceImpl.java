@@ -88,17 +88,12 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Boolean delete(Long id) {
+        log.info("Executing delete method in CourseServiceImpl for ID: {}", id);
         if (id == null) {
             log.error("ID is null in delete method");
             throw new IllegalArgumentException("ID cannot be null");
         }
-        Boolean deleted = courseDao.delete(id);
-        if (!deleted) {
-            log.error("Course not found");
-            throw new NotFoundEntityException("Course not found");
-        }
-        log.info("Executing delete method in CourseServiceImpl for ID: {}", id);
-        return deleted;
+        return courseDao.delete(id);
     }
 
     @Override
@@ -109,11 +104,11 @@ public class CourseServiceImpl implements CourseService {
             throw new IllegalArgumentException("Invalid date format in findByDate method");
         }
         List<Course> foundCourses = courseDao.findByCreateDate(date);
-        if(foundCourses.isEmpty()){
+        if (foundCourses.isEmpty()) {
             log.error("List of courses is empty in findByDate method");
             throw new NotFoundEntityException("List of courses is empty in findByDate method");
         }
-        return courseDao.findByCreateDate(date).stream()
+        return foundCourses.stream()
                 .map(course -> modelMapper.map(course, CourseDto.class))
                 .collect(Collectors.toList());
     }

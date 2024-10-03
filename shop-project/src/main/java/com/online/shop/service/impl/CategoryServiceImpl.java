@@ -1,6 +1,5 @@
 package com.online.shop.service.impl;
 
-import com.online.shop.entity.User;
 import com.online.shop.exceptions.InvalidEntityDataException;
 import com.online.shop.exceptions.NotFoundEntityException;
 import com.online.shop.service.CategoryService;
@@ -74,7 +73,7 @@ public class CategoryServiceImpl implements CategoryService {
             log.error("Category not found");
             throw new NotFoundEntityException("Category not found");
         }
-        return modelMapper.map(categoryDao.getById(id), CategoryDto.class);
+        return modelMapper.map(foundCategory, CategoryDto.class);
     }
 
     @Override
@@ -91,11 +90,6 @@ public class CategoryServiceImpl implements CategoryService {
         if (id == null) {
             log.error("ID is null in delete method");
             throw new IllegalArgumentException("ID cannot be null");
-        }
-        Boolean deleted = categoryDao.delete(id);
-        if (!deleted) {
-            log.error("Category not found");
-            throw new NotFoundEntityException("User not found");
         }
         return categoryDao.delete(id);
     }

@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-class CourseServiceImplTest {
+class CourseServiceTest {
 
     @Mock
     private CourseDao courseDao;

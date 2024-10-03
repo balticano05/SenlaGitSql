@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class CoursePlanServiceImplTest {
+public class CoursePlanServiceTest {
 
     @Mock
     private CoursePlanDao coursePlanDao;

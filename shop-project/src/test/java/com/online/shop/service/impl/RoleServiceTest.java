@@ -20,7 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
 @ExtendWith(MockitoExtension.class)
-class RoleServiceImplTest {
+class RoleServiceTest {
 
     @Mock
     private RoleDao roleDao;

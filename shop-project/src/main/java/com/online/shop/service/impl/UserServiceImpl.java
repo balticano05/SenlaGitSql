@@ -93,12 +93,7 @@ public class UserServiceImpl implements UserService {
             log.error("ID is null in delete method");
             throw new IllegalArgumentException("ID cannot be null");
         }
-        Boolean deleted = userDao.delete(id);
-        if (!deleted) {
-            log.error("User not found");
-            throw new NotFoundEntityException("User not found");
-        }
-        return deleted;
+        return userDao.delete(id);
     }
 
     @Override
@@ -124,7 +119,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Invalid date format in findByDate method");
         }
         List<User> foundUsers = userDao.findByCreateDate(date);
-        if(foundUsers.isEmpty()){
+        if (foundUsers.isEmpty()) {
             log.error("List of users is empty in findByDate method");
             throw new NotFoundEntityException("List of users is empty in findByDate method");
         }

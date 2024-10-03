@@ -3,7 +3,6 @@ package com.online.shop.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.online.shop.config.AppConfig;
 import com.online.shop.dto.CourseDto;
-import com.online.shop.dto.CoursePlanDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

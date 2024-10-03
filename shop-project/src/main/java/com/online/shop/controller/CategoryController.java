@@ -3,9 +3,9 @@ package com.online.shop.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.online.shop.dto.CategoryDto;
 import com.online.shop.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,33 +26,33 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> insert(@RequestBody CategoryDto categoryDto) {
+    public ResponseEntity<Long> insert(@Valid @RequestBody CategoryDto categoryDto) {
         log.info("Executing insert method in CategoryController with JSON processing");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(categoryService.insert(categoryDto));
+        return ResponseEntity.ok(categoryService.insert(categoryDto));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<CategoryDto> update(@PathVariable Long id, @RequestBody CategoryDto categoryDto) {
+    public ResponseEntity<CategoryDto> update(@PathVariable Long id, @Valid @RequestBody CategoryDto categoryDto) {
         log.info("Executing update method in CategoryController with JSON processing");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(categoryService.update(id, categoryDto));
+        return ResponseEntity.ok(categoryService.update(id, categoryDto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable Long id) {
         log.info("Executing delete method in CategoryController with JSON processing");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(categoryService.delete(id));
+        return ResponseEntity.ok(categoryService.delete(id));
     }
 
     @GetMapping
     public ResponseEntity<List<CategoryDto>> getAll() {
         log.info("Executing getAll method in CategoryController with JSON processing");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(categoryService.getAll());
+        return ResponseEntity.ok(categoryService.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDto> getById(@PathVariable Long id) {
         log.info("Executing getById method in CategoryController with JSON processing");
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(categoryService.findById(id));
+        return ResponseEntity.ok(categoryService.findById(id));
     }
 
 }
