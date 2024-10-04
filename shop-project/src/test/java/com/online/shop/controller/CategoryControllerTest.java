@@ -24,9 +24,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @Transactional
 class CategoryControllerTest {
+
     @Autowired
     WebApplicationContext webApplicationContext;
+
     private MockMvc mockMvc;
+
     @Autowired
     private ObjectMapper objectMapper;
 

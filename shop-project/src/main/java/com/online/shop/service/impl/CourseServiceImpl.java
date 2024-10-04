@@ -1,16 +1,15 @@
 package com.online.shop.service.impl;
 
-import com.online.shop.exceptions.InvalidEntityDataException;
-import com.online.shop.exceptions.NotFoundEntityException;
 import com.online.shop.utils.Validator;
 import com.online.shop.service.CourseService;
 import com.online.shop.dto.CourseDto;
 import com.online.shop.entity.Course;
 import com.online.shop.repository.CourseDao;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,17 +18,12 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @Transactional
 public class CourseServiceImpl implements CourseService {
 
-    private CourseDao courseDao;
-    private ModelMapper modelMapper;
-
-    @Autowired
-    public CourseServiceImpl(CourseDao courseDao, ModelMapper modelMapper) {
-        this.courseDao = courseDao;
-        this.modelMapper = modelMapper;
-    }
+    private final CourseDao courseDao;
+    private final ModelMapper modelMapper;
 
     @Override
     public Long insert(CourseDto entityDto) {
@@ -37,10 +31,6 @@ public class CourseServiceImpl implements CourseService {
         if (entityDto == null) {
             log.error("CourseDto is null in insert method");
             throw new IllegalArgumentException("CourseDto cannot be null");
-        }
-        if (entityDto.getTitle() == null || entityDto.getDescription() == null || entityDto.getPrice() == null) {
-            log.error("CourseDto data's cannot be null insert method");
-            throw new InvalidEntityDataException("Data are required");
         }
         return courseDao.insert(modelMapper.map(entityDto, Course.class));
     }
@@ -56,10 +46,8 @@ public class CourseServiceImpl implements CourseService {
             log.error("CourseDto is null in update method");
             throw new IllegalArgumentException("CourseDto cannot be null");
         }
-        Optional<Course> updatedCourse = courseDao.update(id, modelMapper.map(entityDto, Course.class));
-        if (!updatedCourse.isPresent()) {
-            throw new NotFoundEntityException("Course not found");
-        }
+        Optional<Course> updatedCourse = Optional.ofNullable(courseDao.update(id, modelMapper.map(entityDto, Course.class))
+                .orElseThrow(() -> new EntityNotFoundException("Course not found")));
         return modelMapper.map(updatedCourse, CourseDto.class);
     }
 
@@ -70,11 +58,8 @@ public class CourseServiceImpl implements CourseService {
             log.error("ID is null in findById method");
             throw new IllegalArgumentException("ID cannot be null");
         }
-        Optional<Course> foundCourse = courseDao.getById(id);
-        if (!foundCourse.isPresent()) {
-            log.error("Course not found");
-            throw new NotFoundEntityException("Course not found");
-        }
+        Optional<Course> foundCourse = Optional.ofNullable(courseDao.getById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Course not found")));
         return modelMapper.map(foundCourse, CourseDto.class);
     }
 
@@ -103,15 +88,14 @@ public class CourseServiceImpl implements CourseService {
             log.error("Invalid date format in findByDate method");
             throw new IllegalArgumentException("Invalid date format in findByDate method");
         }
-        List<Course> foundCourses = courseDao.findByCreateDate(date);
-        if (foundCourses.isEmpty()) {
-            log.error("List of courses is empty in findByDate method");
-            throw new NotFoundEntityException("List of courses is empty in findByDate method");
-        }
-        return foundCourses.stream()
+        return Optional.ofNullable(courseDao.findByCreateDate(date))
+                .filter(courses -> !courses.isEmpty())
+                .orElseThrow(() -> {
+                    return new EntityNotFoundException("List of courses is empty in findByDate method");
+                })
+                .stream()
                 .map(course -> modelMapper.map(course, CourseDto.class))
                 .collect(Collectors.toList());
     }
-
 
 }

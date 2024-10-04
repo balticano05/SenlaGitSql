@@ -2,14 +2,13 @@ package com.online.shop.service.impl;
 
 import com.online.shop.dto.CoursePlanDto;
 import com.online.shop.entity.CoursePlan;
-import com.online.shop.exceptions.InvalidEntityDataException;
-import com.online.shop.exceptions.NotFoundEntityException;
 import com.online.shop.repository.CoursePlanDao;
 import com.online.shop.service.CoursePlanService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,17 +17,12 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @Transactional
 public class CoursePlanServiceImpl implements CoursePlanService {
 
     private final CoursePlanDao coursePlanDao;
     private final ModelMapper modelMapper;
-
-    @Autowired
-    public CoursePlanServiceImpl(CoursePlanDao coursePlanDao, ModelMapper modelMapper) {
-        this.coursePlanDao = coursePlanDao;
-        this.modelMapper = modelMapper;
-    }
 
     @Override
     public Long insert(CoursePlanDto entityDto) {
@@ -36,10 +30,6 @@ public class CoursePlanServiceImpl implements CoursePlanService {
         if (entityDto == null) {
             log.error("CoursePlanDto is null in insert method");
             throw new IllegalArgumentException("CoursePlanDto cannot be null");
-        }
-        if (entityDto.getLessonCount() == null || entityDto.getPracticeCount() == null || entityDto.getDuration() == null) {
-            log.error("CoursePlanDto data's cannot be null in insert method");
-            throw new InvalidEntityDataException("Data are required");
         }
         return coursePlanDao.insert(modelMapper.map(entityDto, CoursePlan.class));
     }
@@ -55,10 +45,8 @@ public class CoursePlanServiceImpl implements CoursePlanService {
             log.error("CoursePlanDto is null in update method");
             throw new IllegalArgumentException("CoursePlanDto cannot be null");
         }
-        Optional<CoursePlan> updatedCoursePlan = coursePlanDao.update(id, modelMapper.map(entityDto, CoursePlan.class));
-        if (!updatedCoursePlan.isPresent()) {
-            throw new NotFoundEntityException("CoursePlan not found");
-        }
+        Optional<CoursePlan> updatedCoursePlan = Optional.ofNullable(coursePlanDao.update(id, modelMapper.map(entityDto, CoursePlan.class))
+                .orElseThrow(() -> new EntityNotFoundException("CoursePlanDto not found")));
         return modelMapper.map(updatedCoursePlan, CoursePlanDto.class);
     }
 
@@ -69,11 +57,8 @@ public class CoursePlanServiceImpl implements CoursePlanService {
             log.error("ID is null in findById method");
             throw new IllegalArgumentException("ID cannot be null");
         }
-        Optional<CoursePlan> foundCoursePlan = coursePlanDao.getById(id);
-        if (!foundCoursePlan.isPresent()) {
-            log.error("CoursePlan not found");
-            throw new NotFoundEntityException("CoursePlan not found");
-        }
+        Optional<CoursePlan> foundCoursePlan = Optional.ofNullable(coursePlanDao.getById(id)
+                .orElseThrow(() -> new EntityNotFoundException("CoursePlan not found")));
         return modelMapper.map(foundCoursePlan, CoursePlanDto.class);
     }
 
@@ -94,4 +79,5 @@ public class CoursePlanServiceImpl implements CoursePlanService {
         }
         return coursePlanDao.delete(id);
     }
+
 }

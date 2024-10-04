@@ -1,7 +1,5 @@
 package com.online.shop.dto;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -28,7 +26,6 @@ public class CourseDto {
     @Min(value = 0, message = "Price must be at least 0")
     @Max(value = 100000000, message = "Price must be at most 100000000")
     private BigDecimal price;
-    @OneToOne(cascade = CascadeType.ALL)
     private LocalDateTime createdAt;
     private List<CategoryDto> categories;
 }

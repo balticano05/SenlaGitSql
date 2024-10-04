@@ -33,9 +33,12 @@ class CoursePlanControllerTest {
 
     @Autowired
     WebApplicationContext webApplicationContext;
+
     private MockMvc mockMvc;
+
     @Autowired
     private ObjectMapper objectMapper;
+
     @Autowired
     private ModelMapper modelMapper;
 
@@ -137,4 +140,5 @@ class CoursePlanControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
+
 }

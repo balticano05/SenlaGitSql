@@ -1,15 +1,14 @@
 package com.online.shop.service.impl;
 
-import com.online.shop.exceptions.InvalidEntityDataException;
-import com.online.shop.exceptions.NotFoundEntityException;
 import com.online.shop.service.CategoryService;
 import com.online.shop.dto.CategoryDto;
 import com.online.shop.entity.Category;
 import com.online.shop.repository.CategoryDao;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,17 +17,12 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @Transactional
 public class CategoryServiceImpl implements CategoryService {
 
-    private CategoryDao categoryDao;
-    private ModelMapper modelMapper;
-
-    @Autowired
-    public CategoryServiceImpl(CategoryDao categoryDao, ModelMapper modelMapper) {
-        this.categoryDao = categoryDao;
-        this.modelMapper = modelMapper;
-    }
+    private final CategoryDao categoryDao;
+    private final ModelMapper modelMapper;
 
     @Override
     public Long insert(CategoryDto entityDto) {
@@ -36,9 +30,6 @@ public class CategoryServiceImpl implements CategoryService {
         if (entityDto == null) {
             log.error("CategoryDto is null in insert method");
             throw new IllegalArgumentException("CategoryDto cannot be null");
-        }
-        if (entityDto.getName() == null || entityDto.getDescription() == null) {
-            throw new InvalidEntityDataException("Data are required");
         }
         return categoryDao.insert(modelMapper.map(entityDto, Category.class));
     }
@@ -54,10 +45,8 @@ public class CategoryServiceImpl implements CategoryService {
             log.error("CategoryDto is null in update method");
             throw new IllegalArgumentException("CategoryDto cannot be null");
         }
-        Optional<Category> updatedCategory = categoryDao.update(id, modelMapper.map(entityDto, Category.class));
-        if (!updatedCategory.isPresent()) {
-            throw new NotFoundEntityException("Category not found");
-        }
+        Optional<Category> updatedCategory = Optional.ofNullable(categoryDao.update(id, modelMapper.map(entityDto, Category.class))
+                .orElseThrow(() -> new EntityNotFoundException("Category not found")));
         return modelMapper.map(updatedCategory, CategoryDto.class);
     }
 
@@ -68,11 +57,8 @@ public class CategoryServiceImpl implements CategoryService {
             log.error("ID is null in findById method");
             throw new IllegalArgumentException("ID cannot be null");
         }
-        Optional<Category> foundCategory = categoryDao.getById(id);
-        if (!foundCategory.isPresent()) {
-            log.error("Category not found");
-            throw new NotFoundEntityException("Category not found");
-        }
+        Optional<Category> foundCategory = Optional.ofNullable(categoryDao.getById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Category not found")));
         return modelMapper.map(foundCategory, CategoryDto.class);
     }
 

@@ -1,6 +1,7 @@
 package com.online.shop.exceptions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,21 +40,19 @@ public class GlobalRestExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<String> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException e) {
+        log.error("Method argument type mismatch", e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleArgumentTypeMismatch(IllegalArgumentException e) {
+        log.error("Illegal argument exception", e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(InvalidEntityDataException.class)
-    public ResponseEntity<String> handleInvalidUserDataException(InvalidEntityDataException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
-
-    @ExceptionHandler(NotFoundEntityException.class)
-    public ResponseEntity<String> handleNotFoundEntityException(NotFoundEntityException e) {
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<String> handleNotFoundEntityException(EntityNotFoundException e) {
+        log.error("Entity not found", e);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 

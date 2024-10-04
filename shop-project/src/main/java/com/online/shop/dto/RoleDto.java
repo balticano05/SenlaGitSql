@@ -12,7 +12,7 @@ import lombok.*;
 public class RoleDto {
     private Long id;
     @NotNull
-    @Size(min = 1, max = 40, message = "Role must be between 3 and 50 characters")
+    @Size(min = 1, max = 40, message = "Role must be between 1 and 40 characters")
     private String name;
     @NotNull(message = "Description cannot be null")
     private String description;

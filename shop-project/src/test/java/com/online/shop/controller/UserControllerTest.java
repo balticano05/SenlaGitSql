@@ -116,7 +116,7 @@ class UserControllerTest {
 
     @Test
     void insertWithInvalidData() throws Exception {
-        UserDto userDto = new UserDto();
+        UserDto userDto = getUserDto();
         String jsonContent = objectMapper.writeValueAsString(userDto);
         mockMvc.perform(post("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)

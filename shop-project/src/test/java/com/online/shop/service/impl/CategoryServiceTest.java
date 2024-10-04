@@ -144,4 +144,5 @@ class CategoryServiceTest {
         assertFalse(result);
         verify(categoryDao, times(1)).delete(anyLong());
     }
+
 }
