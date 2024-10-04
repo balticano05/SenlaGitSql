@@ -8,18 +8,22 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Builder
 @Entity
 @Table(name = "reviews")
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @EqualsAndHashCode.Include
     private User user;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", nullable = false)
+    @EqualsAndHashCode.Include
     private Course course;
     @Column(name = "content", nullable = false)
     private String content;

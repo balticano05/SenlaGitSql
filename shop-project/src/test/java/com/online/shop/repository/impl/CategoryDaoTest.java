@@ -2,14 +2,14 @@ package com.online.shop.repository.impl;
 
 import com.online.shop.entity.Category;
 import com.online.shop.repository.CategoryDao;
-import com.online.shop.сontext.AppConfig;
+import com.online.shop.config.AppConfig;
 import org.hibernate.PropertyValueException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -19,10 +19,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(
-        classes = {AppConfig.class},
-        loader = AnnotationConfigContextLoader.class
-)
+@SpringJUnitConfig(classes = AppConfig.class)
+@WebAppConfiguration
 @Transactional
 class CategoryDaoTest {
 

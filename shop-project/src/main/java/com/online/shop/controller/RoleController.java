@@ -1,71 +1,50 @@
 package com.online.shop.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.online.shop.dto.RoleDto;
 import com.online.shop.service.RoleService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
-import static com.online.shop.utils.StringConst.*;
+import java.util.List;
 
 @Slf4j
-@Controller
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/roles")
 public class RoleController {
 
     private final RoleService roleService;
-    private final ObjectMapper objectMapper;
 
-    @Autowired
-    public RoleController(RoleService roleService, ObjectMapper objectMapper) {
-        this.roleService = roleService;
-        this.objectMapper = objectMapper;
+    @PostMapping
+    public Long insert(@Valid @RequestBody RoleDto roleDto) {
+        log.info("Executing insert method in RoleController with JSON processing");
+        return roleService.insert(roleDto);
     }
 
-    public String insert(String jsonEntity) {
-        try {
-            log.info("Executing insert method in RoleController with JSON processing");
-            return objectMapper.writeValueAsString(roleService.insert(objectMapper.readValue(jsonEntity, RoleDto.class)));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
-        }
+    @PutMapping("/{id}")
+    public RoleDto update(@PathVariable Long id, @Valid @RequestBody RoleDto roleDto) {
+        log.info("Executing update method in RoleController with JSON processing");
+        return roleService.update(id, roleDto);
     }
 
-    public String update(Long id, String jsonEntity) {
-        try {
-            log.info("Executing update method in RoleController with JSON processing");
-            return objectMapper.writeValueAsString(roleService.update(id, objectMapper.readValue(jsonEntity, RoleDto.class)));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
-        }
+    @DeleteMapping("/{id}")
+    public Boolean delete(@PathVariable Long id) {
+        log.info("Executing delete method in RoleController with JSON processing");
+        return roleService.delete(id);
     }
 
-    public String delete(Long id) {
-        try {
-            log.info("Executing delete method in RoleController with JSON processing");
-            return objectMapper.writeValueAsString(roleService.delete(id));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
-        }
+    @GetMapping
+    public List<RoleDto> getAll() {
+        log.info("Executing getAll method in RoleController with JSON processing");
+        return roleService.getAll();
     }
 
-    public String getAll() {
-        try {
-            log.info("Executing getAll method in RoleController with JSON processing");
-            return objectMapper.writeValueAsString(roleService.getAll());
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
-        }
-    }
-
-    public String getById(Long id) {
-        try {
-            log.info("Executing getById method in RoleController with JSON processing");
-            return objectMapper.writeValueAsString(roleService.findById(id));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
-        }
+    @GetMapping("/{id}")
+    public RoleDto getById(@PathVariable Long id) {
+        log.info("Executing getById method in RoleController with JSON processing");
+        return roleService.findById(id);
     }
 
 }

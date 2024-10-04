@@ -1,71 +1,50 @@
 package com.online.shop.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.online.shop.dto.CoursePlanDto;
 import com.online.shop.service.CoursePlanService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
-import static com.online.shop.utils.StringConst.*;
+import java.util.List;
 
 @Slf4j
-@Controller
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/course-plans")
 public class CoursePlanController {
 
     private final CoursePlanService coursePlanService;
-    private final ObjectMapper objectMapper;
 
-    @Autowired
-    public CoursePlanController(CoursePlanService coursePlanService, ObjectMapper objectMapper) {
-        this.coursePlanService = coursePlanService;
-        this.objectMapper = objectMapper;
+    @PostMapping
+    public Long insert(@Valid @RequestBody CoursePlanDto coursePlanDto) {
+        log.info("Executing insert method in CoursePlanController with JSON processing");
+        return coursePlanService.insert(coursePlanDto);
     }
 
-    public String insert(String jsonEntity) {
-        try {
-            log.info("Executing insert method in CoursePlanController with JSON processing");
-            return objectMapper.writeValueAsString(coursePlanService.insert(objectMapper.readValue(jsonEntity, CoursePlanDto.class)));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
-        }
+    @PutMapping("/{id}")
+    public CoursePlanDto update(@PathVariable Long id, @Valid @RequestBody CoursePlanDto coursePlanDto) {
+        log.info("Executing update method in CoursePlanController with JSON processing");
+        return coursePlanService.update(id, coursePlanDto);
     }
 
-    public String update(Long id, String jsonEntity) {
-        try {
-            log.info("Executing update method in CoursePlanController with JSON processing");
-            return objectMapper.writeValueAsString(coursePlanService.update(id, objectMapper.readValue(jsonEntity, CoursePlanDto.class)));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
-        }
+    @DeleteMapping("/{id}")
+    public Boolean delete(@PathVariable Long id) {
+        log.info("Executing delete method in CoursePlanController with JSON processing");
+        return coursePlanService.delete(id);
     }
 
-    public String delete(Long id) {
-        try {
-            log.info("Executing delete method in CoursePlanController with JSON processing");
-            return objectMapper.writeValueAsString(coursePlanService.delete(id));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
-        }
+    @GetMapping
+    public List<CoursePlanDto> getAll() {
+        log.info("Executing getAll method in CoursePlanController with JSON processing");
+        return coursePlanService.getAll();
     }
 
-    public String getAll() {
-        try {
-            log.info("Executing getAll method in CoursePlanController with JSON processing");
-            return objectMapper.writeValueAsString(coursePlanService.getAll());
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
-        }
-    }
-
-    public String getById(Long id) {
-        try {
-            log.info("Executing getById method in CoursePlanController with JSON processing");
-            return objectMapper.writeValueAsString(coursePlanService.findById(id));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
-        }
+    @GetMapping("/{id}")
+    public CoursePlanDto getById(@PathVariable Long id) {
+        log.info("Executing getById method in CoursePlanController with JSON processing");
+        return coursePlanService.findById(id);
     }
 
 }

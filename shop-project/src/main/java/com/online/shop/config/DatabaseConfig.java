@@ -1,4 +1,4 @@
-package com.online.shop.сontext;
+package com.online.shop.config;
 
 import jakarta.persistence.EntityManagerFactory;
 import liquibase.integration.spring.SpringLiquibase;
@@ -11,7 +11,6 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;

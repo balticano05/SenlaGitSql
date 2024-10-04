@@ -5,41 +5,39 @@ import com.online.shop.utils.Validator;
 import com.online.shop.service.TransactionService;
 import com.online.shop.dto.TransactionDto;
 import com.online.shop.entity.Transaction;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @Transactional
 public class TransactionServiceImpl implements TransactionService {
 
-    private TransactionDao transactionDao;
-    private ModelMapper modelMapper;
-
-    @Autowired
-    public TransactionServiceImpl(TransactionDao transactionDao, ModelMapper modelMapper) {
-        this.transactionDao = transactionDao;
-        this.modelMapper = modelMapper;
-    }
+    private final TransactionDao transactionDao;
+    private final ModelMapper modelMapper;
 
     @Override
     public Long insert(TransactionDto entityDto) {
+        log.info("Executing insert method in TransactionServiceImpl with DTO: {}", entityDto);
         if (entityDto == null) {
             log.error("TransactionDto is null in insert method");
             throw new IllegalArgumentException("TransactionDto cannot be null");
         }
-        log.info("Executing insert method in TransactionServiceImpl with DTO: {}", entityDto);
         return transactionDao.insert(modelMapper.map(entityDto, Transaction.class));
     }
 
     @Override
     public TransactionDto update(Long id, TransactionDto entityDto) {
+        log.info("Executing update method in TransactionServiceImpl for ID: {} with DTO: {}", id, entityDto);
         if (id == null) {
             log.error("ID is null in update method");
             throw new IllegalArgumentException("ID cannot be null");
@@ -48,18 +46,21 @@ public class TransactionServiceImpl implements TransactionService {
             log.error("TransactionDto is null in update method");
             throw new IllegalArgumentException("TransactionDto cannot be null");
         }
-        log.info("Executing update method in TransactionServiceImpl for ID: {} with DTO: {}", id, entityDto);
-        return modelMapper.map(transactionDao.update(id, modelMapper.map(entityDto, Transaction.class)), TransactionDto.class);
+        Transaction updatedTransaction = transactionDao.update(id, modelMapper.map(entityDto, Transaction.class))
+                .orElseThrow(() -> new EntityNotFoundException("Transaction not found"));
+        return modelMapper.map(updatedTransaction, TransactionDto.class);
     }
 
     @Override
     public TransactionDto findById(Long id) {
+        log.info("Executing findById method in TransactionServiceImpl for ID: {}", id);
         if (id == null) {
             log.error("ID is null in findById method");
             throw new IllegalArgumentException("ID cannot be null");
         }
-        log.info("Executing findById method in TransactionServiceImpl for ID: {}", id);
-        return modelMapper.map(transactionDao.getById(id), TransactionDto.class);
+        Transaction foundTransaction = transactionDao.getById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Transaction not found"));
+        return modelMapper.map(foundTransaction, TransactionDto.class);
     }
 
     @Override
@@ -72,50 +73,46 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Boolean delete(Long id) {
+        log.info("Executing delete method in TransactionServiceImpl for ID: {}", id);
         if (id == null) {
             log.error("ID is null in delete method");
             throw new IllegalArgumentException("ID cannot be null");
         }
-        log.info("Executing delete method in TransactionServiceImpl for ID: {}", id);
         return transactionDao.delete(id);
     }
 
     @Override
-    public List<TransactionDto> getTransactions(String email) {
+    public List<TransactionDto> getTransactionsByEmail(String email) {
+        log.info("Executing getTransactionsByEmail method in TransactionServiceImpl for email: {}", email);
         if (email == null) {
             log.error("Email is null in getTransactionsByEmail method");
             throw new IllegalArgumentException("Email cannot be null");
         }
-        log.info("Executing getTransactionsByEmail method in TransactionServiceImpl for email: {}", email);
-        return transactionDao.findTransactionsByEmail(email).stream()
+        return Optional.ofNullable(transactionDao.findTransactionsByEmail(email))
+                .filter(transactions -> !transactions.isEmpty())
+                .orElseThrow(() -> {
+                    throw new EntityNotFoundException("Transactions with email " + email + " not found");
+                })
+                .stream()
                 .map(transaction -> modelMapper.map(transaction, TransactionDto.class))
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<TransactionDto> findByDate(String date) {
-        if (date == null) {
-            log.error("Date is null in findByDate method");
-            throw new IllegalArgumentException("Date cannot be null");
-        }
-        if (!Validator.isValidDateFormat(date)) {
-            log.error("Invalid date format in findByDate method");
-        }
         log.info("Executing findByDate method in TransactionServiceImpl for date: {}", date);
-        return transactionDao.findByCreateDate(date).stream()
+        if (date == null || !Validator.isValidDateFormat(date)) {
+            log.error("Invalid date format in findByDate method");
+            throw new IllegalArgumentException("Invalid date format in findByDate method");
+        }
+        return Optional.ofNullable(transactionDao.findByCreateDate(date))
+                .filter(transactions -> !transactions.isEmpty())
+                .orElseThrow(() -> {
+                    throw new EntityNotFoundException("List of transactions is empty in findByDate method");
+                })
+                .stream()
                 .map(transaction -> modelMapper.map(transaction, TransactionDto.class))
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<TransactionDto> getTransactions(Long userId) {
-        if (userId == null) {
-            log.error("ID is null in getTransactionsByUserId method");
-            throw new IllegalArgumentException("ID cannot be null");
-        }
-        log.info("Executing getTransactionsByUserId method in TransactionServiceImpl for id: {}", userId);
-        return transactionDao.findTransactionsById(userId).stream()
-                .map(transaction -> modelMapper.map(transaction, TransactionDto.class))
-                .collect(Collectors.toList());
-    }
 }

@@ -1,89 +1,65 @@
 package com.online.shop.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.online.shop.dto.UserDto;
 import com.online.shop.service.UserService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
-import static com.online.shop.utils.StringConst.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
-@Controller
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
-    private final ObjectMapper objectMapper;
 
-    @Autowired
-    public UserController(UserService userService, ObjectMapper objectMapper) {
-        this.userService = userService;
-        this.objectMapper = objectMapper;
+    @PostMapping
+    public Long insert(@Valid @RequestBody UserDto userDto) {
+        log.info("Executing insert method in UserController with JSON processing");
+        userDto.setCreatedAt(LocalDateTime.now());
+        return userService.insert(userDto);
     }
 
-    public String insert(String jsonEntity) {
-        try {
-            log.info("Executing insert method in UserController with JSON processing");
-            return objectMapper.writeValueAsString(userService.insert(objectMapper.readValue(jsonEntity, UserDto.class)));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
-        }
+    @PutMapping("/{id}")
+    public UserDto update(@PathVariable Long id, @Valid @RequestBody UserDto userDto) {
+        log.info("Executing update method in UserController with JSON processing");
+        return userService.update(id, userDto);
     }
 
-    public String update(Long id, String jsonEntity) {
-        try {
-            log.info("Executing update method in UserController with JSON processing");
-            return objectMapper.writeValueAsString(userService.update(id, objectMapper.readValue(jsonEntity, UserDto.class)));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
-        }
+    @DeleteMapping("/{id}")
+    public Boolean delete(@PathVariable Long id) {
+        log.info("Executing delete method in UserController with JSON processing");
+        return userService.delete(id);
     }
 
-    public String delete(Long id) {
-        try {
-            log.info("Executing delete method in UserController with JSON processing");
-            return objectMapper.writeValueAsString(userService.delete(id));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
-        }
+    @GetMapping
+    public List<UserDto> getAll() {
+        log.info("Executing getAll method in UserController with JSON processing");
+        return userService.getAll();
     }
 
-    public String getAll() {
-        try {
-            log.info("Executing getById method in UserController with JSON processing");
-            return objectMapper.writeValueAsString(userService.getAll());
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
-        }
+    @GetMapping("/{id}")
+    public UserDto getById(@PathVariable Long id) {
+        log.info("Executing getById method in UserController with JSON processing");
+        return userService.findById(id);
     }
 
-    public String getById(Long id) {
-        try {
-            log.info("Executing getByEmail method in UserController with JSON processing");
-            return objectMapper.writeValueAsString(userService.findById(id));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
-        }
+    @GetMapping("/email/{email}")
+    public UserDto getByEmail(@PathVariable String email) {
+        log.info("Executing getByEmail method in UserController with JSON processing");
+        return userService.findByEmail(email);
+
     }
 
-    public String getByEmail(String email) {
-        try {
-            log.info("Executing getByDate method in UserController with JSON processing");
-            return objectMapper.writeValueAsString(userService.findByEmail(email));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
-        }
-    }
-
-    public String getByDate(String date) {
-        try {
-            log.info("Executing getByDate method.");
-            return objectMapper.writeValueAsString(userService.findByDate(date));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(EXCEPTION_PROCESSING_JSON, e);
-        }
+    @GetMapping("/date/{date}")
+    public List<UserDto> getByDate(@PathVariable String date) {
+        log.info("Executing getByDate method.");
+        return userService.findByDate(date);
     }
 
 }

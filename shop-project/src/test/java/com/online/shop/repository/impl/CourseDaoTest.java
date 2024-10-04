@@ -3,12 +3,12 @@ package com.online.shop.repository.impl;
 import com.online.shop.entity.Course;
 import com.online.shop.repository.CourseDao;
 import com.online.shop.utils.StringConst;
-import com.online.shop.сontext.AppConfig;
+import com.online.shop.config.AppConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -25,10 +25,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(
-        classes = {AppConfig.class},
-        loader = AnnotationConfigContextLoader.class
-)
+@SpringJUnitConfig(classes = AppConfig.class)
+@WebAppConfiguration
 @Transactional
 class CourseDaoTest {
 

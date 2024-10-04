@@ -15,9 +15,7 @@ public interface TransactionService {
 
     Boolean delete(Long id);
 
-    public List<TransactionDto> getTransactions(String email);
-
-    public List<TransactionDto> getTransactions(Long userId);
+    public List<TransactionDto> getTransactionsByEmail(String email);
 
     List<TransactionDto> findByDate(String date);
 }

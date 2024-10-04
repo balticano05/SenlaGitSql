@@ -2,13 +2,13 @@ package com.online.shop.repository.impl;
 
 import com.online.shop.entity.Role;
 import com.online.shop.repository.RoleDao;
-import com.online.shop.сontext.AppConfig;
+import com.online.shop.config.AppConfig;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -17,10 +17,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(
-        classes = {AppConfig.class},
-        loader = AnnotationConfigContextLoader.class
-)
+@SpringJUnitConfig(classes = AppConfig.class)
+@WebAppConfiguration
 @Transactional
 class RoleDaoTest {
 

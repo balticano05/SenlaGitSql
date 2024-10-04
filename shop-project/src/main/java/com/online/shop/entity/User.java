@@ -9,25 +9,14 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Builder
 @Entity
-@NamedEntityGraph(
-        name = "com.User.details",
-        attributeNodes = {
-                @NamedAttributeNode("role"),
-                @NamedAttributeNode(value = "courses", subgraph = "subgraph.courses")
-        },
-        subgraphs = {
-                @NamedSubgraph(name = "subgraph.courses", attributeNodes = {
-                        @NamedAttributeNode("categories"),
-                        @NamedAttributeNode("coursePlan")
-                })
-        }
-)
 @Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
     @Column(name = "email", nullable = false)
     private String email;

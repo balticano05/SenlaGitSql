@@ -1,4 +1,4 @@
-package com.online.shop.сontext;
+package com.online.shop.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

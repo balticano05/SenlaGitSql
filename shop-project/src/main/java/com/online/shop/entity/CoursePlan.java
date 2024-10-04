@@ -6,12 +6,14 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Builder
 @Entity
 @Table(name = "course_plans")
 public class CoursePlan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
     @Column(name = "lesson_count", nullable = false)
     private Integer lessonCount;
@@ -19,4 +21,8 @@ public class CoursePlan {
     private Integer practiceCount;
     @Column(name = "duration", nullable = false)
     private Integer duration;
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "id", nullable = false)
+    private Course course;
 }
