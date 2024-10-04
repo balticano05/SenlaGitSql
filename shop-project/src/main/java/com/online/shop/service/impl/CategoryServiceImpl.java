@@ -12,7 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -45,8 +44,8 @@ public class CategoryServiceImpl implements CategoryService {
             log.error("CategoryDto is null in update method");
             throw new IllegalArgumentException("CategoryDto cannot be null");
         }
-        Optional<Category> updatedCategory = Optional.ofNullable(categoryDao.update(id, modelMapper.map(entityDto, Category.class))
-                .orElseThrow(() -> new EntityNotFoundException("Category not found")));
+        Category updatedCategory = categoryDao.update(id, modelMapper.map(entityDto, Category.class))
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
         return modelMapper.map(updatedCategory, CategoryDto.class);
     }
 
@@ -57,8 +56,8 @@ public class CategoryServiceImpl implements CategoryService {
             log.error("ID is null in findById method");
             throw new IllegalArgumentException("ID cannot be null");
         }
-        Optional<Category> foundCategory = Optional.ofNullable(categoryDao.getById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Category not found")));
+        Category foundCategory = categoryDao.getById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
         return modelMapper.map(foundCategory, CategoryDto.class);
     }
 

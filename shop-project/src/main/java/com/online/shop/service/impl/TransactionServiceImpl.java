@@ -46,8 +46,8 @@ public class TransactionServiceImpl implements TransactionService {
             log.error("TransactionDto is null in update method");
             throw new IllegalArgumentException("TransactionDto cannot be null");
         }
-        Optional<Transaction> updatedTransaction = Optional.ofNullable(transactionDao.update(id, modelMapper.map(entityDto, Transaction.class))
-                .orElseThrow(() -> new EntityNotFoundException("Transaction not found")));
+        Transaction updatedTransaction = transactionDao.update(id, modelMapper.map(entityDto, Transaction.class))
+                .orElseThrow(() -> new EntityNotFoundException("Transaction not found"));
         return modelMapper.map(updatedTransaction, TransactionDto.class);
     }
 
@@ -58,8 +58,8 @@ public class TransactionServiceImpl implements TransactionService {
             log.error("ID is null in findById method");
             throw new IllegalArgumentException("ID cannot be null");
         }
-        Optional<Transaction> foundTransaction = Optional.ofNullable(transactionDao.getById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Transaction not found")));
+        Transaction foundTransaction = transactionDao.getById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Transaction not found"));
         return modelMapper.map(foundTransaction, TransactionDto.class);
     }
 
@@ -88,8 +88,7 @@ public class TransactionServiceImpl implements TransactionService {
             log.error("Email is null in getTransactionsByEmail method");
             throw new IllegalArgumentException("Email cannot be null");
         }
-        List<Transaction> foundTransactions = transactionDao.findTransactionsByEmail(email);
-        return Optional.ofNullable(foundTransactions)
+        return Optional.ofNullable(transactionDao.findTransactionsByEmail(email))
                 .filter(transactions -> !transactions.isEmpty())
                 .orElseThrow(() -> {
                     throw new EntityNotFoundException("Transactions with email " + email + " not found");
@@ -102,12 +101,11 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public List<TransactionDto> findByDate(String date) {
         log.info("Executing findByDate method in TransactionServiceImpl for date: {}", date);
-        if (!Validator.isValidDateFormat(date) || date == null) {
+        if (date == null || !Validator.isValidDateFormat(date)) {
             log.error("Invalid date format in findByDate method");
             throw new IllegalArgumentException("Invalid date format in findByDate method");
         }
-        List<Transaction> foundTransactions = transactionDao.findByCreateDate(date);
-        return Optional.ofNullable(foundTransactions)
+        return Optional.ofNullable(transactionDao.findByCreateDate(date))
                 .filter(transactions -> !transactions.isEmpty())
                 .orElseThrow(() -> {
                     throw new EntityNotFoundException("List of transactions is empty in findByDate method");

@@ -46,8 +46,8 @@ public class CourseServiceImpl implements CourseService {
             log.error("CourseDto is null in update method");
             throw new IllegalArgumentException("CourseDto cannot be null");
         }
-        Optional<Course> updatedCourse = Optional.ofNullable(courseDao.update(id, modelMapper.map(entityDto, Course.class))
-                .orElseThrow(() -> new EntityNotFoundException("Course not found")));
+        Course updatedCourse = courseDao.update(id, modelMapper.map(entityDto, Course.class))
+                .orElseThrow(() -> new EntityNotFoundException("Course not found"));
         return modelMapper.map(updatedCourse, CourseDto.class);
     }
 
@@ -58,8 +58,8 @@ public class CourseServiceImpl implements CourseService {
             log.error("ID is null in findById method");
             throw new IllegalArgumentException("ID cannot be null");
         }
-        Optional<Course> foundCourse = Optional.ofNullable(courseDao.getById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Course not found")));
+        Course foundCourse = courseDao.getById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Course not found"));
         return modelMapper.map(foundCourse, CourseDto.class);
     }
 
@@ -84,14 +84,14 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<CourseDto> findByDate(String date) {
         log.info("Executing findByDate method in CourseServiceImpl for date: {}", date);
-        if (!Validator.isValidDateFormat(date) || date == null) {
+        if (date == null || !Validator.isValidDateFormat(date)) {
             log.error("Invalid date format in findByDate method");
             throw new IllegalArgumentException("Invalid date format in findByDate method");
         }
         return Optional.ofNullable(courseDao.findByCreateDate(date))
                 .filter(courses -> !courses.isEmpty())
                 .orElseThrow(() -> {
-                    return new EntityNotFoundException("List of courses is empty in findByDate method");
+                    throw new EntityNotFoundException("List of courses is empty in findByDate method");
                 })
                 .stream()
                 .map(course -> modelMapper.map(course, CourseDto.class))

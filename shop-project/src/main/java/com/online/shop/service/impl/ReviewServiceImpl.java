@@ -46,8 +46,8 @@ public class ReviewServiceImpl implements ReviewService {
             log.error("ReviewDto is null in update method");
             throw new IllegalArgumentException("ReviewDto cannot be null");
         }
-        Optional<Review> updatedReview = Optional.ofNullable(reviewDao.update(id, modelMapper.map(entityDto, Review.class))
-                .orElseThrow(() -> new EntityNotFoundException("Review not found")));
+        Review updatedReview = reviewDao.update(id, modelMapper.map(entityDto, Review.class))
+                .orElseThrow(() -> new EntityNotFoundException("Review not found"));
         return modelMapper.map(updatedReview, ReviewDto.class);
     }
 
@@ -58,8 +58,8 @@ public class ReviewServiceImpl implements ReviewService {
             log.error("ID is null in findById method");
             throw new IllegalArgumentException("ID cannot be null");
         }
-        Optional<Review> foundReview = Optional.ofNullable(reviewDao.getById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Review not found")));
+        Review foundReview = reviewDao.getById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Review not found"));
         return modelMapper.map(foundReview, ReviewDto.class);
     }
 
@@ -88,7 +88,7 @@ public class ReviewServiceImpl implements ReviewService {
             log.error("Email is null in findByEmail method");
             throw new IllegalArgumentException("Email cannot be null");
         }
-        return Optional.ofNullable( reviewDao.findByEmail(email))
+        return Optional.ofNullable(reviewDao.findByEmail(email))
                 .filter(reviewList -> !reviewList.isEmpty())
                 .orElseThrow(() -> {
                     throw new EntityNotFoundException("List of reviews is empty in findByEmail method");
@@ -101,7 +101,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public List<ReviewDto> findByDate(String date) {
         log.info("Executing findByDate method in ReviewServiceImpl for date: {}", date);
-        if (!Validator.isValidDateFormat(date) || date == null) {
+        if (date == null || !Validator.isValidDateFormat(date)) {
             log.error("Invalid date format in findByDate method");
             throw new IllegalArgumentException("Invalid date format in findByDate method");
         }

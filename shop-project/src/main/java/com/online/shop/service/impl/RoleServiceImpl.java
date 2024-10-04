@@ -12,7 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -45,8 +44,8 @@ public class RoleServiceImpl implements RoleService {
             log.error("RoleDto is null in update method");
             throw new IllegalArgumentException("RoleDto cannot be null");
         }
-        Optional<Role> updatedRole = Optional.ofNullable(roleDao.update(id, modelMapper.map(entityDto, Role.class))
-                .orElseThrow(() -> new EntityNotFoundException("Role not found")));
+        Role updatedRole = roleDao.update(id, modelMapper.map(entityDto, Role.class))
+                .orElseThrow(() -> new EntityNotFoundException("Role not found"));
         return modelMapper.map(updatedRole, RoleDto.class);
     }
 
@@ -57,8 +56,8 @@ public class RoleServiceImpl implements RoleService {
             log.error("ID is null in findById method");
             throw new IllegalArgumentException("ID cannot be null");
         }
-        Optional<Role> foundRole = Optional.ofNullable(roleDao.getById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Role not found")));
+        Role foundRole = roleDao.getById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Role not found"));
         return modelMapper.map(foundRole, RoleDto.class);
     }
 

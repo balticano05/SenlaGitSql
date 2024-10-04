@@ -12,7 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -45,8 +44,8 @@ public class CoursePlanServiceImpl implements CoursePlanService {
             log.error("CoursePlanDto is null in update method");
             throw new IllegalArgumentException("CoursePlanDto cannot be null");
         }
-        Optional<CoursePlan> updatedCoursePlan = Optional.ofNullable(coursePlanDao.update(id, modelMapper.map(entityDto, CoursePlan.class))
-                .orElseThrow(() -> new EntityNotFoundException("CoursePlanDto not found")));
+        CoursePlan updatedCoursePlan = coursePlanDao.update(id, modelMapper.map(entityDto, CoursePlan.class))
+                .orElseThrow(() -> new EntityNotFoundException("CoursePlanDto not found"));
         return modelMapper.map(updatedCoursePlan, CoursePlanDto.class);
     }
 
@@ -57,8 +56,8 @@ public class CoursePlanServiceImpl implements CoursePlanService {
             log.error("ID is null in findById method");
             throw new IllegalArgumentException("ID cannot be null");
         }
-        Optional<CoursePlan> foundCoursePlan = Optional.ofNullable(coursePlanDao.getById(id)
-                .orElseThrow(() -> new EntityNotFoundException("CoursePlan not found")));
+        CoursePlan foundCoursePlan = coursePlanDao.getById(id)
+                .orElseThrow(() -> new EntityNotFoundException("CoursePlan not found"));
         return modelMapper.map(foundCoursePlan, CoursePlanDto.class);
     }
 

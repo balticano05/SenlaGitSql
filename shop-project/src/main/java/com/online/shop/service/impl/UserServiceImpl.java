@@ -46,8 +46,8 @@ public class UserServiceImpl implements UserService {
             log.error("UserDto is null in update method");
             throw new IllegalArgumentException("UserDto cannot be null");
         }
-        Optional<User> updatedUser = Optional.ofNullable(userDao.update(id, modelMapper.map(entityDto, User.class))
-                .orElseThrow(() -> new EntityNotFoundException("User not found")));
+        User updatedUser = userDao.update(id, modelMapper.map(entityDto, User.class))
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
         return modelMapper.map(updatedUser, UserDto.class);
     }
 
@@ -58,8 +58,8 @@ public class UserServiceImpl implements UserService {
             log.error("ID is null in findById method");
             throw new IllegalArgumentException("ID cannot be null");
         }
-        Optional<User> foundUser = Optional.ofNullable(userDao.getById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found")));
+        User foundUser = userDao.getById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
         return modelMapper.map(foundUser, UserDto.class);
     }
 
@@ -88,8 +88,8 @@ public class UserServiceImpl implements UserService {
             log.error("Email is null in findByEmail method");
             throw new IllegalArgumentException("Email cannot be null");
         }
-        Optional<User> foundUser = Optional.ofNullable(userDao.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("User with email " + email + " not found")));
+        User foundUser = userDao.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("User with email " + email + " not found"));
         return modelMapper.map(foundUser, UserDto.class);
     }
 
