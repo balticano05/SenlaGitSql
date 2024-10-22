@@ -12,7 +12,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/reviews")
+@RequestMapping("secured/api/reviews")
 public class ReviewController {
 
     private final ReviewService reviewService;

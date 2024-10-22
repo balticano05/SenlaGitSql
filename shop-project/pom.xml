@@ -13,7 +13,7 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <jsonwebtoken.version>0.12.6</jsonwebtoken.version>
-        <spring.security.version>5.7.12</spring.security.version>
+        <spring.security.version>6.3.3</spring.security.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

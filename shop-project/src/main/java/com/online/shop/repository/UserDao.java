@@ -19,4 +19,6 @@ public interface UserDao {
     Optional<User> findByEmail(String email);
 
     List<User> findByCreateDate(String createdAt);
+
+    boolean existsByEmail(String email);
 }
