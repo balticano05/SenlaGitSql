@@ -2,7 +2,6 @@ package com.online.shop.config;
 
 import com.online.shop.security.filter.JwtAuthFilter;
 import com.online.shop.security.service.CustomUserDetailsService;
-import com.online.shop.security.service.CustomUserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -18,14 +17,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableWebSecurity
 @Slf4j
 @EnableMethodSecurity
 @RequiredArgsConstructor
-@EnableTransactionManagement
 public class SecurityConfig {
 
     private final JwtAuthFilter authFilter;
@@ -62,13 +59,23 @@ public class SecurityConfig {
                             "/api/v1/welcome",
                             "/api/v1/auth/authenticate",
                             "/api/v1/auth/register",
-                            "/api/v1/auth/register/rights",
-                            "/api/v1/courses/front"
+                            "/api/v1/auth/register/admin",
+                            "/api/v1/courses/front",
+                            "/api/v1/categories/front",
+                            "/api/v1/course-plans/front",
+                            "/api/v1/reviews/front",
+                            "/api/v1/roles/front"
                     ).permitAll();
                 }).authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/v1/courses/**").authenticated();
+                    auth.requestMatchers("api/v1/categories/**").authenticated();
+                    auth.requestMatchers("api/v1/course-plans/**").authenticated();
                     auth.requestMatchers("/api/v1/user/**").authenticated();
                     auth.requestMatchers("/api/v1/admin/**").authenticated();
+                    auth.requestMatchers("/api/v1/reviews/**").authenticated();
+                    auth.requestMatchers("/api/v1/roles/**").authenticated();
+                    auth.requestMatchers("/api/v1/transactions/**").authenticated();
+                    auth.requestMatchers("/api/v1/users/**").authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)

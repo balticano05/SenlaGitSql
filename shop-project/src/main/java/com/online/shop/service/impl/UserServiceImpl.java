@@ -1,6 +1,5 @@
 package com.online.shop.service.impl;
 
-import com.online.shop.repository.RoleDao;
 import com.online.shop.utils.Validator;
 import com.online.shop.service.UserService;
 import com.online.shop.dto.UserDto;
@@ -10,7 +9,6 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +23,8 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
-    private final RoleDao roleDao;
     private final ModelMapper modelMapper;
+
     @Override
     public Long insert(UserDto entityDto) {
         log.info("Executing insert method in UserServiceImpl with DTO: {}", entityDto);

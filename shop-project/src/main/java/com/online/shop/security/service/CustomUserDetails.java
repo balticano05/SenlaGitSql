@@ -1,14 +1,10 @@
 package com.online.shop.security.service;
 
-import com.online.shop.entity.Role;
 import com.online.shop.entity.User;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,7 +19,7 @@ public class CustomUserDetails implements UserDetails {
         this.username = user.getEmail();
         this.password = user.getPassword();
         this.authorities = List.of(
-                "ROLE_" + user.getRole().getName())
+                        "ROLE_" + user.getRole().getName())
                 .stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList()
@@ -64,4 +60,5 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

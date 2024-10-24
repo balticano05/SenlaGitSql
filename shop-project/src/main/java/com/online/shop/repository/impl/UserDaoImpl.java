@@ -68,4 +68,5 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
         Long count = entityManager.createQuery(criteriaQuery).getSingleResult();
         return count > 0;
     }
+
 }
