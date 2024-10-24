@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,19 +32,19 @@ public class CourseController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('admin')")
     public Boolean delete(@PathVariable Long id) {
         log.info("Executing delete method in CourseController with JSON processing");
         return courseService.delete(id);
     }
 
-    @GetMapping
+    @GetMapping("/front")
     public List<CourseDto> getAll() {
         log.info("Executing getAll method in CourseController with JSON processing");
         return courseService.getAll();
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('admin')")
     public CourseDto getById(@PathVariable Long id) {
         log.info("Executing getById method in CourseController with JSON processing");
         return courseService.findById(id);

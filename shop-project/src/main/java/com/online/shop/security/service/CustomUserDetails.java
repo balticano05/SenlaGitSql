@@ -23,7 +23,7 @@ public class CustomUserDetails implements UserDetails {
         this.username = user.getEmail();
         this.password = user.getPassword();
         this.authorities = List.of(
-                user.getRole().getName())
+                "ROLE_" + user.getRole().getName())
                 .stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList()

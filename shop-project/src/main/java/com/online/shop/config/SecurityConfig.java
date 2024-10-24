@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableWebSecurity
 @Slf4j
+@EnableMethodSecurity
 @RequiredArgsConstructor
 @EnableTransactionManagement
 public class SecurityConfig {
@@ -60,17 +62,17 @@ public class SecurityConfig {
                             "/api/v1/welcome",
                             "/api/v1/auth/authenticate",
                             "/api/v1/auth/register",
-                            "/api/v1/courses"
+                            "/api/v1/auth/register/rights",
+                            "/api/v1/courses/front"
                     ).permitAll();
                 }).authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/api/v1/courses/**").authenticated();
                     auth.requestMatchers("/api/v1/user/**").authenticated();
-                }).authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/v1/admin/**").authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(authenticationProvider());
-
         return http.build();
     }
 

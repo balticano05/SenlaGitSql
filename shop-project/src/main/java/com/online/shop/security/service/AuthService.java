@@ -38,6 +38,18 @@ public class AuthService {
         return new AuthResponse(jwtToken);
     }
 
+    public AuthResponse registerAdmin(RegisterDto registerDto) {
+        User user = User.builder()
+                .email(registerDto.getEmail())
+                .password(bCryptPasswordEncoder.encode(registerDto.getPassword()))
+                .role(Role.builder().id(2L).name("admin").build())
+                .createdAt(LocalDateTime.now())
+                .build();
+        userDao.insert(user);
+        String jwtToken = jwtService.generateToken(user.getEmail());
+        return new AuthResponse(jwtToken);
+    }
+
     public AuthResponse authenticate(AuthenticateDto authRequest) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

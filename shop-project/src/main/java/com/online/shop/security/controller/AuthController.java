@@ -27,6 +27,12 @@ public class AuthController {
         return ResponseEntity.ok(authService.register(dto));
     }
 
+    @PostMapping("/register/rights")
+    public ResponseEntity<AuthResponse> registerAdmin(@RequestBody RegisterDto dto) {
+        log.info("Executing registration for admin in controller");
+        return ResponseEntity.ok(authService.registerAdmin(dto));
+    }
+
     @PostMapping("/authenticate")
     public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthenticateDto dto) {
         log.info("Executing authentication in controller");
