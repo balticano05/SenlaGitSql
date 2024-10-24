@@ -4,6 +4,9 @@ import com.online.shop.repository.AbstractDao;
 import com.online.shop.entity.User;
 import com.online.shop.repository.UserDao;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Repository;
@@ -54,4 +57,15 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
         return query.getResultList();
     }
 
+    @Override
+    public boolean existsByEmail(String email) {
+        log.info("Executing checking existence of user by email: {}", email);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+        Root<User> root = criteriaQuery.from(User.class);
+        criteriaQuery.select(criteriaBuilder.count(root));
+        criteriaQuery.where(criteriaBuilder.equal(root.get("email"), email));
+        Long count = entityManager.createQuery(criteriaQuery).getSingleResult();
+        return count > 0;
+    }
 }

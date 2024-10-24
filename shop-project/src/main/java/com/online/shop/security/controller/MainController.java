@@ -11,12 +11,21 @@ public class MainController {
 
     @GetMapping("/welcome")
     public String welcome () {
-        return  "Страница приветствия" ;
+        return  "Hello World!";
+    }
+
+    @GetMapping("/api/v1/user/test")
+    public String test () {
+        return "test";
     }
 
     @GetMapping("/user/profile")
     @PreAuthorize("hasAuthority('user')")
     public String userProfile () {
-        return  "Здесь отображается профиль пользователя." ;
+        return  "Info for user." ;
     }
+
+    @GetMapping("/admin/profile")
+    @PreAuthorize("hasAuthority('admin')")
+    public String adminProfile () {return  "Admin Info for user." ;}
 }

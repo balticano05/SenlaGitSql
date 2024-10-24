@@ -12,7 +12,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/transactions")
+@RequestMapping("secured/api/transactions")
 public class TransactionController {
 
     private final TransactionService transactionService;

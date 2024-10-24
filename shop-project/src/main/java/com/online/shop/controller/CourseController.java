@@ -5,6 +5,7 @@ import com.online.shop.service.CourseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/courses")
+@RequestMapping("api/v1/courses")
 public class CourseController {
 
     private final CourseService courseService;
@@ -30,6 +31,7 @@ public class CourseController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('admin')")
     public Boolean delete(@PathVariable Long id) {
         log.info("Executing delete method in CourseController with JSON processing");
         return courseService.delete(id);

@@ -12,10 +12,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AuthService {
 
@@ -31,7 +33,6 @@ public class AuthService {
                 .role(Role.builder().id(1L).name("user").build())
                 .createdAt(LocalDateTime.now())
                 .build();
-
         userDao.insert(user);
         String jwtToken = jwtService.generateToken(user.getEmail());
         return new AuthResponse(jwtToken);

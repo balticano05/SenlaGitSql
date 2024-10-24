@@ -12,7 +12,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/course-plans")
+@RequestMapping("secured/api/course-plans")
 public class CoursePlanController {
 
     private final CoursePlanService coursePlanService;
