@@ -39,7 +39,7 @@ public class ReviewController {
         return reviewService.delete(id);
     }
 
-    @GetMapping("/front")
+    @GetMapping()
     public List<ReviewDto> getAll() {
         log.info("Executing getAll method in ReviewController with JSON processing");
         return reviewService.getAll();
@@ -52,13 +52,13 @@ public class ReviewController {
         return reviewService.findById(id);
     }
 
-    @GetMapping("/front/email/{email}")
+    @GetMapping("/email/{email}")
     public List<ReviewDto> getReviewsByUser(@PathVariable String email) {
         log.info("Executing getReviewsByUser method in ReviewController with JSON processing");
         return reviewService.findByEmail(email);
     }
 
-    @GetMapping("/front/date/{date}")
+    @GetMapping("/date/{date}")
     public List<ReviewDto> getByDate(@PathVariable String date) {
         log.info("Executing getByDate method in ReviewController with JSON processing");
         return reviewService.findByDate(date);

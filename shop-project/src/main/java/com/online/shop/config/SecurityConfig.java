@@ -60,11 +60,11 @@ public class SecurityConfig {
                             "/api/v1/auth/authenticate",
                             "/api/v1/auth/register",
                             "/api/v1/auth/register/admin",
-                            "/api/v1/courses/front",
-                            "/api/v1/categories/front",
-                            "/api/v1/course-plans/front",
-                            "/api/v1/reviews/front",
-                            "/api/v1/roles/front"
+                            "/api/v1/courses",
+                            "/api/v1/categories",
+                            "/api/v1/course-plans",
+                            "/api/v1/reviews",
+                            "/api/v1/roles"
                     ).permitAll();
                 }).authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/v1/courses/**").authenticated();

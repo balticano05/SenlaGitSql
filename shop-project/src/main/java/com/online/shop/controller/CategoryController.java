@@ -25,7 +25,7 @@ public class CategoryController {
         return categoryService.insert(categoryDto);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasRole('admin')")
     public CategoryDto update(@PathVariable Long id, @Valid @RequestBody CategoryDto categoryDto) {
         log.info("Executing update method in CategoryController with JSON processing");
@@ -39,13 +39,13 @@ public class CategoryController {
         return categoryService.delete(id);
     }
 
-    @GetMapping("/front")
+    @GetMapping
     public List<CategoryDto> getAll() {
         log.info("Executing getAll method in CategoryController with JSON processing");
         return categoryService.getAll();
     }
 
-    @GetMapping("/front/{id}")
+    @GetMapping
     public CategoryDto getById(@PathVariable Long id) {
         log.info("Executing getById method in CategoryController with JSON processing");
         return categoryService.findById(id);

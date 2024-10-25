@@ -39,19 +39,19 @@ public class CourseController {
         return courseService.delete(id);
     }
 
-    @GetMapping("/front")
+    @GetMapping
     public List<CourseDto> getAll() {
         log.info("Executing getAll method in CourseController with JSON processing");
         return courseService.getAll();
     }
 
-    @GetMapping("/front/{id}")
+    @GetMapping("/{id}")
     public CourseDto getById(@PathVariable Long id) {
         log.info("Executing getById method in CourseController with JSON processing");
         return courseService.findById(id);
     }
 
-    @GetMapping("/front/date/{date}")
+    @GetMapping("/date/{date}")
     public List<CourseDto> getByDate(@PathVariable String date) {
         log.info("Executing getByDate method in CourseController with JSON processing");
         return courseService.findByDate(date);

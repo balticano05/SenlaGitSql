@@ -39,13 +39,13 @@ public class CoursePlanController {
         return coursePlanService.delete(id);
     }
 
-    @GetMapping("/front")
+    @GetMapping
     public List<CoursePlanDto> getAll() {
         log.info("Executing getAll method in CoursePlanController with JSON processing");
         return coursePlanService.getAll();
     }
 
-    @GetMapping("/front/{id}")
+    @GetMapping("/{id}")
     public CoursePlanDto getById(@PathVariable Long id) {
         log.info("Executing getById method in CoursePlanController with JSON processing");
         return coursePlanService.findById(id);
