@@ -3,6 +3,7 @@ package com.online.shop.repository.impl;
 import com.online.shop.entity.*;
 import com.online.shop.repository.AbstractDao;
 import com.online.shop.repository.TransactionDao;
+import com.online.shop.utils.Validator;
 import jakarta.persistence.criteria.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -12,8 +13,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
-import static com.online.shop.utils.StringConst.*;
 
 @Slf4j
 @Repository
@@ -41,7 +40,7 @@ public class TransactionDaoImpl extends AbstractDao<Transaction> implements Tran
     @Override
     public List<Transaction> findByCreateDate(String createdAt) {
         log.info("Executing findByCreationDate method by {}", createdAt);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Validator.DATE_FORMAT);
         LocalDate date = LocalDate.parse(createdAt, formatter);
         LocalDateTime startOfDay = date.atStartOfDay();
         LocalDateTime endOfDay = date.plusDays(1).atStartOfDay();

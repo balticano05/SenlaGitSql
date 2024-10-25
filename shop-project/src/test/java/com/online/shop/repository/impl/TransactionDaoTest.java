@@ -4,8 +4,8 @@ import com.online.shop.entity.Course;
 import com.online.shop.entity.Transaction;
 import com.online.shop.entity.User;
 import com.online.shop.repository.TransactionDao;
-import com.online.shop.utils.StringConst;
 import com.online.shop.config.AppConfig;
+import com.online.shop.utils.Validator;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -106,7 +106,7 @@ class TransactionDaoTest {
     void findByCreationDate_TransactionWasFound() {
         Transaction transaction = getTransaction();
         transactionDao.insert(transaction);
-        String createdAt = transaction.getDateTime().format(DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT));
+        String createdAt = transaction.getDateTime().format(DateTimeFormatter.ofPattern(Validator.DATE_FORMAT));
         List<Transaction> transactions = transactionDao.findByCreateDate(createdAt);
         assertFalse(transactions.isEmpty());
         assertEquals(1, transactions.size());

@@ -2,8 +2,8 @@ package com.online.shop.repository.impl;
 
 import com.online.shop.entity.Course;
 import com.online.shop.repository.CourseDao;
-import com.online.shop.utils.StringConst;
 import com.online.shop.config.AppConfig;
+import com.online.shop.utils.Validator;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -94,7 +94,7 @@ class CourseDaoTest {
         ;
         Course course = getCourse();
         courseDao.insert(course);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Validator.DATE_FORMAT);
         String createdAt = course.getCreatedAt().format(formatter);
         List<Course> courses = courseDao.findByCreateDate(createdAt);
         assertFalse(courses.isEmpty());

@@ -45,7 +45,7 @@ public class CategoryController {
         return categoryService.getAll();
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     public CategoryDto getById(@PathVariable Long id) {
         log.info("Executing getById method in CategoryController with JSON processing");
         return categoryService.findById(id);

@@ -4,8 +4,8 @@ import com.online.shop.entity.Course;
 import com.online.shop.entity.Review;
 import com.online.shop.entity.User;
 import com.online.shop.repository.ReviewDao;
-import com.online.shop.utils.StringConst;
 import com.online.shop.config.AppConfig;
+import com.online.shop.utils.Validator;
 import jakarta.annotation.Resource;
 import org.hibernate.PropertyValueException;
 import org.junit.jupiter.api.Test;
@@ -109,7 +109,7 @@ class ReviewDaoTest {
     void findByCreateDate_ReviewWasFound() {
         Review review = getReview();
         reviewDao.insert(review);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Validator.DATE_FORMAT);
         String createdAt = review.getCreatedAt().format(formatter);
         List<Review> reviews = reviewDao.findByCreateDate(createdAt);
         assertFalse(reviews.isEmpty());
