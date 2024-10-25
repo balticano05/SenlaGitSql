@@ -50,6 +50,15 @@ class ReviewControllerTest {
     @Value("${secret}")
     private String jwtSecret;
 
+    private String generateJwtToken(String email) {
+        return Jwts.builder()
+                .setSubject(email)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
+                .signWith(getSignKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
     private Key getSignKey() {
         byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
         return Keys.hmacShaKeyFor(keyBytes);
@@ -72,7 +81,7 @@ class ReviewControllerTest {
 
     @Test
     void getAll() throws Exception {
-        mockMvc.perform(get("/api/v1/reviews/front")
+        mockMvc.perform(get("/api/v1/reviews")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -86,14 +95,14 @@ class ReviewControllerTest {
 
     @Test
     void getReviewsByUser() throws Exception {
-        mockMvc.perform(get("/api/v1/reviews/front/email/bob.johnson@gmail.com")
+        mockMvc.perform(get("/api/v1/reviews/email/bob.johnson@gmail.com")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getByDate() throws Exception {
-        mockMvc.perform(get("/api/v1/reviews/front/date/16.01.2015")
+        mockMvc.perform(get("/api/v1/reviews/date/16.01.2015")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -107,14 +116,14 @@ class ReviewControllerTest {
 
     @Test
     void getByNonExistentEmail() throws Exception {
-        mockMvc.perform(get("/api/v1/reviews/front/email/nonexistent@gmail.com")
+        mockMvc.perform(get("/api/v1/reviews/email/nonexistent@gmail.com")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void getByInvalidDateFormat() throws Exception {
-        mockMvc.perform(get("/api/v1/reviews/front/date/invalid-date")
+        mockMvc.perform(get("/api/v1/reviews/date/invalid-date")
                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
     }
 
@@ -131,7 +140,7 @@ class ReviewControllerTest {
     void userDeletesAnotherUserReview() throws Exception {
         mockMvc.perform(delete("/api/v1/reviews/7")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isForbidden());
     }
 
     @Test
