@@ -3,6 +3,7 @@ package com.online.shop.repository.impl;
 import com.online.shop.entity.Category;
 import com.online.shop.repository.CategoryDao;
 import com.online.shop.config.AppConfig;
+import jakarta.annotation.Resource;
 import org.hibernate.PropertyValueException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,6 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 

@@ -7,6 +7,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.beans.PropertyDescriptor;
 
 import java.util.*;
 
@@ -49,7 +52,7 @@ public abstract class AbstractDao<T> {
         log.info("Executing getNullProperty method.");
         BeanWrapper src = new BeanWrapperImpl(source);
         return Arrays.stream(src.getPropertyDescriptors())
-                .map(java.beans.PropertyDescriptor::getName)
+                .map(PropertyDescriptor::getName)
                 .filter(name -> src.getPropertyValue(name) == null)
                 .toArray(String[]::new);
     }

@@ -6,7 +6,7 @@ import com.online.shop.entity.User;
 import com.online.shop.entity.User_;
 import com.online.shop.repository.AbstractDao;
 import com.online.shop.repository.ReviewDao;
-import com.online.shop.utils.StringConst;
+import com.online.shop.utils.Validator;
 import jakarta.persistence.criteria.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -42,7 +42,7 @@ public class ReviewDaoImpl extends AbstractDao<Review> implements ReviewDao {
     @Override
     public List<Review> findByCreateDate(String createdAt) {
         log.info("Executing findByCreationDate method by {}", createdAt);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Validator.DATE_FORMAT);
         LocalDate date = LocalDate.parse(createdAt, formatter);
         LocalDateTime startOfDay = date.atStartOfDay();
         LocalDateTime endOfDay = date.plusDays(1).atStartOfDay().minusNanos(1);

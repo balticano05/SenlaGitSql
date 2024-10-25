@@ -18,4 +18,5 @@ public interface UserService {
     UserDto findByEmail(String email);
 
     List<UserDto> findByDate(String date);
+
 }

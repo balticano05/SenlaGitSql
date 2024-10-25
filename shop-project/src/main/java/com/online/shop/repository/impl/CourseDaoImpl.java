@@ -4,7 +4,7 @@ import com.online.shop.entity.Course;
 import com.online.shop.entity.Course_;
 import com.online.shop.repository.AbstractDao;
 import com.online.shop.repository.CourseDao;
-import com.online.shop.utils.StringConst;
+import com.online.shop.utils.Validator;
 import jakarta.persistence.criteria.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -28,7 +28,7 @@ public class CourseDaoImpl extends AbstractDao<Course> implements CourseDao {
     @Override
     public List<Course> findByCreateDate(String createdAt) {
         log.info("Executing findByCreatedAt method by {}", createdAt);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Validator.DATE_FORMAT);
         LocalDate date = LocalDate.parse(createdAt, formatter);
         LocalDateTime startOfDay = date.atStartOfDay();
         LocalDateTime endOfDay = date.plusDays(1).atStartOfDay();

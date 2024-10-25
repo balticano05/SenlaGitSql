@@ -4,8 +4,9 @@ import com.online.shop.config.AppConfig;
 import com.online.shop.entity.Role;
 import com.online.shop.entity.User;
 import com.online.shop.repository.UserDao;
-import com.online.shop.utils.StringConst;
 
+import com.online.shop.utils.Validator;
+import jakarta.annotation.Resource;
 import org.hibernate.PropertyValueException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,6 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -106,7 +106,7 @@ class UserDaoTest {
         User user = getUser();
         Long userId = userDao.insert(user);
         userDao.insert(user);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConst.DATE_FORMAT);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Validator.DATE_FORMAT);
         String createdAt = user.getCreatedAt().format(formatter);
         List<User> users = userDao.findByCreateDate(createdAt);
         assertFalse(users.isEmpty());

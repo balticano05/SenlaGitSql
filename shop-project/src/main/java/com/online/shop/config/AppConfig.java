@@ -8,6 +8,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @ComponentScan(basePackages = "com.online.shop")
 @EnableJpaRepositories(basePackages = "com.online.shop.repository.impl")
 @EnableWebMvc
-@Import({MapperConfig.class, DatabaseConfig.class})
+@Import({MapperConfig.class, DatabaseConfig.class, SecurityConfig.class})
 public class AppConfig {
 }

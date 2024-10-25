@@ -5,6 +5,7 @@ import com.online.shop.service.ReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,30 +13,33 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/reviews")
+@RequestMapping("api/v1/reviews")
 public class ReviewController {
 
     private final ReviewService reviewService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('user', 'admin')")
     public Long insert(@Valid @RequestBody ReviewDto reviewDto) {
         log.info("Executing insert method in ReviewController with JSON processing");
         return reviewService.insert(reviewDto);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('admin') or (hasRole('user') and @securityServiceImpl.isReviewOwner(#id, authentication.name))")
     public ReviewDto update(@PathVariable Long id, @Valid @RequestBody ReviewDto reviewDto) {
         log.info("Executing update method in ReviewController with JSON processing");
         return reviewService.update(id, reviewDto);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('admin') or ((hasRole('user') and @securityServiceImpl.isReviewOwner(#id, authentication.name)))")
     public Boolean delete(@PathVariable Long id) {
         log.info("Executing delete method in ReviewController with JSON processing");
         return reviewService.delete(id);
     }
 
-    @GetMapping
+    @GetMapping()
     public List<ReviewDto> getAll() {
         log.info("Executing getAll method in ReviewController with JSON processing");
         return reviewService.getAll();

@@ -3,7 +3,11 @@ package com.online.shop.repository.impl;
 import com.online.shop.repository.AbstractDao;
 import com.online.shop.entity.User;
 import com.online.shop.repository.UserDao;
+import com.online.shop.utils.Validator;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Repository;
@@ -14,8 +18,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-
-import static com.online.shop.utils.StringConst.*;
 
 @Slf4j
 @Repository
@@ -43,7 +45,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public List<User> findByCreateDate(String createdAt) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Validator.DATE_FORMAT);
         LocalDate date = LocalDate.parse(createdAt, formatter);
         LocalDateTime startOfDay = date.atStartOfDay();
         LocalDateTime endOfDay = date.plusDays(1).atStartOfDay();
@@ -52,6 +54,18 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
         query.setParameter("startOfDay", startOfDay);
         query.setParameter("endOfDay", endOfDay);
         return query.getResultList();
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        log.info("Executing checking existence of user by email: {}", email);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+        Root<User> root = criteriaQuery.from(User.class);
+        criteriaQuery.select(criteriaBuilder.count(root));
+        criteriaQuery.where(criteriaBuilder.equal(root.get("email"), email));
+        Long count = entityManager.createQuery(criteriaQuery).getSingleResult();
+        return count > 0;
     }
 
 }
