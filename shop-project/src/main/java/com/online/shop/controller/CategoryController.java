@@ -5,6 +5,7 @@ import com.online.shop.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,9 +41,12 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<CategoryDto> getAll() {
+    public List<CategoryDto> getAll(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size
+    ) {
         log.info("Executing getAll method in CategoryController with JSON processing");
-        return categoryService.getAll();
+        return categoryService.getAll(PageRequest.of(page, size));
     }
 
     @GetMapping("/{id}")

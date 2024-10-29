@@ -1,6 +1,7 @@
 package com.online.shop.service;
 
 import com.online.shop.dto.UserDto;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface UserService {
 
     UserDto findById(Long id);
 
-    List<UserDto> getAll();
+    List<UserDto> getAll(PageRequest pageRequest);
 
     Boolean delete(Long id);
 

@@ -8,6 +8,7 @@ import org.hibernate.PropertyValueException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -76,7 +77,7 @@ class CategoryDaoTest {
 
     @Test
     public void getAll_CategoriesWereFound() {
-        List<Category> categories = categoryDao.getAll();
+        List<Category> categories = categoryDao.getAll(PageRequest.of(0, 10));
         assertFalse(categories.isEmpty());
     }
 

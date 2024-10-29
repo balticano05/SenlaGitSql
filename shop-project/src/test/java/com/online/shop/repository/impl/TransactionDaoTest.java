@@ -9,6 +9,7 @@ import com.online.shop.utils.Validator;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -57,7 +58,7 @@ class TransactionDaoTest {
 
     @Test
     void getAll_TransactionsWereFound() {
-        List<Transaction> transactions = transactionDao.getAll();
+        List<Transaction> transactions = transactionDao.getAll(PageRequest.of(0, 10));
         assertFalse(transactions.isEmpty());
     }
 

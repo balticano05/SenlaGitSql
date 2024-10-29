@@ -18,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
 
 @ExtendWith(MockitoExtension.class)
 class RoleServiceTest {
@@ -74,12 +75,12 @@ class RoleServiceTest {
 
     @Test
     void getAll() {
-        when(roleDao.getAll()).thenReturn(Collections.singletonList(role));
+        when(roleDao.getAll(PageRequest.of(0,10))).thenReturn(Collections.singletonList(role));
         when(modelMapper.map(any(Role.class), eq(RoleDto.class))).thenReturn(roleDto);
-        List<RoleDto> roles = roleService.getAll();
+        List<RoleDto> roles = roleService.getAll(PageRequest.of(0,10));
         assertFalse(roles.isEmpty());
         assertEquals(1, roles.size());
-        verify(roleDao, times(1)).getAll();
+        verify(roleDao, times(1)).getAll(PageRequest.of(0,10));
     }
 
     @Test
@@ -112,10 +113,10 @@ class RoleServiceTest {
 
     @Test
     void getAllNegative() {
-        when(roleDao.getAll()).thenReturn(Collections.emptyList());
-        List<RoleDto> roles = roleService.getAll();
+        when(roleDao.getAll(PageRequest.of(0,10))).thenReturn(Collections.emptyList());
+        List<RoleDto> roles = roleService.getAll(PageRequest.of(0,10));
         assertTrue(roles.isEmpty());
-        verify(roleDao, times(1)).getAll();
+        verify(roleDao, times(1)).getAll(PageRequest.of(0,10));
     }
 
     @Test

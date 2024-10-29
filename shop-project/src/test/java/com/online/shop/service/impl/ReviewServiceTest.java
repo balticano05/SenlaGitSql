@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -81,12 +82,12 @@ class ReviewServiceTest {
 
     @Test
     void getAll() {
-        when(reviewDao.getAll()).thenReturn(Collections.singletonList(review));
+        when(reviewDao.getAll(PageRequest.of(0,10))).thenReturn(Collections.singletonList(review));
         when(modelMapper.map(any(Review.class), eq(ReviewDto.class))).thenReturn(reviewDto);
-        List<ReviewDto> reviews = reviewService.getAll();
+        List<ReviewDto> reviews = reviewService.getAll(PageRequest.of(0,10));
         assertFalse(reviews.isEmpty());
         assertEquals(1, reviews.size());
-        verify(reviewDao, times(1)).getAll();
+        verify(reviewDao, times(1)).getAll(PageRequest.of(0,10));
     }
 
     @Test
@@ -139,10 +140,10 @@ class ReviewServiceTest {
 
     @Test
     void getAllNegative() {
-        when(reviewDao.getAll()).thenReturn(Collections.emptyList());
-        List<ReviewDto> reviews = reviewService.getAll();
+        when(reviewDao.getAll(PageRequest.of(0,10))).thenReturn(Collections.emptyList());
+        List<ReviewDto> reviews = reviewService.getAll(PageRequest.of(0,10));
         assertTrue(reviews.isEmpty());
-        verify(reviewDao, times(1)).getAll();
+        verify(reviewDao, times(1)).getAll(PageRequest.of(0,10));
     }
 
     @Test

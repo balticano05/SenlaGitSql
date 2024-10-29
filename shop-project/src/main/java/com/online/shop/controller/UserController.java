@@ -1,10 +1,13 @@
 package com.online.shop.controller;
 
+import com.online.shop.security.dto.BuyCourseRequest;
 import com.online.shop.dto.UserDto;
+import com.online.shop.service.TransactionService;
 import com.online.shop.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +21,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final TransactionService transactionService;
 
     @PostMapping
     @PreAuthorize("hasRole('admin')")
@@ -43,9 +47,12 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize("hasRole('admin')")
-    public List<UserDto> getAll() {
+    public List<UserDto> getAll(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size
+    ) {
         log.info("Executing getAll method in UserController with JSON processing");
-        return userService.getAll();
+        return userService.getAll(PageRequest.of(page, size));
     }
 
     @GetMapping("/{id}")
@@ -68,6 +75,13 @@ public class UserController {
     public List<UserDto> getByDate(@PathVariable String date) {
         log.info("Executing getByDate method.");
         return userService.findByDate(date);
+    }
+
+    @PostMapping("/{id}/buy-course")
+    @PreAuthorize("hasRole('admin') or ((hasRole('user') and @securityServiceImpl.isUserOwner(#id, authentication.name)))")
+    public Long buyCourse(@PathVariable Long id, @RequestBody BuyCourseRequest request) {
+        log.info("Executing buyCourse method in UserController");
+        return transactionService.buyCourse(id, request);
     }
 
 }

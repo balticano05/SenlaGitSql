@@ -1,6 +1,7 @@
 package com.online.shop.service;
 
 import com.online.shop.dto.CategoryDto;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface CategoryService {
 
     CategoryDto findById(Long id);
 
-    List<CategoryDto> getAll();
+    List<CategoryDto> getAll(PageRequest pageRequest);
 
     Boolean delete(Long id);
 }

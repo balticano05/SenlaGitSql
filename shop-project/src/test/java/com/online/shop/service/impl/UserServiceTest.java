@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -86,12 +87,12 @@ class UserServiceTest {
 
     @Test
     void getAll() {
-        when(userDao.getAll()).thenReturn(Collections.singletonList(user));
+        when(userDao.getAll(PageRequest.of(0,10))).thenReturn(Collections.singletonList(user));
         when(modelMapper.map(any(User.class), eq(UserDto.class))).thenReturn(userDto);
-        List<UserDto> users = userService.getAll();
+        List<UserDto> users = userService.getAll(PageRequest.of(0,10));
         assertFalse(users.isEmpty());
         assertEquals(1, users.size());
-        verify(userDao, times(1)).getAll();
+        verify(userDao, times(1)).getAll(PageRequest.of(0,10));
     }
 
     @Test
@@ -143,10 +144,10 @@ class UserServiceTest {
 
     @Test
     void getAllNegative() {
-        when(userDao.getAll()).thenReturn(Collections.emptyList());
-        List<UserDto> users = userService.getAll();
+        when(userDao.getAll(PageRequest.of(0,10))).thenReturn(Collections.emptyList());
+        List<UserDto> users = userService.getAll(PageRequest.of(0,10));
         assertTrue(users.isEmpty());
-        verify(userDao, times(1)).getAll();
+        verify(userDao, times(1)).getAll(PageRequest.of(0,10));
     }
 
     @Test

@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,9 +63,9 @@ public class CoursePlanServiceImpl implements CoursePlanService {
     }
 
     @Override
-    public List<CoursePlanDto> getAll() {
+    public List<CoursePlanDto> getAll(PageRequest pageRequest) {
         log.info("Executing getAll method in CoursePlanServiceImpl");
-        return coursePlanDao.getAll().stream()
+        return coursePlanDao.getAll(pageRequest).stream()
                 .map(coursePlan -> modelMapper.map(coursePlan, CoursePlanDto.class))
                 .collect(Collectors.toList());
     }

@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -64,9 +65,9 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseDto> getAll() {
+    public List<CourseDto> getAll(PageRequest pageRequest) {
         log.info("Executing getAll method in CourseServiceImpl");
-        return courseDao.getAll().stream()
+        return courseDao.getAll(pageRequest).stream()
                 .map(course -> modelMapper.map(course, CourseDto.class))
                 .collect(Collectors.toList());
     }
@@ -89,6 +90,23 @@ public class CourseServiceImpl implements CourseService {
             throw new IllegalArgumentException("Invalid date format in findByDate method");
         }
         return Optional.ofNullable(courseDao.findByCreateDate(date))
+                .filter(courses -> !courses.isEmpty())
+                .orElseThrow(() -> {
+                    throw new EntityNotFoundException("List of courses is empty in findByDate method");
+                })
+                .stream()
+                .map(course -> modelMapper.map(course, CourseDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CourseDto> getCoursesByUserId(Long id) {
+        log.info("Executing getCoursesByUserId in CourseServiceImpl for ID: {}", id);
+        if (id == null) {
+            log.error("ID is null in delete method");
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+        return Optional.ofNullable(courseDao.findCoursesByUserId(id))
                 .filter(courses -> !courses.isEmpty())
                 .orElseThrow(() -> {
                     throw new EntityNotFoundException("List of courses is empty in findByDate method");

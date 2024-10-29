@@ -1,6 +1,7 @@
 package com.online.shop.service;
 
 import com.online.shop.dto.RoleDto;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface RoleService {
 
     RoleDto findById(Long id);
 
-    List<RoleDto> getAll();
+    List<RoleDto> getAll(PageRequest pageRequest);
 
     Boolean delete(Long id);
 }

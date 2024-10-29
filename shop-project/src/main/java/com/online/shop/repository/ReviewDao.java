@@ -1,6 +1,7 @@
 package com.online.shop.repository;
 
 import com.online.shop.entity.Review;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +9,7 @@ import java.util.Optional;
 public interface ReviewDao {
     Optional<Review> getById(Long id);
 
-    List<Review> getAll();
+    List<Review> getAll(PageRequest pageRequest);
 
     Long insert(Review entity);
 

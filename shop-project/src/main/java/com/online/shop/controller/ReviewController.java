@@ -5,6 +5,7 @@ import com.online.shop.service.ReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,10 +40,13 @@ public class ReviewController {
         return reviewService.delete(id);
     }
 
-    @GetMapping()
-    public List<ReviewDto> getAll() {
+    @GetMapping
+    public List<ReviewDto> getAll(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size
+    ) {
         log.info("Executing getAll method in ReviewController with JSON processing");
-        return reviewService.getAll();
+        return reviewService.getAll(PageRequest.of(page, size));
     }
 
 

@@ -1,6 +1,12 @@
 package com.online.shop.service.impl;
 
+import com.online.shop.security.dto.BuyCourseRequest;
+import com.online.shop.entity.Course;
+import com.online.shop.entity.User;
+import com.online.shop.repository.CourseDao;
 import com.online.shop.repository.TransactionDao;
+import com.online.shop.repository.UserDao;
+import com.online.shop.security.service.SecurityService;
 import com.online.shop.utils.Validator;
 import com.online.shop.service.TransactionService;
 import com.online.shop.dto.TransactionDto;
@@ -10,8 +16,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,7 +31,10 @@ import java.util.stream.Collectors;
 public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionDao transactionDao;
+    private final CourseDao courseDao;
+    private final UserDao userDao;
     private final ModelMapper modelMapper;
+    private final SecurityService securityService;
 
     @Override
     public Long insert(TransactionDto entityDto) {
@@ -64,9 +75,9 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<TransactionDto> getAll() {
+    public List<TransactionDto> getAll(PageRequest pageRequest) {
         log.info("Executing getAll method in TransactionServiceImpl");
-        return transactionDao.getAll().stream()
+        return transactionDao.getAll(pageRequest).stream()
                 .map(transaction -> modelMapper.map(transaction, TransactionDto.class))
                 .collect(Collectors.toList());
     }
@@ -113,6 +124,23 @@ public class TransactionServiceImpl implements TransactionService {
                 .stream()
                 .map(transaction -> modelMapper.map(transaction, TransactionDto.class))
                 .collect(Collectors.toList());
+    }
+
+    public Long buyCourse(Long id, BuyCourseRequest request) {
+        log.info("Executing buyCourse method");
+        if(securityService.isCoursePurchasedByUser(request.getCourseId(), id)){
+            throw new IllegalStateException("Course already purchased by this course");
+        }
+        User user = userDao.getById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        Course course = courseDao.getById(request.getCourseId())
+                .orElseThrow(() -> new EntityNotFoundException("Course not found"));
+        Transaction transaction = new Transaction();
+        transaction.setUser(user);
+        transaction.setCourse(course);
+        transaction.setDateTime(LocalDateTime.now());
+        transaction.setPrice(course.getPrice());
+        return transactionDao.insert(transaction);
     }
 
 }

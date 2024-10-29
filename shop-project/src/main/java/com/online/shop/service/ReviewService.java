@@ -1,6 +1,7 @@
 package com.online.shop.service;
 
 import com.online.shop.dto.ReviewDto;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface ReviewService {
 
     ReviewDto findById(Long id);
 
-    List<ReviewDto> getAll();
+    List<ReviewDto> getAll(PageRequest pageRequest);
 
     Boolean delete(Long id);
 

@@ -6,6 +6,7 @@ import com.online.shop.config.AppConfig;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -74,7 +75,7 @@ class RoleDaoTest {
 
     @Test
     public void getAll_RolesWereFound() {
-        List<Role> roles = roleDao.getAll();
+        List<Role> roles = roleDao.getAll(PageRequest.of(0, 10));
         assertFalse(roles.isEmpty());
     }
 

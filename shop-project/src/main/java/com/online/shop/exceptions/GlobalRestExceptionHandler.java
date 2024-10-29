@@ -63,4 +63,10 @@ public class GlobalRestExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied");
     }
 
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<String> handleIllegalStateException(IllegalStateException e) {
+        log.error("Illegal state exception", e);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
+
 }

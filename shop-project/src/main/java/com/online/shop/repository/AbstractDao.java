@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,9 +28,15 @@ public abstract class AbstractDao<T> {
         return Optional.ofNullable(entityManager.find(getEntityClass(), id));
     }
 
-    public List<T> getAll() {
+    public List<T> getAll(PageRequest pageRequest) {
         log.info("Executing getAll method.");
-        return entityManager.createQuery("FROM " + getEntityClass().getSimpleName()).getResultList();
+        int pageNumber = pageRequest.getPageNumber();
+        int pageSize = pageRequest.getPageSize();
+        int firstResult = pageNumber * pageSize;
+        return entityManager.createQuery("FROM " + getEntityClass().getSimpleName())
+                .setFirstResult(pageRequest.getPageNumber() * pageRequest.getPageSize())
+                .setMaxResults(pageRequest.getPageSize())
+                .getResultList();
     }
 
     public Long insert(T entity) {

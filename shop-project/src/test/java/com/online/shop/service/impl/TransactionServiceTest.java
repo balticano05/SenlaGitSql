@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -80,12 +81,12 @@ class TransactionServiceTest {
 
     @Test
     void getAll() {
-        when(transactionDao.getAll()).thenReturn(Collections.singletonList(transaction));
+        when(transactionDao.getAll(PageRequest.of(0,10))).thenReturn(Collections.singletonList(transaction));
         when(modelMapper.map(any(Transaction.class), eq(TransactionDto.class))).thenReturn(transactionDto);
-        List<TransactionDto> transactions = transactionService.getAll();
+        List<TransactionDto> transactions = transactionService.getAll(PageRequest.of(0,10));
         assertFalse(transactions.isEmpty());
         assertEquals(1, transactions.size());
-        verify(transactionDao, times(1)).getAll();
+        verify(transactionDao, times(1)).getAll(PageRequest.of(0,10));
     }
 
     @Test
@@ -138,10 +139,10 @@ class TransactionServiceTest {
 
     @Test
     void getAllNegative() {
-        when(transactionDao.getAll()).thenReturn(Collections.emptyList());
-        List<TransactionDto> transactions = transactionService.getAll();
+        when(transactionDao.getAll(PageRequest.of(0,10))).thenReturn(Collections.emptyList());
+        List<TransactionDto> transactions = transactionService.getAll(PageRequest.of(0,10));
         assertTrue(transactions.isEmpty());
-        verify(transactionDao, times(1)).getAll();
+        verify(transactionDao, times(1)).getAll(PageRequest.of(0,10));
     }
 
     @Test

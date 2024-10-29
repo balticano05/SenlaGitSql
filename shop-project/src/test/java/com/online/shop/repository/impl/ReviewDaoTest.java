@@ -10,6 +10,7 @@ import jakarta.annotation.Resource;
 import org.hibernate.PropertyValueException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -53,7 +54,7 @@ class ReviewDaoTest {
 
     @Test
     void getAll_ReviewsWasFound() {
-        List<Review> reviews = reviewDao.getAll();
+        List<Review> reviews = reviewDao.getAll(PageRequest.of(0, 10));
         assertFalse(reviews.isEmpty());
     }
 

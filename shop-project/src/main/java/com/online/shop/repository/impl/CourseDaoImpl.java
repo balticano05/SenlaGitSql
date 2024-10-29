@@ -2,6 +2,7 @@ package com.online.shop.repository.impl;
 
 import com.online.shop.entity.Course;
 import com.online.shop.entity.Course_;
+import com.online.shop.entity.Transaction;
 import com.online.shop.repository.AbstractDao;
 import com.online.shop.repository.CourseDao;
 import com.online.shop.utils.Validator;
@@ -40,4 +41,14 @@ public class CourseDaoImpl extends AbstractDao<Course> implements CourseDao {
         return entityManager.createQuery(query).getResultList();
     }
 
+    @Override
+    public List<Course> findCoursesByUserId(Long id) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Course> query = criteriaBuilder.createQuery(Course.class);
+        Root<Transaction> root = query.from(Transaction.class);
+        Join<Transaction, Course> join = root.join("course");
+        query.select(join).where(criteriaBuilder.equal(root.get("user").get("id"), id));
+        List<Course> courses = entityManager.createQuery(query).getResultList();
+        return courses;
+    }
 }

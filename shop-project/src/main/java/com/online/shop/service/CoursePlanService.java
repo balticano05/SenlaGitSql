@@ -1,6 +1,7 @@
 package com.online.shop.service;
 
 import com.online.shop.dto.CoursePlanDto;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface CoursePlanService {
 
     CoursePlanDto findById(Long id);
 
-    List<CoursePlanDto> getAll();
+    List<CoursePlanDto> getAll(PageRequest pageRequest);
 
     Boolean delete(Long id);
 }

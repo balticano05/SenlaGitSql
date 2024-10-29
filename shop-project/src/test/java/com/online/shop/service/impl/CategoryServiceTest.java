@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.Collections;
 import java.util.List;
@@ -84,14 +85,14 @@ class CategoryServiceTest {
 
     @Test
     void getAll() {
-        when(categoryDao.getAll()).thenReturn(Collections.singletonList(category));
+        when(categoryDao.getAll(PageRequest.of(0, 10))).thenReturn(Collections.singletonList(category));
         when(modelMapper.map(any(Category.class), eq(CategoryDto.class))).thenReturn(categoryDto);
 
-        List<CategoryDto> categories = categoryService.getAll();
+        List<CategoryDto> categories = categoryService.getAll(PageRequest.of(0, 10));
 
         assertFalse(categories.isEmpty());
         assertEquals(1, categories.size());
-        verify(categoryDao, times(1)).getAll();
+        verify(categoryDao, times(1)).getAll(PageRequest.of(0, 10));
     }
 
     @Test
@@ -127,12 +128,12 @@ class CategoryServiceTest {
 
     @Test
     void getAllNegative() {
-        when(categoryDao.getAll()).thenReturn(Collections.emptyList());
+        when(categoryDao.getAll(PageRequest.of(0, 10))).thenReturn(Collections.emptyList());
 
-        List<CategoryDto> categories = categoryService.getAll();
+        List<CategoryDto> categories = categoryService.getAll(PageRequest.of(0, 10));
 
         assertTrue(categories.isEmpty());
-        verify(categoryDao, times(1)).getAll();
+        verify(categoryDao, times(1)).getAll(PageRequest.of(0, 10));
     }
 
     @Test

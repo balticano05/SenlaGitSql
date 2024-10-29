@@ -7,6 +7,7 @@ import com.online.shop.repository.CoursePlanDao;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -85,7 +86,7 @@ class CoursePlanDaoTest {
 
     @Test
     public void getAll_CoursePlansWereFound() {
-        List<CoursePlan> coursePlans = coursePlanDao.getAll();
+        List<CoursePlan> coursePlans = coursePlanDao.getAll(PageRequest.of(0, 10));
         assertFalse(coursePlans.isEmpty());
     }
 

@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.Collections;
 import java.util.List;
@@ -78,12 +79,12 @@ public class CoursePlanServiceTest {
 
     @Test
     void getAll() {
-        when(coursePlanDao.getAll()).thenReturn(Collections.singletonList(coursePlan));
+        when(coursePlanDao.getAll(PageRequest.of(0, 10))).thenReturn(Collections.singletonList(coursePlan));
         when(modelMapper.map(any(CoursePlan.class), eq(CoursePlanDto.class))).thenReturn(coursePlanDto);
-        List<CoursePlanDto> coursePlans = coursePlanService.getAll();
+        List<CoursePlanDto> coursePlans = coursePlanService.getAll(PageRequest.of(0, 10));
         assertFalse(coursePlans.isEmpty());
         assertEquals(1, coursePlans.size());
-        verify(coursePlanDao, times(1)).getAll();
+        verify(coursePlanDao, times(1)).getAll(PageRequest.of(0, 10));
     }
 
     @Test

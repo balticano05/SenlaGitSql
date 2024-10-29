@@ -1,6 +1,7 @@
 package com.online.shop.repository;
 
 import com.online.shop.entity.CoursePlan;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +9,7 @@ import java.util.Optional;
 public interface CoursePlanDao {
     Optional<CoursePlan> getById(Long id);
 
-    List<CoursePlan> getAll();
+    List<CoursePlan> getAll(PageRequest pageRequest);
 
     Long insert(CoursePlan entity);
 

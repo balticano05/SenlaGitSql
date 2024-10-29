@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -82,12 +83,12 @@ class CourseServiceTest {
 
     @Test
     void getAll() {
-        when(courseDao.getAll()).thenReturn(Collections.singletonList(course));
+        when(courseDao.getAll(PageRequest.of(0,10))).thenReturn(Collections.singletonList(course));
         when(modelMapper.map(any(Course.class), eq(CourseDto.class))).thenReturn(courseDto);
-        List<CourseDto> courses = courseService.getAll();
+        List<CourseDto> courses = courseService.getAll(PageRequest.of(0,10));
         assertFalse(courses.isEmpty());
         assertEquals(1, courses.size());
-        verify(courseDao, times(1)).getAll();
+        verify(courseDao, times(1)).getAll(PageRequest.of(0,10));
     }
 
     @Test
@@ -130,10 +131,10 @@ class CourseServiceTest {
 
     @Test
     void getAllNegative() {
-        when(courseDao.getAll()).thenReturn(Collections.emptyList());
-        List<CourseDto> courses = courseService.getAll();
+        when(courseDao.getAll(PageRequest.of(0,10))).thenReturn(Collections.emptyList());
+        List<CourseDto> courses = courseService.getAll(PageRequest.of(0,10));
         assertTrue(courses.isEmpty());
-        verify(courseDao, times(1)).getAll();
+        verify(courseDao, times(1)).getAll(PageRequest.of(0,10));
     }
 
     @Test

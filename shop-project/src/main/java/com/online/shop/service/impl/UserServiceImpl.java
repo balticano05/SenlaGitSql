@@ -1,5 +1,8 @@
 package com.online.shop.service.impl;
 
+import com.online.shop.entity.Course;
+import com.online.shop.entity.Transaction;
+import com.online.shop.repository.CourseDao;
 import com.online.shop.utils.Validator;
 import com.online.shop.service.UserService;
 import com.online.shop.dto.UserDto;
@@ -9,9 +12,11 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -64,9 +69,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAll() {
+    public List<UserDto> getAll(PageRequest pageRequest) {
         log.info("Executing getAll method in UserServiceImpl");
-        return userDao.getAll().stream()
+        return userDao.getAll(pageRequest).stream()
                 .map(user -> modelMapper.map(user, UserDto.class))
                 .collect(Collectors.toList());
     }
