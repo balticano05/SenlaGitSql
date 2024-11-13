@@ -1,11 +1,11 @@
-package com.online.shop.security.service;
+package com.online.shop.service;
 
 import com.online.shop.entity.Role;
 import com.online.shop.entity.User;
 import com.online.shop.repository.UserDao;
-import com.online.shop.security.dto.AuthRequest;
-import com.online.shop.security.dto.AuthResponse;
-import com.online.shop.security.dto.RegisterRequest;
+import com.online.shop.dto.AuthRequest;
+import com.online.shop.dto.AuthResponse;
+import com.online.shop.dto.RegisterRequest;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

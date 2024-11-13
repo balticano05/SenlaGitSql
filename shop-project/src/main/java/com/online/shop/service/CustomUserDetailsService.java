@@ -1,4 +1,4 @@
-package com.online.shop.security.service;
+package com.online.shop.service;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 

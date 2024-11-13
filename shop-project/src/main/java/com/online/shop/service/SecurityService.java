@@ -1,4 +1,4 @@
-package com.online.shop.security.service;
+package com.online.shop.service;
 
 public interface SecurityService {
     boolean isReviewOwner(Long reviewId, String currentUserEmail);

@@ -1,6 +1,6 @@
 package com.online.shop.service;
 
-import com.online.shop.security.dto.BuyCourseRequest;
+import com.online.shop.dto.BuyCourseRequest;
 import com.online.shop.dto.TransactionDto;
 import org.springframework.data.domain.PageRequest;
 

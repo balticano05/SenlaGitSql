@@ -1,9 +1,9 @@
-package com.online.shop.security.controller;
+package com.online.shop.controller;
 
-import com.online.shop.security.dto.AuthRequest;
-import com.online.shop.security.dto.AuthResponse;
-import com.online.shop.security.dto.RegisterRequest;
-import com.online.shop.security.service.AuthService;
+import com.online.shop.dto.AuthRequest;
+import com.online.shop.dto.AuthResponse;
+import com.online.shop.dto.RegisterRequest;
+import com.online.shop.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

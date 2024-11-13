@@ -1,7 +1,7 @@
 package com.online.shop.config;
 
 import com.online.shop.security.filter.JwtAuthFilter;
-import com.online.shop.security.service.CustomUserDetailsService;
+import com.online.shop.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

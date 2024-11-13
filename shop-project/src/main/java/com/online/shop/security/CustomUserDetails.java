@@ -1,4 +1,4 @@
-package com.online.shop.security.service;
+package com.online.shop.security;
 
 import com.online.shop.entity.User;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,12 +1,12 @@
 package com.online.shop.service.impl;
 
-import com.online.shop.security.dto.BuyCourseRequest;
+import com.online.shop.dto.BuyCourseRequest;
 import com.online.shop.entity.Course;
 import com.online.shop.entity.User;
 import com.online.shop.repository.CourseDao;
 import com.online.shop.repository.TransactionDao;
 import com.online.shop.repository.UserDao;
-import com.online.shop.security.service.SecurityService;
+import com.online.shop.service.SecurityService;
 import com.online.shop.utils.Validator;
 import com.online.shop.service.TransactionService;
 import com.online.shop.dto.TransactionDto;
@@ -128,7 +128,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     public Long buyCourse(Long id, BuyCourseRequest request) {
         log.info("Executing buyCourse method");
-        if(securityService.isCoursePurchasedByUser(request.getCourseId(), id)){
+        if (securityService.isCoursePurchasedByUser(request.getCourseId(), id)) {
             throw new IllegalStateException("Course already purchased by this course");
         }
         User user = userDao.getById(id)

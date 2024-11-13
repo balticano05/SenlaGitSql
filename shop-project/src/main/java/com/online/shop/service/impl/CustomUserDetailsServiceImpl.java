@@ -1,7 +1,9 @@
-package com.online.shop.security.service;
+package com.online.shop.service.impl;
 
 import com.online.shop.entity.User;
 import com.online.shop.repository.UserDao;
+import com.online.shop.security.CustomUserDetails;
+import com.online.shop.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

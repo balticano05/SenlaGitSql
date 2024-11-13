@@ -1,6 +1,8 @@
 package com.online.shop.controller;
 
-import com.online.shop.security.dto.BuyCourseRequest;
+import com.online.shop.dto.BuyCourseRequest;
+import com.online.shop.dto.DateRequest;
+import com.online.shop.dto.EmailRequest;
 import com.online.shop.dto.UserDto;
 import com.online.shop.service.TransactionService;
 import com.online.shop.service.UserService;
@@ -62,22 +64,22 @@ public class UserController {
         return userService.findById(id);
     }
 
-    @GetMapping("/email/{email}")
+    @PostMapping("/email")
     @PreAuthorize("hasRole('admin')")
-    public UserDto getByEmail(@PathVariable String email) {
+    public UserDto getByEmail(@RequestBody EmailRequest emailRequest) {
         log.info("Executing getByEmail method in UserController with JSON processing");
-        return userService.findByEmail(email);
+        return userService.findByEmail(emailRequest.getEmail());
 
     }
 
-    @GetMapping("/date/{date}")
+    @PostMapping("/date")
     @PreAuthorize("hasRole('admin')")
-    public List<UserDto> getByDate(@PathVariable String date) {
+    public List<UserDto> getByDate(@RequestBody DateRequest dateRequest) {
         log.info("Executing getByDate method.");
-        return userService.findByDate(date);
+        return userService.findByDate(dateRequest.getBody());
     }
 
-    @PostMapping("/{id}/buy-course")
+    @PostMapping("/course-purchase/{id}")
     @PreAuthorize("hasRole('admin') or ((hasRole('user') and @securityServiceImpl.isUserOwner(#id, authentication.name)))")
     public Long buyCourse(@PathVariable Long id, @RequestBody BuyCourseRequest request) {
         log.info("Executing buyCourse method in UserController");

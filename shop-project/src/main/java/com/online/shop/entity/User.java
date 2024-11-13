@@ -36,4 +36,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
     private List<Course> courses;
+    //private final List<Course> courses;
+    //ментор на тестовом
 }
